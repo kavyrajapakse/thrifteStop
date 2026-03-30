@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Cart - Premium Shopping</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 min-h-screen">
+        <div id="nav-placeholder"></div>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Cart</h1>
+                <p class="text-gray-600">Review your items and proceed to checkout</p>
+            </div>
+
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                <div class="lg:col-span-8">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="p-6">
+                            <div id="cartContainer" class="space-y-6 cartContainer">
+<!--                                <div class="flex items-start space-x-4 pb-6 border-b border-gray-200">
+                                    <div class="flex-shrink-0">
+                                        <img src="https://readdy.ai/api/search-image?query=premium%20wireless%20headphones%20with%20sleek%20modern%20design%20on%20clean%20white%20background%20minimalist%20product%20photography&width=120&height=120&seq=cart1&orientation=squarish"
+                                             alt="Premium Wireless Headphones"
+                                             class="w-20 h-20 object-cover object-top rounded-lg">
+                                    </div>
+
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm text-gray-600 mt-1">ITEM ID: ITM-001</p>
+                                        <h3 class="text-lg font-semibold text-gray-900">Premium Wireless Headphones</h3>
+                                        <p class="text-sm text-gray-600 mt-1">Noise Cancelling, 30H Battery Life</p>
+                                    </div>
+
+                                     Right-side column: price at top, remove at bottom 
+                                    <div class="flex flex-col justify-between items-end h-20 text-right">
+                                        <p class="text-lg font-bold text-gray-900">Rs.2,500</p>
+                                        <button
+                                            class="text-red-600 hover:text-red-800 transition-colors text-sm font-medium flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center inline-block mr-1">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                            </div>
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <div class="flex items-start space-x-4 pb-6 border-b border-gray-200">
+                                    <div class="flex-shrink-0">
+                                        <img src="https://readdy.ai/api/search-image?query=elegant%20smartwatch%20with%20metal%20band%20on%20clean%20white%20background%20modern%20wearable%20technology%20product%20photography&width=120&height=120&seq=cart2&orientation=squarish"
+                                             alt="Smart Fitness Watch" class="w-20 h-20 object-cover object-top rounded-lg">
+                                    </div>
+
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm text-gray-600 mt-1">ITEM ID: ITM-002</p>
+                                        <h3 class="text-lg font-semibold text-gray-900">Smart Fitness Watch</h3>
+                                        <p class="text-sm text-gray-600 mt-1">GPS, Heart Rate Monitor, Waterproof</p>
+                                    </div>
+
+                                     Price and Remove Button aligned vertically 
+                                    <div class="flex flex-col justify-between items-end h-20">
+                                        <p class="text-lg font-bold text-gray-900">Rs.2,500</p>
+                                        <button
+                                            class="text-red-600 hover:text-red-800 transition-colors text-sm font-medium flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center inline-block mr-1">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                            </div>
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="flex items-start space-x-4 pb-6 border-b border-gray-200">
+                                    <div class="flex-shrink-0">
+                                        <img src="https://readdy.ai/api/search-image?query=portable%20bluetooth%20speaker%20with%20modern%20design%20on%20clean%20white%20background%20premium%20audio%20device%20product%20photography&width=120&height=120&seq=cart3&orientation=squarish"
+                                             alt="Portable Bluetooth Speaker"
+                                             class="w-20 h-20 object-cover object-top rounded-lg">
+                                    </div>
+
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm text-gray-600 mt-1">ITEM ID: ITM-003</p>
+                                        <h3 class="text-lg font-semibold text-gray-900">Portable Bluetooth Speaker</h3>
+                                        <p class="text-sm text-gray-600 mt-1">360° Sound, 20H Battery, Waterproof</p>
+                                    </div>
+
+                                     Right section: price top, remove bottom 
+                                    <div class="flex flex-col justify-between items-end h-20 text-right">
+                                        <p class="text-lg font-bold text-gray-900">Rs.2,500</p>
+                                        <button
+                                            class="text-red-600 hover:text-red-800 transition-colors text-sm font-medium flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center inline-block mr-1">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                            </div>
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>-->
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button class="text-primary hover:text-primary/80 transition-colors font-medium">
+                            <div class="w-4 h-4 flex items-center justify-center inline-block mr-2">
+                                <i class="ri-arrow-left-line"></i>
+                            </div>
+                            Continue Shopping
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 mt-8 lg:mt-0">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
+
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600 subtotal-label">Subtotal (4 items)</span>
+                                <span class="text-gray-900 subtotal-value">Rs.7,500</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Shipping</span>
+                                <span class="text-gray-900 shipping-value">Rs 500</span>
+                            </div>
+                            <!-- <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Tax</span>
+                                <span class="text-gray-900">$67.68</span>
+                            </div> -->
+                            <div class="border-t border-gray-200 pt-3">
+                                <div class="flex justify-between">
+                                    <span class="text-lg font-semibold text-gray-900">Total</span>
+                                    <span class="text-lg font-bold text-gray-900 total-value">Rs.8,000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="checkout-btn"
+                                class="w-full bg-primary text-white py-3 px-4 rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap mb-4">
+                            Proceed to Checkout
+                        </button>
+
+                        <div class="text-center">
+                            <div class="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-shield-check-line"></i>
+                                </div>
+                                <span>Secure checkout with SSL encryption</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-6 border-t border-gray-200">
+                            <h3 class="text-sm font-medium text-gray-900 mb-3">We Accept</h3>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-6 flex items-center justify-center">
+                                    <i class="ri-visa-fill text-2xl text-blue-600"></i>
+                                </div>
+                                <div class="w-8 h-6 flex items-center justify-center">
+                                    <i class="ri-mastercard-fill text-2xl text-red-600"></i>
+                                </div>
+                                <div class="w-8 h-6 flex items-center justify-center">
+                                    <i class="ri-paypal-fill text-2xl text-blue-500"></i>
+                                </div>
+                                <div class="w-8 h-6 flex items-center justify-center">
+                                    <i class="ri-apple-fill text-2xl text-gray-900"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="footer-placeholder"></div>
+        <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
+        <script>
+            async function loadCartAndCheckout() {
+                const response = await fetch("/ThrifteStop/LoadCartSummaryServlet");
+                if (response.ok) {
+                    const json = await response.json();
+                    if (!json.status) {
+                        iziToast.warning({title: "Oops", message: json.message, position: "topRight"});
+                        return;
+                    }
+
+                    const container = document.getElementById("cartContainer");
+                    container.innerHTML = "";
+
+                    if (json.cartItems.length === 0) {
+                        container.innerHTML = `
+                <div class="text-center py-20 text-gray-500">
+                    <div class="text-6xl text-gray-400 mb-4">
+                        <i class="ri-shopping-cart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-700">Your cart is empty</h3>
+                    <p class="text-gray-500 mt-2">Looks like you haven't added anything yet.</p>
+                    <a href="productlist.html" class="inline-block mt-6 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition">
+                        Start Shopping
+                    </a>
+                </div>
+            `;
+
+                        // Clear summary values
+                        document.querySelector(".subtotal-label").innerText = "Subtotal";
+                        document.querySelector(".subtotal-value").innerText = "Rs.0";
+                        document.querySelector(".shipping-value").innerText = "Rs 0";
+                        document.querySelector(".total-value").innerText = "Rs.0";
+                        return;
+                    }
+
+                    // Loop through cart items
+                    json.cartItems.forEach(cart => {
+                        const p = cart.product;
+                        const itemHTML = `
+                <div class="flex items-start space-x-4 pb-6 border-b border-gray-200">
+                    <div class="flex-shrink-0">
+                        <img src="${cart.imagePath}" alt="${p.title}" class="w-20 h-20 object-cover object-top rounded-lg">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm text-gray-600 mt-1">ITEM ID: ${p.productId}</p>
+                        <h3 class="text-lg font-semibold text-gray-900">${p.title}</h3>
+                        <p class="text-sm text-gray-600 mt-1">${p.description}</p>
+                    </div>
+                    <div class="flex flex-col justify-between items-end h-20 text-right">
+                        <p class="text-lg font-bold text-gray-900">Rs.${p.price.toLocaleString()}</p>
+                        <button onclick="removeCartItem('${p.productId}')" class="text-red-600 hover:text-red-800 transition-colors text-sm font-medium flex items-center">
+                            <div class="w-4 h-4 flex items-center justify-center inline-block mr-1">
+                                <i class="ri-delete-bin-line text-sm"></i>
+                            </div>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `;
+                        container.innerHTML += itemHTML;
+                    });
+
+                    // Order summary
+                    document.querySelector(".subtotal-label").innerText = `Subtotal (${json.itemCount} item${json.itemCount > 1 ? 's' : ''})`;
+                    document.querySelector(".subtotal-value").innerText = `Rs.${json.subtotal.toLocaleString()}`;
+                    document.querySelector(".shipping-value").innerText = `Rs ${json.shippingCost.toLocaleString()}`;
+                    document.querySelector(".total-value").innerText = `Rs.${json.grandTotal.toLocaleString()}`;
+
+                } else {
+                    iziToast.error({title: "Error", message: "Failed to load cart", position: "topRight"});
+                }
+            }
+
+
+            document.addEventListener("DOMContentLoaded", loadCartAndCheckout);
+
+
+            async function removeCartItem(productId) {
+                iziToast.question({
+                    timeout: 20000,
+                    close: true,
+                    overlay: true,
+                    displayMode: 'once',
+                    id: 'confirm-remove',
+                    title: 'Remove Item',
+                    message: 'Are you sure you want to remove this item?',
+                    position: 'center',
+                    buttons: [
+                        ['<button><b>Yes</b></button>', async (instance, toast) => {
+                                instance.hide({transitionOut: 'fadeOut'}, toast);
+
+                                const response = await fetch("/ThrifteStop/RemoveCartServlet", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/x-www-form-urlencoded"
+                                    },
+                                    body: `productId=${encodeURIComponent(productId)}`
+                                });
+
+                                if (response.ok) {
+                                    const json = await response.json();
+                                    if (json.status) {
+                                        iziToast.success({
+                                            title: 'Success',
+                                            message: 'Item removed from cart',
+                                            position: 'topRight'
+                                        });
+                                        loadCartAndCheckout();
+                                    } else {
+                                        iziToast.error({
+                                            title: 'Error',
+                                            message: json.message || 'Failed to remove item',
+                                            position: 'topRight'
+                                        });
+                                    }
+                                } else {
+                                    iziToast.error({
+                                        title: 'Error',
+                                        message: 'Failed to communicate with server',
+                                        position: 'topRight'
+                                    });
+                                }
+                            }, true],
+                        ['<button>No</button>', (instance, toast) => {
+                                instance.hide({transitionOut: 'fadeOut'}, toast);
+                            }]
+                    ]
+                });
+            }
+
+
+
+
+
+
+        </script>
+
+        <script id="quantity-controls">
+            document.addEventListener('DOMContentLoaded', function () {
+                const quantityControls = document.querySelectorAll('.flex.items-center.border');
+
+                quantityControls.forEach(control => {
+                    const minusBtn = control.querySelector('button:first-child');
+                    const plusBtn = control.querySelector('button:last-child');
+                    const quantitySpan = control.querySelector('span');
+
+                    minusBtn.addEventListener('click', function () {
+                        let quantity = parseInt(quantitySpan.textContent);
+                        if (quantity > 1) {
+                            quantitySpan.textContent = quantity - 1;
+                            updateTotal();
+                        }
+                    });
+
+                    plusBtn.addEventListener('click', function () {
+                        let quantity = parseInt(quantitySpan.textContent);
+                        quantitySpan.textContent = quantity + 1;
+                        updateTotal();
+                    });
+                });
+            });
+        </script>
+
+        <script id="timer-animation">
+            document.addEventListener('DOMContentLoaded', function () {
+                const timerBars = document.querySelectorAll('.timer-bar');
+                const timerTexts = document.querySelectorAll('.text-secondary');
+
+                function updateTimers() {
+                    timerBars.forEach((bar, index) => {
+                        const currentWidth = parseFloat(bar.style.width);
+                        const newWidth = Math.max(0, currentWidth - 0.1);
+                        bar.style.width = newWidth + '%';
+
+                        const minutes = Math.ceil((newWidth / 100) * 15);
+                        const timerText = timerTexts[index * 2 + 1];
+                        if (timerText) {
+                            timerText.textContent = `${minutes} minutes remaining`;
+                        }
+
+                        if (newWidth <= 0) {
+                            bar.style.backgroundColor = '#ef4444';
+                            if (timerText) {
+                                timerText.textContent = 'Reservation expired';
+                                timerText.classList.add('text-red-600');
+                            }
+                        }
+                    });
+                }
+
+                setInterval(updateTimers, 1000);
+            });
+        </script>
+
+        <script>
+
+            function loadHTML(id, url) {
+                fetch(url)
+                        .then(response => {
+                            if (!response.ok)
+                                throw new Error("Network response was not ok");
+                            return response.text();
+                        })
+                        .then(data => {
+                            const container = document.getElementById(id);
+                            container.innerHTML = data;
+
+                            // Extract and execute scripts manually
+                            const scripts = container.querySelectorAll("script");
+                            scripts.forEach(script => {
+                                const newScript = document.createElement("script");
+                                if (script.src) {
+                                    newScript.src = script.src;
+                                } else {
+                                    newScript.textContent = script.textContent;
+                                }
+                                document.head.appendChild(newScript); // Append to head or body
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error loading HTML:', error);
+                        });
+            }
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                loadHTML("nav-placeholder", "header.html");
+                loadHTML("footer-placeholder", "footer.html");
+            });
+        </script>
+        <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+        <script>
+           async function checkout() {
+               const response = await fetch("/ThrifteStop/CheckOutServlet", {
+                   method: "POST"
+               });
+
+//                const popup = new Notification();
+
+               if (response.ok) {
+                   const json = await response.json();
+                   if (json.status) {
+                       payhere.startPayment(json.payhereJson);
+                   } else {
+                       iziToast.warning({
+                           title: "Oops",
+                           message: json.message || "Checkout failed",
+                           position: "topRight"
+                       });
+                   }
+               } else {
+                   iziToast.error({
+                       title: "Error",
+                       message: "Something went wrong",
+                       position: "topRight"
+                   });
+               }
+           }
+
+
+
+           document.getElementById("checkout-btn").addEventListener("click", checkout);
+
+           payhere.onCompleted = async function onCompleted(orderId) {
+               console.log("Payment completed. Order ID:", orderId);
+
+               try {
+                   const res = await fetch("/ThrifteStop/send-invoice", {method: "POST"});
+                   const data = await res.json();
+                   if (data.status === "success") {
+                       console.log(data.message);
+                   } else {
+                       console.warn("Invoice failed:", data.message);
+                   }
+               } catch (error) {
+                   console.error("Invoice sending failed:", error);
+               }
+
+               window.location = "home.html";
+           };
+
+
+           payhere.onDismissed = function onDismissed() {
+               console.log("Payment dismissed");
+           };
+
+           payhere.onError = function onError(error) {
+               console.log("Error occurred:", error);
+           };
+
+        </script>
+
+
+
+    </body>
+
+</html>

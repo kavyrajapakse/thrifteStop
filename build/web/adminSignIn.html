@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Sign In</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B',
+                            secondary: '#E0B96A'
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #C7795B 0%, #E0B96A 100%);
+            }
+            .custom-checkbox {
+                appearance: none;
+                width: 1.25rem;
+                height: 1.25rem;
+                border: 2px solid #d1d5db;
+                border-radius: 4px;
+                background-color: white;
+                cursor: pointer;
+                position: relative;
+            }
+            .custom-checkbox:checked {
+                background-color: #C7795B;
+                border-color: #C7795B;
+            }
+            .custom-checkbox:checked::after {
+                content: '✓';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-size: 0.875rem;
+                font-weight: bold;
+            }
+            .password-toggle {
+                cursor: pointer;
+                transition: color 0.2s ease;
+            }
+            .password-toggle:hover {
+                color: #C7795B;
+            }
+            .loading-spinner {
+                width: 1rem;
+                height: 1rem;
+                border: 2px solid transparent;
+                border-top: 2px solid white;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+            .error-field {
+                border-color: #ef4444 !important;
+            }
+            .error-message {
+                color: #ef4444;
+                font-size: 0.875rem;
+                margin-top: 0.25rem;
+            }
+        </style>
+    </head>
+    <body class="min-h-screen gradient-bg flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <div class="text-center mb-8">
+                <!-- <div class="font-['Pacifico'] text-white text-3xl mb-4">logo</div> -->
+                <h1 class="text-2xl font-bold text-white mb-2">Admin Sign In</h1>
+                <p class="text-white/80">Welcome back! Please sign in to your account</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div id="loginForm" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-user-line text-gray-400"></i>
+                                </div>
+                            </div>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm"
+                                placeholder="Enter your Username"
+                                required
+                                >
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-lock-line text-gray-400"></i>
+                                </div>
+                            </div>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm"
+                                placeholder="Enter your password"
+                                required
+                                >
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center password-toggle" id="togglePassword">
+                                    <i class="ri-eye-off-line text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="passwordError" class="error-message hidden">Password must be at least 6 characters</div>
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        id="signInBtn"
+                        class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-primary/90 focus:ring-4 focus:ring-primary/20 transition-all font-medium text-sm !rounded-button whitespace-nowrap flex items-center justify-center"
+                        >
+                        <span id="btnText">Sign In</span>
+                        <div id="loadingSpinner" class="loading-spinner hidden ml-2"></div>
+                    </button>
+                </div>
+
+
+            </div>
+
+            <div class="text-center mt-6">
+                <p class="text-white/60 text-sm">© 2025 Admin Panel. All rights reserved.</p>
+            </div>
+        </div>
+
+        <script id="passwordToggle">
+            document.addEventListener('DOMContentLoaded', function () {
+                const togglePassword = document.getElementById('togglePassword');
+                const passwordInput = document.getElementById('password');
+                const toggleIcon = togglePassword.querySelector('i');
+                togglePassword.addEventListener('click', function () {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+
+                    if (type === 'password') {
+                        toggleIcon.className = 'ri-eye-off-line text-gray-400';
+                    } else {
+                        toggleIcon.className = 'ri-eye-line text-gray-400';
+                    }
+                });
+            });
+        </script>
+
+
+        <script>
+            document.getElementById('signInBtn').addEventListener('click', async function (e) {
+                e.preventDefault();
+
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+
+                // Remove previous error styles
+                usernameInput.classList.remove('error-field');
+                passwordInput.classList.remove('error-field');
+
+                // Validation for empty fields
+                if (username === "" || password === "") {
+                    if (username === "")
+                        usernameInput.classList.add('error-field');
+                    if (password === "")
+                        passwordInput.classList.add('error-field');
+
+                    iziToast.warning({
+                        title: 'Warning',
+                        message: 'Username and password are required.',
+                        position: 'topRight'
+                    });
+                    return;
+                }
+
+                const btn = document.getElementById("signInBtn");
+                const spinner = document.getElementById("loadingSpinner");
+                const btnText = document.getElementById("btnText");
+
+                btn.disabled = true;
+                spinner.classList.remove("hidden");
+                btnText.textContent = "Signing in...";
+
+                const formData = new URLSearchParams();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                const response = await fetch('/ThrifteStop/AdminLoginServlet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData.toString()
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+
+                    if (json.status) {
+                        window.location.href = 'adminDashboard.html';
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: json.message || "Login failed",
+                            position: 'topRight'
+                        });
+                    }
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Network error. Try again later.',
+                        position: 'topRight'
+                    });
+                }
+
+                spinner.classList.add("hidden");
+                btnText.textContent = "Sign In";
+                btn.disabled = false;
+            });
+        </script>
+
+
+    </body>
+</html>

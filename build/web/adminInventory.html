@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inventory Status Dashboard</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <script>tailwind.config = {theme: {extend: {colors: {primary: '#8B4513', secondary: '#D2691E'}, borderRadius: {'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px'}}}}</script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            .switch {
+                width: 40px;
+                height: 20px;
+                background-color: #ccc;
+                border-radius: 9999px;
+                position: relative;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .switch.active {
+                background-color: #C7795B;
+                /* primary color */
+            }
+
+            .switch-handle {
+                width: 16px;
+                height: 16px;
+                background-color: white;
+                border-radius: 9999px;
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                transition: left 0.3s ease;
+            }
+
+            .switch.active .switch-handle {
+                left: 22px;
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 min-h-screen">
+
+        <div class="flex">
+            <aside class="w-64 bg-white shadow-lg min-h-screen">
+                <nav class="p-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="adminDashboard.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-dashboard-line"></i>
+                                </div>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="addNewProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-shopping-bag-line"></i>
+                                </div>
+                                <span>Add Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="updateProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-edit-box-line"></i>
+                                </div>
+                                <span>Update Product</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminOrder.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminInventory.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Inventory</span>
+                            </a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="adminOrder.html" data-page="adminOrder.html"
+                                class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="adminCustomer.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-group-line"></i>
+                                </div>
+                                <span>Customer</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminSale.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-bar-chart-line"></i>
+                                </div>
+                                <span>Sales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-logout-box-line"></i>
+                                </div>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </aside>
+        
+        <main class="flex-1 pt-2">
+            <div class="px-6 py-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Inventory Status Dashboard</h1>
+                    <p class="text-gray-600">Track available, reserved, and sold items in real time</p>
+
+                </div>
+
+                <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i class="ri-check-line text-green-600 text-xl"></i>
+                                </div>
+                                <span
+                                    class="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">+12.5%</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-1">2,847</h3>
+                            <p class="text-gray-600 text-sm">Available Items</p>
+                        </div>
+    
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                    <i class="ri-time-line text-yellow-600 text-xl"></i>
+                                </div>
+                                <span
+                                    class="text-sm font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">+3.2%</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-1">456</h3>
+                            <p class="text-gray-600 text-sm">Reserved Items</p>
+                        </div>
+    
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i class="ri-shopping-bag-line text-gray-600 text-xl"></i>
+                                </div>
+                                <span
+                                    class="text-sm font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-full">+8.7%</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-1">1,923</h3>
+                            <p class="text-gray-600 text-sm">Sold Items</p>
+                        </div>
+                    </div> -->
+
+                <!-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Inventory Status Overview</h3>
+                            <div id="statusChart" class="h-64"></div>
+                        </div>
+    
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Weekly Trends</h3>
+                            <div id="trendChart" class="h-64"></div>
+                        </div>
+                    </div> -->
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="flex items-center justify-between">
+
+                            <div class="flex items-center space-x-4 mt-4">
+                                <div class="relative">
+                                    <select id="statusFilter"
+                                            class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                        <option>All Status</option>
+                                        <!--                                        <option>Available</option>
+                                                                                <option>Reserved</option>
+                                                                                <option>Sold</option>-->
+                                    </select>
+                                    <div
+                                        class="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                                        <i class="ri-arrow-down-s-line text-gray-500"></i>
+                                    </div>
+                                </div>
+
+                                <div class="relative">
+                                    <select id="categoryFilter"
+                                            class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                        <option>All Categories</option>
+                                        <!--                                        <option>Electronics</option>
+                                                                                <option>Clothing</option>
+                                                                                <option>Books</option>
+                                                                                <option>Home & Garden</option>-->
+                                    </select>
+                                    <div
+                                        class="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                                        <i class="ri-arrow-down-s-line text-gray-500"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <!-- <div class="flex items-center space-x-2">
+                                        <label class="text-sm text-gray-600">Auto Refresh</label>
+                                        <div class="relative">
+                                            <input type="checkbox" id="autoRefresh" class="sr-only" checked>
+                                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary cursor-pointer"
+                                                onclick="toggleAutoRefresh()">
+                                                <div
+                                                    class="w-5 h-5 bg-white rounded-full shadow-md transform transition-transform peer-checked:translate-x-5 translate-x-0.5 translate-y-0.5">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                <button id="applyFilterBtn"
+                                        class="bg-primary text-white px-6 py-2 rounded-button text-sm font-medium hover:bg-opacity-90 transition-colors whitespace-nowrap">
+                                    Apply Filters
+                                </button>
+                                <button id="printBtn"
+                                        class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-secondary hover:bg-opacity-90 !rounded-button whitespace-nowrap">
+                                    <i class="ri-download-line"></i>
+                                    Export Report
+                                </button>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                        Item Details</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                        Status</th>
+                                    <!-- <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Quantity</th> -->
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                        Category</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                        Date Added</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50 transition-colors">
+
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3">
+                                                <i class="ri-smartphone-line text-gray-600"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">iPhone 15 Pro Max</div>
+                                                <div class="text-sm text-gray-500">SKU: IPH-15PM-256</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Available</span>
+                                    </td>
+
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Electronics</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">21 March 2025</td>
+                                    <td class="py-4 px-4">
+                                        <div class="switch active">
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3">
+                                                <i class="ri-shirt-line text-gray-600"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Premium Cotton T-Shirt
+                                                </div>
+                                                <div class="text-sm text-gray-500">SKU: TSH-COT-BLK-L</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Reserved</span>
+                                    </td>
+
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Clothing</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">21 March 2025</td>
+                                    <td class="py-4 px-4">
+                                        <div class="switch active">
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3">
+                                                <i class="ri-book-line text-gray-600"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">The Art of Programming
+                                                </div>
+                                                <div class="text-sm text-gray-500">SKU: BK-PROG-2024</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Sold</span>
+                                    </td>
+
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Books</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">21 March 2025</td>
+                                    <td class="py-4 px-4">
+                                        <div class="switch active">
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3">
+                                                <i class="ri-plant-line text-gray-600"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Ceramic Plant Pot Set
+                                                </div>
+                                                <div class="text-sm text-gray-500">SKU: POT-CER-WHT-3</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Available</span>
+                                    </td>
+
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Home & Garden</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">21 March 2025</td>
+                                    <td class="py-4 px-4">
+                                        <div class="switch active">
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-6 py-4 border-t border-gray-100">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-gray-600"></div>
+                            <div class="flex items-center space-x-2 paginationControls">
+
+                                <button
+                                    class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+                                    >
+                                    Previous
+                                </button>
+                                <button class="px-3 py-2 text-sm font-medium bg-primary text-white rounded-lg">1</button>
+                                <button
+                                    class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
+
+                                <button
+                                    class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        </div>
+
+        <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                        <i class="ri-question-line text-orange-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Confirm Status Change</h3>
+                        <p class="text-sm text-gray-600">Are you sure you want to update this order status?</p>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button id="cancelBtn"
+                            class="px-4 py-2 text-sm border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                        Cancel
+                    </button>
+                    <button id="confirmBtn"
+                            class="px-4 py-2 text-sm bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script id="switchToggle">
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.switch').forEach(function (switchEl) {
+                    switchEl.addEventListener('click', function () {
+                        this.classList.toggle('active');
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            const statusFilter = document.getElementById("statusFilter");
+
+            if (statusFilter) {
+                fetch("/ThrifteStop/get-product-statuses")
+                        .then(res => res.json())
+                        .then(json => {
+                            if (json.status && Array.isArray(json.statuses)) {
+                                // Add default "All" option
+                                const defaultOpt = document.createElement("option");
+//                                defaultOpt.value = "";
+//                                statusFilter.appendChild(defaultOpt);
+
+                                json.statuses.forEach(stat => {
+                                    const opt = document.createElement("option");
+                                    opt.value = stat.id;
+                                    opt.textContent = stat.name;
+                                    statusFilter.appendChild(opt);
+                                });
+                            }
+                        })
+                        .catch(err => console.error("Failed to load status filter", err));
+            }
+
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                loadCombo("/ThrifteStop/get-categories", "categoryFilter");
+            });
+
+            async function loadCombo(url, selectId) {
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const data = await response.json();
+                        const select = document.getElementById(selectId);
+                        data.categories.forEach(item => {
+                            const opt = document.createElement("option");
+                            opt.value = item.id;
+                            opt.textContent = item.name;
+                            select.appendChild(opt);
+                        });
+                    } else {
+                        console.error("Failed to load " + selectId + ": Server responded with status " + response.status);
+                    }
+                } catch (err) {
+                    console.error("Error loading " + selectId + ":", err);
+                }
+            }
+        </script>
+
+
+        <script>
+            let products = [];
+            document.addEventListener('DOMContentLoaded', async () => {
+                const tbody = document.querySelector("tbody");
+                const paginationContainer = document.querySelector(".paginationControls");
+
+                const statusFilter = document.getElementById("statusFilter");
+                const categoryFilter = document.getElementById("categoryFilter");
+                const applyFilterBtn = document.getElementById("applyFilterBtn");
+
+                
+                let currentPage = 1;
+                const pageSize = 10;
+
+                await loadProducts(); // load all initially
+
+                // Load statuses into statusFilter
+
+
+                // Load categories into categoryFilter
+
+
+                
+                async function loadProducts(query = "") {
+                    try {
+                        const response = await fetch('/ThrifteStop/get-inventory' + query);
+                        if (response.ok) {
+                            const json = await response.json();
+                            if (json.status) {
+                                products = json.products;
+                                currentPage = 1;
+                                renderTable();
+                                renderPagination();
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Failed to load inventory", err);
+                }
+                }
+
+                // Apply filter button click
+                applyFilterBtn.addEventListener("click", async () => {
+                    const statusId = statusFilter.value;
+                    const categoryId = categoryFilter.value;
+
+                    const params = new URLSearchParams();
+                    if (statusId)
+                        params.append("status", statusId);
+                    if (categoryId)
+                        params.append("category", categoryId);
+
+                    await loadProducts("?" + params.toString());
+                });
+
+                // Render table with paginated products
+                function renderTable() {
+                    tbody.innerHTML = "";
+
+                    const startIndex = (currentPage - 1) * pageSize;
+                    const paginatedProducts = products.slice(startIndex, startIndex + pageSize);
+
+                    paginatedProducts.forEach(product => {
+                        const statusBadge = getStatusBadge(product.statusName);
+                        const switchClass = product.status === 1 ? "switch active" : "switch";
+
+                        const row = `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">${product.title}</div>
+                                    <div class="text-sm text-gray-500">Product ID: ${product.sku}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            ${statusBadge}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.category}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(product.dateAdded)}</td>
+                        <td class="py-4 px-4">
+                            <div class="${switchClass}">
+                                <div class="switch-handle"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                        tbody.insertAdjacentHTML('beforeend', row);
+                    });
+
+                    attachSwitchListeners();
+                }
+
+                // Render pagination
+                function renderPagination() {
+                    paginationContainer.innerHTML = "";
+
+                    const totalPages = Math.ceil(products.length / pageSize);
+
+                    const prevBtn = createPageBtn("Prev", currentPage > 1, () => {
+                        currentPage--;
+                        renderTable();
+                        renderPagination();
+                    });
+                    paginationContainer.appendChild(prevBtn);
+
+                    for (let i = 1; i <= totalPages; i++) {
+                        const btn = document.createElement("button");
+                        btn.textContent = i;
+                        btn.className = "px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 mx-1";
+                        if (i === currentPage) {
+                            btn.classList.add("bg-primary", "text-white");
+                        }
+                        btn.addEventListener("click", () => {
+                            currentPage = i;
+                            renderTable();
+                            renderPagination();
+                        });
+                        paginationContainer.appendChild(btn);
+                    }
+
+                    const nextBtn = createPageBtn("Next", currentPage < totalPages, () => {
+                        currentPage++;
+                        renderTable();
+                        renderPagination();
+                    });
+                    paginationContainer.appendChild(nextBtn);
+                }
+
+                function createPageBtn(label, enabled, onClick) {
+                    const btn = document.createElement("button");
+                    btn.textContent = label;
+                    btn.className = "px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 mx-1";
+                    if (!enabled) {
+                        btn.disabled = true;
+                        btn.classList.add("opacity-50", "cursor-not-allowed");
+                    } else {
+                        btn.addEventListener("click", onClick);
+                    }
+                    return btn;
+                }
+
+                function attachSwitchListeners() {
+                    document.querySelectorAll('.switch').forEach(function (switchEl) {
+                        switchEl.addEventListener('click', async function () {
+                            this.classList.toggle('active');
+                            const tr = this.closest("tr");
+                            const productIdText = tr.querySelector(".text-gray-500").textContent; // e.g., "Product ID: ITM-001"
+                            const productId = productIdText.replace("Product ID: ", "").trim();
+                            const newStatus = this.classList.contains("active") ? 1 : 2;
+
+                            try {
+                                const res = await fetch('/ThrifteStop/update-product-status', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        productId: productId,
+                                        status: newStatus
+                                    })
+                                });
+
+                                if (res.ok) {
+                                    const json = await res.json();
+                                    if (!json.status) {
+                                        console.warn("Status update failed:", json.message);
+                                    }
+                                }
+                            } catch (err) {
+                                console.error("Error updating status", err);
+                            }
+                        });
+                    });
+                }
+
+
+                function getStatusBadge(statusName) {
+                    const name = statusName.toLowerCase();
+                    let colorClass = "bg-gray-100 text-gray-800";
+                    if (name === "available")
+                        colorClass = "bg-green-100 text-green-800";
+                    else if (name === "reserved")
+                        colorClass = "bg-yellow-100 text-yellow-800";
+                    else if (name === "sold")
+                        colorClass = "bg-gray-300 text-gray-700";
+
+                    return `<span class="px-2 py-1 text-xs font-medium ${colorClass} rounded-full">${statusName}</span>`;
+                }
+
+                function formatDate(dateStr) {
+                    const d = new Date(dateStr);
+                    return d.toLocaleDateString("en-GB", {year: 'numeric', month: 'long', day: 'numeric'});
+                }
+            });
+            
+            
+            document.getElementById("printBtn").addEventListener("click", () => {
+                // Use the full products 
+                const today = new Date();
+                const formattedDate = today.toISOString().split("T")[0];
+
+                let printContent = `
+          <h2 style="text-align:center; font-family:sans-serif;">Inventory Report</h2>
+          <p style="text-align:center; font-size:13px; font-family:sans-serif;">Date: ${formattedDate}</p>
+          <br>
+          <table border="1" cellpadding="8" cellspacing="0" style="width:100%; font-family:sans-serif; font-size:14px; border-collapse:collapse;">
+              <thead>
+                  <tr style="background-color:#C7795B; color:white;">
+                      <th>Item</th>
+                      <th>SKU</th>
+                      <th>Status</th>
+                      <th>Category</th>
+                      <th>Date Added</th>
+                  </tr>
+              </thead>
+              <tbody>
+      `;
+
+                products.forEach(product => {
+                    const formattedDate = new Date(product.dateAdded).toLocaleDateString("en-GB", {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    printContent += `
+              <tr>
+                  <td>${product.title}</td>
+                  <td>${product.sku}</td>
+                  <td>${product.statusName}</td>
+                  <td>${product.category}</td>
+                  <td>${formattedDate}</td>
+              </tr>
+          `;
+                });
+
+                printContent += `
+              </tbody>
+          </table>
+      `;
+
+                const win = window.open('', '', 'width=900,height=650');
+                win.document.write('<html><head><title>Inventory Report</title></head><body>');
+                win.document.write(printContent);
+                win.document.write('</body></html>');
+                win.document.close();
+                win.print();
+            });
+            
+            
+            function logout() {
+                fetch('/ThrifteStop/AdminLogout', {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        iziToast.success({
+                            title: 'Logged out',
+                            message: 'You have been logged out.',
+                            position: 'topRight'
+                        });
+                        setTimeout(() => {
+                            window.location.href = 'adminSignIn.html'; // change if your login page differs
+                        }, 1500);
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Logout failed.',
+                            position: 'topRight'
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Something went wrong.',
+                        position: 'topRight'
+                    });
+                });
+            }
+        </script>
+
+
+        
+
+
+
+
+
+    </body>
+
+</html>

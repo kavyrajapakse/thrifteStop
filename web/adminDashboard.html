@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 min-h-screen">
+        <!-- Header -->
+        <!--        <header class="bg-primary text-white shadow-lg">
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="text-sm opacity-90">Monday, July 14, 2025</div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-white/20 rounded-lg cursor-pointer hover:bg-white/30 transition-colors">
+                                <i class="ri-notification-3-line text-lg"></i>
+                            </div>
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-white/20 rounded-lg cursor-pointer hover:bg-white/30 transition-colors">
+                                <i class="ri-user-3-line text-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </header>-->
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-white shadow-lg min-h-screen">
+                <nav class="p-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="adminDashboard.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-dashboard-line"></i>
+                                </div>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="addNewProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-shopping-bag-line"></i>
+                                </div>
+                                <span>Add Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="updateProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-edit-box-line"></i>
+                                </div>
+                                <span>Update Product</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminOrder.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminInventory.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Inventory</span>
+                            </a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="adminOrder.html" data-page="adminOrder.html"
+                                class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="adminCustomer.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-group-line"></i>
+                                </div>
+                                <span>Customer</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminSale.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-bar-chart-line"></i>
+                                </div>
+                                <span>Sales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-logout-box-line"></i>
+                                </div>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </aside>
+            <!-- Main Content -->
+            <main id="mainContent" class="flex-1 p-8">
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
+                    <p class="text-gray-600">Welcome back! Here's what's happening in your store today.</p>
+                </div>
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Total Sales Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg">
+                                <i class="ri-money-dollar-circle-line text-2xl text-primary"></i>
+                            </div>
+
+                        </div>
+                        <h3 class="text-gray-600 text-sm mb-2">Total Sales</h3>
+                        <p id="totalSales" class="text-2xl font-bold text-gray-900">Rs.24,780</p>
+
+                    </div>
+                    <!-- Total Orders Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg">
+                                <i class="ri-shopping-cart-line text-2xl text-primary"></i>
+                            </div>
+
+                        </div>
+                        <h3 class="text-gray-600 text-sm mb-2">Total Orders</h3>
+                        <p id="totalOrders" class="text-2xl font-bold text-gray-900">386</p>
+
+                    </div>
+                    <!-- Current Inventory Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg">
+                                <i class="ri-stack-line text-2xl text-primary"></i>
+                            </div>
+
+                        </div>
+                        <h3 class="text-gray-600 text-sm mb-2">Current Inventory</h3>
+                        <p id="currentInventory" class="text-2xl font-bold text-gray-900">2,149</p>
+
+                    </div>
+                    <!-- Active Customers Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg">
+                                <i class="ri-user-heart-line text-2xl text-primary"></i>
+                            </div>
+
+                        </div>
+                        <h3 class="text-gray-600 text-sm mb-2">Total Customers</h3>
+                        <p id="activeCustomers" class="text-2xl font-bold text-gray-900">892</p>
+
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Recent Orders</h3>
+                        <button class="text-sm text-primary hover:text-primary/80">View All Orders</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Order ID</th>
+                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Customer</th>
+                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Amount</th>
+                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Status</th>
+                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4 text-sm text-gray-600">#ORD-7843</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">Emily Robertson</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Leather Crossbody Bag</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">$179.99</td>
+                                    <td class="py-3 px-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">Delivered</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">July 14, 2025</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4 text-sm text-gray-600">#ORD-7842</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">Michael Chen</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Classic Oxford Shoes</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">$245.00</td>
+                                    <td class="py-3 px-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-full">Processing</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">July 14, 2025</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4 text-sm text-gray-600">#ORD-7841</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">Sarah Thompson</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Silk Summer Dress</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">$329.99</td>
+                                    <td class="py-3 px-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full">Shipped</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">July 13, 2025</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4 text-sm text-gray-600">#ORD-7840</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">James Wilson</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Leather Wallet</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">$89.99</td>
+                                    <td class="py-3 px-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">Delivered</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">July 13, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 text-sm text-gray-600">#ORD-7839</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">Isabella Martinez</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">Designer Sunglasses</td>
+                                    <td class="py-3 px-4 text-sm text-gray-900">$159.99</td>
+                                    <td class="py-3 px-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded-full">Cancelled</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">July 13, 2025</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+
+        </div>
+        <!-- <script type="module" src="customerCharts.js"></script> -->
+        <!-- <script id="charts-initialization">
+            document.addEventListener('DOMContentLoaded', function () {
+    
+                const mainContent = document.getElementById('mainContent');
+    
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        const page = link.dataset.page;
+                        if (!page) return;
+    
+                        mainContent.innerHTML = '<p class="text-gray-500 p-8">Loading…</p>';
+                        try {
+                            const res = await fetch(page);
+                            const html = await res.text();
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const next = doc.querySelector('main');
+                            mainContent.innerHTML = next ? next.innerHTML
+                                : '<p class="text-red-600 p-8">Could not load page.</p>';
+                                
+                        } catch (err) {
+                            mainContent.innerHTML = '<p class="text-red-600 p-8">Error loading page.</p>';
+                            console.error(err);
+                        }
+                        mainContent.scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+    
+                // function runScripts(container) {
+                //     container.querySelectorAll('script').forEach(old => {
+                //         const s = document.createElement('script');
+                //         if (old.src) {
+                //             s.src = old.src;              // external file
+                //         } else {
+                //             s.textContent = old.textContent; // inline code
+                //         }
+                //         document.head.appendChild(s);   // executes immediately
+                //         old.remove();
+                //     });
+                // }
+                // Sales Chart
+                const salesChart = echarts.init(document.getElementById('salesChart'));
+                const salesOption = {
+                    animation: false,
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        borderColor: '#eee',
+                        borderWidth: 1,
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    legend: {
+                        data: ['Clothes', 'Shoes', 'Bags'],
+                        bottom: 0,
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    grid: {
+                        top: '5%',
+                        left: '3%',
+                        right: '4%',
+                        bottom: '15%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                        axisLine: {
+                            lineStyle: {
+                                color: '#e5e7eb'
+                            }
+                        },
+                        axisLabel: {
+                            color: '#1f2937'
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: {
+                            lineStyle: {
+                                color: '#e5e7eb'
+                            }
+                        },
+                        axisLabel: {
+                            color: '#1f2937'
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#f3f4f6'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Clothes',
+                            type: 'line',
+                            smooth: true,
+                            data: [5200, 4800, 6300, 5800, 7100, 6900, 7500],
+                            itemStyle: {
+                                color: 'rgba(87, 181, 231, 1)'
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(87, 181, 231, 0.1)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(87, 181, 231, 0.02)'
+                                    }
+                                ])
+                            },
+                            symbol: 'none'
+                        },
+                        {
+                            name: 'Shoes',
+                            type: 'line',
+                            smooth: true,
+                            data: [3800, 4200, 4800, 4600, 5200, 5500, 5900],
+                            itemStyle: {
+                                color: 'rgba(141, 211, 199, 1)'
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(141, 211, 199, 0.1)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(141, 211, 199, 0.02)'
+                                    }
+                                ])
+                            },
+                            symbol: 'none'
+                        },
+                        {
+                            name: 'Bags',
+                            type: 'line',
+                            smooth: true,
+                            data: [2600, 2800, 3200, 3500, 3800, 4100, 4400],
+                            itemStyle: {
+                                color: 'rgba(251, 191, 114, 1)'
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(251, 191, 114, 0.1)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(251, 191, 114, 0.02)'
+                                    }
+                                ])
+                            },
+                            symbol: 'none'
+                        }
+                    ]
+                };
+                salesChart.setOption(salesOption);
+                // Products Chart
+                const productsChart = echarts.init(document.getElementById('productsChart'));
+                const productsOption = {
+                    animation: false,
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        borderColor: '#eee',
+                        borderWidth: 1,
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        right: '5%',
+                        top: 'center',
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Top Products',
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            center: ['40%', '50%'],
+                            avoidLabelOverlap: false,
+                            itemStyle: {
+                                borderRadius: 8,
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            },
+                            label: {
+                                show: false
+                            },
+                            emphasis: {
+                                label: {
+                                    show: false
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: [
+                                { value: 1048, name: 'Leather Bags', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+                                { value: 735, name: 'Dresses', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+                                { value: 580, name: 'Shoes', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+                                { value: 484, name: 'Accessories', itemStyle: { color: 'rgba(252, 141, 98, 1)' } }
+                            ]
+                        }
+                    ]
+                };
+                productsChart.setOption(productsOption);
+                // Handle window resize
+                window.addEventListener('resize', function () {
+                    salesChart.resize();
+                    productsChart.resize();
+                });
+            });
+        </script> -->
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                // Load dashboard summary
+                try {
+                    const response = await fetch('/ThrifteStop/get-dashboard-summary');
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.status) {
+                            document.getElementById('totalSales').innerText = `Rs.${data.totalSales.toLocaleString()}`;
+                            document.getElementById('totalOrders').innerText = data.totalOrders;
+                            document.getElementById('currentInventory').innerText = data.currentInventory;
+                            document.getElementById('activeCustomers').innerText = data.activeCustomers;
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error loading dashboard data', err);
+                }
+
+                
+                try {
+                    const res = await fetch('/ThrifteStop/get-recent-orders');
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.status) {
+                            const tableBody = document.querySelector('tbody');
+                            tableBody.innerHTML = "";
+
+                            json.orders.forEach(order => {
+                                let statusColor = "bg-gray-100 text-gray-700";
+                                if (order.status === "Delivered")
+                                    statusColor = "bg-green-100 text-green-700";
+                                else if (order.status === "Processing")
+                                    statusColor = "bg-yellow-100 text-yellow-700";
+                                else if (order.status === "Shipped")
+                                    statusColor = "bg-blue-100 text-blue-700";
+                                else if (order.status === "Cancelled")
+                                    statusColor = "bg-red-100 text-red-700";
+
+                                tableBody.innerHTML += `
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-sm text-gray-600">#${order.orderId}</td>
+                            <td class="py-3 px-4 text-sm text-gray-900">${order.customer}</td>
+                            <td class="py-3 px-4 text-sm text-gray-900">Rs.${order.amount.toLocaleString()}</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 text-xs font-medium ${statusColor} rounded-full">${order.status}</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">${order.date}</td>
+                        </tr>`;
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error fetching recent orders", err);
+                }
+            });
+
+
+            function logout() {
+                fetch('/ThrifteStop/AdminLogout', {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        iziToast.success({
+                            title: 'Logged out',
+                            message: 'You have been logged out.',
+                            position: 'topRight'
+                        });
+                        setTimeout(() => {
+                            window.location.href = 'adminSignIn.html'; 
+                        }, 1500);
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Logout failed.',
+                            position: 'topRight'
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Something went wrong.',
+                        position: 'topRight'
+                    });
+                });
+            }
+        </script>
+
+
+    </body>
+
+</html>

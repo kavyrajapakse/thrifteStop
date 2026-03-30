@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vintage Leather Jacket - Unique Finds</title>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+              rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            .vintage-title {
+                font-family: 'Playfair Display', serif;
+            }
+
+            .product-image {
+                transition: transform 0.3s ease;
+            }
+
+            .product-image:hover {
+                transform: scale(1.05);
+            }
+
+            .thumbnail {
+                transition: all 0.3s ease;
+            }
+
+            .thumbnail.active {
+                border-color: #D2691E;
+                opacity: 1;
+            }
+
+            .thumbnail:not(.active) {
+                opacity: 0.6;
+            }
+
+            .size-option {
+                transition: all 0.3s ease;
+            }
+
+            .size-option:hover {
+                background-color: #D2691E;
+                color: white;
+            }
+
+            .size-option.selected {
+                background-color: #8B4513;
+                color: white;
+            }
+
+            .sticky-cart {
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 font-['Inter']">
+        <div id="nav-placeholder"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <nav id="breadcrumb" class="flex items-center space-x-2 text-lg text-gray-600 mb-6">
+                <a href="#" class="hover:text-primary transition-colors">Home</a>
+                <i class="ri-arrow-right-s-line"></i>
+                <a href="#" class="hover:text-primary transition-colors">Clothing</a>
+                <i class="ri-arrow-right-s-line"></i>
+                <a href="#" class="hover:text-primary transition-colors">Jackets</a>
+                <i class="ri-arrow-right-s-line"></i>
+                <span class="text-gray-900">Vintage Leather Jacket</span>
+            </nav>
+            <div id="productImages" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
+                <div class="space-y-4">
+                    <div class="aspect-square bg-white rounded-lg overflow-hidden">
+                        <img id="mainImage"
+                             src="https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture%2C%20classic%20motorcycle%20style%20jacket%20with%20zippers%20and%20buckles&width=600&height=600&seq=main-jacket&orientation=squarish"
+                             alt="Vintage Leather Jacket" class="w-full h-full object-cover product-image">
+                    </div>
+                    <div class="grid grid-cols-4 gap-3">
+                        <button class="thumbnail active aspect-square bg-white rounded-lg overflow-hidden border-2"
+                                onclick="changeImage(0)">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20front%20view%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture&width=150&height=150&seq=jacket-front&orientation=squarish"
+                                 alt="Front view" class="w-full h-full object-cover">
+                        </button>
+                        <button class="thumbnail aspect-square bg-white rounded-lg overflow-hidden border-2"
+                                onclick="changeImage(1)">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20back%20view%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture&width=150&height=150&seq=jacket-back&orientation=squarish"
+                                 alt="Back view" class="w-full h-full object-cover">
+                        </button>
+                        <button class="thumbnail aspect-square bg-white rounded-lg overflow-hidden border-2"
+                                onclick="changeImage(2)">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20side%20view%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture&width=150&height=150&seq=jacket-side&orientation=squarish"
+                                 alt="Side view" class="w-full h-full object-cover">
+                        </button>
+                        <button class="thumbnail aspect-square bg-white rounded-lg overflow-hidden border-2"
+                                onclick="changeImage(3)">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20detail%20close%20up%20zippers%20and%20buckles%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background&width=150&height=150&seq=jacket-detail&orientation=squarish"
+                                 alt="Detail view" class="w-full h-full object-cover">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <span
+                                class="bg-secondary text-white px-3 py-1 rounded-full text-sm font-medium">One-of-a-Kind</span>
+                            <span
+                                class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                                <i class="ri-check-line"></i>
+                                In Stock
+                            </span>
+                        </div>
+                        <h1 id="productTitle" class="vintage-title text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Vintage Leather
+                            Motorcycle Jacket</h1>
+                        <p class="text-gray-600 mb-4">Pre-loved treasures that add personality and charm to your collection
+                        </p>
+                        <div id="productPrice" class="text-3xl font-bold text-primary mb-6">Rs. 2,850</div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <label class="text-sm font-medium text-gray-900">Size</label>
+                                <button class="text-sm text-secondary hover:underline" onclick="openSizeGuide()">Size
+                                    Guide</button>
+                            </div>
+                            <div class="grid grid-cols-4 gap-2">
+                                <div id="productSize"
+                                     class="px-4 py-2 border border-gray-300 rounded text-sm font-medium text-center bg-gray-100 text-gray-800">
+                                    UK 8
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <label class="text-lg font-medium text-gray-900 mb-2 block">Condition</label>
+                            <div class="flex items-center gap-2">
+                                <div id="productCondition" class="text-lg font-bold text-gray-700">
+                                    Pre-Loved
+                                </div>
+                                <span class="text-sm text-gray-600"></span>
+                            </div>
+                            <p class="text-md text-gray-500 mt-1">Carefully kept — a unique piece that adds effortless style
+                                to your wardrobe</p>
+                        </div>
+
+                        <button id="addToCartBtn"
+                                class="w-full bg-secondary hover:bg-opacity-90 text-black font-semibold py-3 px-6 !rounded-button transition-all whitespace-nowrap flex items-center justify-center gap-2"
+                                onclick="addToCart()">
+                            <i class="ri-shopping-bag-line"></i>
+                            Add to Cart
+                        </button>
+
+                        <div class="flex items-center gap-4 pt-4 border-t border-gray-200 text-gray-600">
+                            <!-- <span class="text-md">We accept:</span>
+                            <i class="ri-visa-fill text-xl"></i>
+                            <i class="ri-mastercard-fill text-xl"></i> -->
+                        </div>
+
+                        <div class="bg-white rounded-lg p-8 lg:p-8 mb-12">
+                            <h3 class="font-semibold text-gray-900 mb-3">Description</h3>
+                            <p id="productDescription" class="text-gray-600 leading-relaxed mb-4">
+                                This authentic vintage leather motorcycle jacket from the 1980s embodies classic American
+                                style.
+                                Crafted from premium brown leather that has developed a beautiful patina over time, this
+                                jacket
+                                features the iconic asymmetrical zipper closure, multiple zippered pockets, and adjustable
+                                belt
+                                details.
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-12 mt-8">
+                <h2 class="vintage-title text-2xl font-bold text-gray-900 mb-6">You Might Also Like</h2>
+                <div class="you-might-also-like-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="aspect-square overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20black%20leather%20jacket%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture%2C%20classic%20style&width=300&height=300&seq=related-1&orientation=squarish"
+                                 alt="Black Leather Jacket"
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-1">Classic Black Leather Jacket</h3>
+                            <p class="text-sm text-gray-600 mb-2">1970s Vintage</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-primary">$325.00</span>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="aspect-square overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20denim%20jacket%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture%2C%20classic%20blue%20denim&width=300&height=300&seq=related-2&orientation=squarish"
+                                 alt="Denim Jacket" class="w-full h-full object-cover hover:scale-105 transition-transform">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-1">Vintage Denim Jacket</h3>
+                            <p class="text-sm text-gray-600 mb-2">1990s Classic</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-primary">$145.00</span>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="aspect-square overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20suede%20jacket%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture%2C%20tan%20brown%20suede&width=300&height=300&seq=related-3&orientation=squarish"
+                                 alt="Suede Jacket" class="w-full h-full object-cover hover:scale-105 transition-transform">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-1">Suede Bomber Jacket</h3>
+                            <p class="text-sm text-gray-600 mb-2">1980s Rare Find</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-primary">$198.00</span>
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">Sold</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="aspect-square overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20wool%20peacoat%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture%2C%20navy%20blue%20wool%20coat&width=300&height=300&seq=related-4&orientation=squarish"
+                                 alt="Wool Peacoat" class="w-full h-full object-cover hover:scale-105 transition-transform">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-1">Navy Wool Peacoat</h3>
+                            <p class="text-sm text-gray-600 mb-2">1960s Military</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-primary">$275.00</span>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="stickyCart" class="lg:hidden fixed bottom-0 left-0 right-0 bg-white sticky-cart p-4 hidden">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="text-lg font-bold text-primary">$289.00</div>
+                    <div class="text-sm text-gray-600">Size M selected</div>
+                </div>
+                <button
+                    class="bg-secondary hover:bg-opacity-90 text-white font-semibold py-3 px-6 !rounded-button transition-all whitespace-nowrap flex items-center gap-2"
+                    onclick="addToCart()">
+                    <i class="ri-shopping-bag-line"></i>
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+        <div id="sizeGuideModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="vintage-title text-2xl font-bold text-gray-900">Size Guide</h2>
+                        <button onclick="closeSizeGuide()"
+                                class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700">
+                            <i class="ri-close-line ri-lg"></i>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Size</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Chest (inches)</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Length (inches)</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Shoulder (inches)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-medium">UK 6</td>
+                                    <td class="border border-gray-300 px-4 py-2">36-38</td>
+                                    <td class="border border-gray-300 px-4 py-2">24</td>
+                                    <td class="border border-gray-300 px-4 py-2">17</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-medium">UK 8</td>
+                                    <td class="border border-gray-300 px-4 py-2">40-42</td>
+                                    <td class="border border-gray-300 px-4 py-2">25</td>
+                                    <td class="border border-gray-300 px-4 py-2">18</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-medium">UK 10</td>
+                                    <td class="border border-gray-300 px-4 py-2">44-46</td>
+                                    <td class="border border-gray-300 px-4 py-2">26</td>
+                                    <td class="border border-gray-300 px-4 py-2">19</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-medium">UK 12</td>
+                                    <td class="border border-gray-300 px-4 py-2">48-50</td>
+                                    <td class="border border-gray-300 px-4 py-2">27</td>
+                                    <td class="border border-gray-300 px-4 py-2">20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4">
+                        Measurements are approximate and may vary slightly due to the vintage nature of the items.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-placeholder"></div>
+
+        <!--        <script id="imageGallery">
+                    const images = [
+                        'https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20front%20view%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture&width=600&height=600&seq=jacket-front&orientation=squarish',
+                        'https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20back%20view%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture&width=600&height=600&seq=jacket-back&orientation=squarish',
+                        'https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20side%20view%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background%2C%20warm%20lighting%2C%20detailed%20texture&width=600&height=600&seq=jacket-side&orientation=squarish',
+                        'https://readdy.ai/api/search-image?query=vintage%20brown%20leather%20jacket%20detail%20close%20up%20zippers%20and%20buckles%20on%20white%20background%2C%20professional%20product%20photography%2C%20clean%20minimal%20background&width=600&height=600&seq=jacket-detail&orientation=squarish'
+                    ];
+        
+                    function changeImage(index) {
+                        const mainImage = document.getElementById('mainImage');
+                        const thumbnails = document.querySelectorAll('.thumbnail');
+        
+                        mainImage.src = images[index];
+        
+                        thumbnails.forEach((thumb, i) => {
+                            if (i === index) {
+                                thumb.classList.add('active');
+                            } else {
+                                thumb.classList.remove('active');
+                            }
+                        });
+                    }
+                </script>-->
+
+        <script>
+            let images = []; // Store image URLs globally
+
+            document.addEventListener("DOMContentLoaded", async () => {
+                const params = new URLSearchParams(window.location.search);
+                const productId = params.get("id");
+
+                if (!productId) {
+                    iziToast.error({
+                        message: "Product ID not found in URL",
+                        position: "topRight"
+                    });
+                    return;
+                }
+
+                try {
+                    // Load product info
+                    const productRes = await fetch(`/ThrifteStop/get-product?id=${productId}`);
+                    if (!productRes.ok)
+                        throw new Error("Product fetch failed");
+                    const data = await productRes.json();
+
+                    if (data.status === "error") {
+                        iziToast.error({message: data.message, position: "topRight"});
+                        return;
+                    }
+
+                    // Fill product info
+                    document.getElementById("productTitle").textContent = data.title;
+                    document.getElementById("productPrice").textContent = data.price;
+                    document.getElementById("productDescription").textContent = data.description;
+                    document.getElementById("productCondition").textContent = data.condition;
+                    document.getElementById("productSize").textContent = data.size;
+
+                    // Build breadcrumb
+                    const breadcrumbContainer = document.getElementById("breadcrumb");
+                    breadcrumbContainer.innerHTML = "";
+                    const crumbs = [
+                        {text: "Home", href: "#"},
+                        {text: data.category, href: "#"},
+                        {text: data.title, href: null}
+                    ];
+
+                    crumbs.forEach((crumb, index) => {
+                        if (index > 0) {
+                            const icon = document.createElement("i");
+                            icon.className = "ri-arrow-right-s-line";
+                            breadcrumbContainer.appendChild(icon);
+                        }
+
+                        if (crumb.href) {
+                            const link = document.createElement("a");
+                            link.href = crumb.href;
+                            link.textContent = crumb.text;
+                            link.className = "hover:text-primary transition-colors";
+                            breadcrumbContainer.appendChild(link);
+                        } else {
+                            const span = document.createElement("span");
+                            span.className = "text-gray-900";
+                            span.textContent = crumb.text;
+                            breadcrumbContainer.appendChild(span);
+                        }
+                    });
+
+                    // Update images
+                    images = data.images;
+                    const mainImage = document.getElementById('mainImage');
+                    mainImage.src = images[0];
+
+                    const thumbnailsWrapper = document.querySelector('#productImages .grid-cols-4');
+                    thumbnailsWrapper.innerHTML = "";
+
+                    images.forEach((imgPath, index) => {
+                        const button = document.createElement('button');
+                        button.classList.add('thumbnail', 'aspect-square', 'bg-white', 'rounded-lg', 'overflow-hidden', 'border-2');
+                        button.onclick = () => changeImage(index);
+
+                        const thumbnailImage = document.createElement('img');
+                        thumbnailImage.src = imgPath;
+                        thumbnailImage.alt = `Thumbnail ${index + 1}`;
+                        thumbnailImage.classList.add('w-full', 'h-full', 'object-cover');
+
+                        button.appendChild(thumbnailImage);
+                        thumbnailsWrapper.appendChild(button);
+                    });
+
+                    // 🔥 Load related products
+                    const relatedRes = await fetch(`/ThrifteStop/get-related-products?id=${productId}`);
+                    if (!relatedRes.ok)
+                        throw new Error("Related products fetch failed");
+                    const related = await relatedRes.json();
+
+                    const container = document.querySelector(".you-might-also-like-grid");
+                    container.innerHTML = "";
+
+                    related.related.forEach(p => {
+                        const card = document.createElement("div");
+                        card.className = "bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow";
+
+                        card.innerHTML = `
+                    <div class="aspect-square overflow-hidden">
+                        <img src="${p.imageUrl}" alt="${p.name}" class="w-full h-full object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">${p.name}</h3>
+                        <p class="text-sm text-gray-600 mb-2">Recommended</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-primary">${p.price}</span>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+                        </div>
+                        <button class="view-product-btn w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
+                                data-id="${p.id}">
+                            View Product
+                        </button>
+                    </div>
+                `;
+                        container.appendChild(card);
+                    });
+
+                    container.querySelectorAll(".view-product-btn").forEach(btn => {
+                        btn.addEventListener("click", function () {
+                            const id = this.getAttribute("data-id");
+                            window.location.href = `/ThrifteStop/productView.html?id=${id}`;
+                        });
+                    });
+
+                } catch (error) {
+                    console.error(error);
+                    iziToast.error({
+                        message: "Failed to load product details.",
+                        position: "topRight"
+                    });
+                }
+            });
+
+            function changeImage(index) {
+                const mainImage = document.getElementById('mainImage');
+                const thumbnails = document.querySelectorAll('.thumbnail');
+
+                mainImage.src = images[index];
+
+                thumbnails.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                });
+            }
+        </script>
+
+
+
+        <script>
+            const breadcrumbContainer = document.getElementById("breadcrumb");
+            breadcrumbContainer.innerHTML = ""; // Clear existing
+
+            const crumbs = [
+                {text: "Home", href: "#"},
+                {text: "Clothing", href: "#"},
+                {text: data.category, href: "#"}, // From backend
+                {text: data.title, href: null}     // No href for final breadcrumb
+            ];
+
+            crumbs.forEach((crumb, index) => {
+                if (index > 0) {
+                    const icon = document.createElement("i");
+                    icon.className = "ri-arrow-right-s-line";
+                    breadcrumbContainer.appendChild(icon);
+                }
+
+                if (crumb.href) {
+                    const link = document.createElement("a");
+                    link.href = crumb.href;
+                    link.textContent = crumb.text;
+                    link.className = "hover:text-primary transition-colors";
+                    breadcrumbContainer.appendChild(link);
+                } else {
+                    const span = document.createElement("span");
+                    span.className = "text-gray-900";
+                    span.textContent = crumb.text;
+                    breadcrumbContainer.appendChild(span);
+                }
+            });
+
+        </script>
+
+
+        <!-- <script id="sizeSelection">
+            let selectedSize = 'M';
+    
+            function selectSize(element, size) {
+                if (element.disabled) return;
+    
+                document.querySelectorAll('.size-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+    
+                element.classList.add('selected');
+                selectedSize = size;
+    
+                const stickyCart = document.getElementById('stickyCart');
+                const sizeInfo = stickyCart.querySelector('.text-sm');
+                if (sizeInfo) {
+                    sizeInfo.textContent = `Size ${size} selected`;
+                }
+            }
+        </script> -->
+        <script>
+            async function addToCart() {
+                const button = document.getElementById('addToCartBtn');
+                const originalText = button.innerHTML;
+
+                // UI: loading animation
+                button.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Adding...';
+                button.disabled = true;
+
+                // Get product ID from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get("id");
+
+                if (!productId) {
+                    alert("Invalid product ID");
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    return;
+                }
+
+                try {
+                    const response = await fetch("/ThrifteStop/AddToCartServlet", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `productId=${encodeURIComponent(productId)}`
+                    });
+
+                    if (response.ok) {
+                        const json = await response.json();
+                        if (json.status) {
+                            button.innerHTML = '<i class="ri-check-line"></i> Added to Cart';
+                            button.classList.remove('bg-secondary');
+                            button.classList.add('bg-green-600');
+                        } else {
+                            alert(json.message);
+                            button.innerHTML = originalText;
+                        }
+                    } else {
+                        alert("Add to cart failed. Please try again.");
+                        button.innerHTML = originalText;
+                    }
+                } catch (error) {
+                    console.error("Error adding to cart:", error);
+                    alert("Something went wrong.");
+                    button.innerHTML = originalText;
+                }
+
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('bg-green-600');
+                    button.classList.add('bg-secondary');
+                    button.disabled = false;
+                }, 2000);
+            }
+        </script>
+
+        <script id="sizeGuideModal">
+            function openSizeGuide() {
+                const modal = document.getElementById('sizeGuideModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSizeGuide() {
+                const modal = document.getElementById('sizeGuideModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+
+            document.getElementById('sizeGuideModal').addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeSizeGuide();
+                }
+            });
+        </script>
+
+        <script id="stickyCartToggle">
+            function toggleStickyCart() {
+                const stickyCart = document.getElementById('stickyCart');
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+
+                if (window.innerWidth < 1024) {
+                    if (scrollPosition > 600 && scrollPosition < documentHeight - windowHeight - 200) {
+                        stickyCart.classList.remove('hidden');
+                    } else {
+                        stickyCart.classList.add('hidden');
+                    }
+                } else {
+                    stickyCart.classList.add('hidden');
+                }
+            }
+
+            window.addEventListener('scroll', toggleStickyCart);
+            window.addEventListener('resize', toggleStickyCart);
+        </script>
+        <script>
+
+            function loadHTML(id, url) {
+                fetch(url)
+                        .then(response => {
+                            if (!response.ok)
+                                throw new Error("Network response was not ok");
+                            return response.text();
+                        })
+                        .then(data => {
+                            const container = document.getElementById(id);
+                            container.innerHTML = data;
+
+                            // Extract and execute scripts manually
+                            const scripts = container.querySelectorAll("script");
+                            scripts.forEach(script => {
+                                const newScript = document.createElement("script");
+                                if (script.src) {
+                                    newScript.src = script.src;
+                                } else {
+                                    newScript.textContent = script.textContent;
+                                }
+                                document.head.appendChild(newScript); // Append to head or body
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error loading HTML:', error);
+                        });
+            }
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                loadHTML("nav-placeholder", "header.html");
+                loadHTML("footer-placeholder", "footer.html");
+            });
+        </script>
+    </body>
+
+</html>

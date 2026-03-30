@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Thrift eStop - Sign In</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+              rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+
+    <body class="min-h-screen bg-gray-50">
+
+
+
+        <main class="flex-1 flex items-center justify-center px-4 py-12">
+            <div class="w-full max-w-md">
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+                        <p class="text-gray-600">Sign in to your account to continue shopping</p>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex bg-gray-100 rounded-lg p-1">
+                            <button id="loginTab"
+                                    class="flex-1 py-2 px-4 text-sm font-medium rounded-md bg-white text-primary shadow-sm transition-all">
+                                Sign In
+                            </button>
+                            <button id="registerTab"
+                                    class="flex-1 py-2 px-4 text-sm font-medium rounded-md text-gray-500 hover:text-gray-700 transition-all">
+                                Sign Up
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="loginForm">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-mail-line text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <input type="email"
+                                           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                           placeholder="Enter your email">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-lock-line text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <input type="password" id="loginPassword"
+                                           class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                           placeholder="Enter your password">
+                                    <button type="button" id="toggleLoginPassword"
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <div
+                                            class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600">
+                                            <i class="ri-eye-line text-sm"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+
+                                <button type="button" id="forgotPasswordBtn"
+                                        class="text-sm text-secondary hover:text-primary transition-colors">
+                                    Forgot password?
+                                </button>
+                            </div>
+
+                            <button id="loginBtn" type="button"
+                                    class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-medium !rounded-button whitespace-nowrap">
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="registerForm" class="hidden">
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                                <i class="ri-user-line text-sm"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" id="firstName"
+                                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                               placeholder="John">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                                <i class="ri-user-line text-sm"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" id="lastName"
+                                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                               placeholder="Doe">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-mail-line text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <input type="email" id="registerEmail"
+                                           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                           placeholder="Enter your email">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Mobile Number</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-phone-line text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <input type="tel" id="mobile"
+                                           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                           placeholder="071-2345678">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-lock-line text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <input type="password" id="registerPassword"
+                                           class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                           placeholder="Create a password">
+                                    <button type="button" id="toggleRegisterPassword"
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <div
+                                            class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600">
+                                            <i class="ri-eye-line text-sm"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+
+
+                            <button type="button" id="registerSubmitBtn"
+                                    class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-medium !rounded-button whitespace-nowrap">
+                                Create Account
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <!-- Forgot Password Modal -->
+        <div id="forgotPasswordModal"
+             class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
+                <!-- Step 1: Enter Email -->
+                <div id="enterEmailStep">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-8 h-8 flex items-center justify-center text-secondary">
+                                <i class="ri-mail-send-line text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Reset Password</h3>
+                        <p class="text-gray-600">Enter your email address and we'll send you a verification code.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-mail-line text-sm"></i>
+                                    </div>
+                                </div>
+                                <input type="email" id="resetEmail"
+                                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                       placeholder="Enter your email">
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-3">
+                            <button type="button" id="cancelReset"
+                                    class="flex-1 py-3 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium !rounded-button whitespace-nowrap">
+                                Cancel
+                            </button>
+                            <button type="button" id="sendCodeBtn"
+                                    class="flex-1 bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-medium !rounded-button whitespace-nowrap">
+                                Send Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Enter Verification Code -->
+                <div id="enterCodeStep" class="hidden">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-8 h-8 flex items-center justify-center text-secondary">
+                                <i class="ri-shield-check-line text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Enter Verification Code</h3>
+                        <p class="text-gray-600">We've sent a 6-digit code to <span id="emailDisplay"
+                                                                                    class="font-medium"></span></p>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Verification Code</label>
+                            <div class="flex space-x-2">
+                                <input type="text" maxlength="1"
+                                       class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-medium"
+                                       id="code1">
+                                <input type="text" maxlength="1"
+                                       class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-medium"
+                                       id="code2">
+                                <input type="text" maxlength="1"
+                                       class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-medium"
+                                       id="code3">
+                                <input type="text" maxlength="1"
+                                       class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-medium"
+                                       id="code4">
+                                <input type="text" maxlength="1"
+                                       class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-medium"
+                                       id="code5">
+                                <input type="text" maxlength="1"
+                                       class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-medium"
+                                       id="code6">
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">Didn't receive the code?</p>
+                            <button type="button" id="resendCodeBtn"
+                                    class="text-sm text-secondary hover:text-primary transition-colors font-medium">
+                                Resend Code
+                            </button>
+                        </div>
+
+                        <div class="flex space-x-3">
+                            <button type="button" id="backToEmail"
+                                    class="flex-1 py-3 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium !rounded-button whitespace-nowrap">
+                                Back
+                            </button>
+                            <button type="button" id="verifyCodeBtn"
+                                    class="flex-1 bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-medium !rounded-button whitespace-nowrap">
+                                Verify Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Set New Password -->
+                <div id="newPasswordStep" class="hidden">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-8 h-8 flex items-center justify-center text-secondary">
+                                <i class="ri-lock-password-line text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Set New Password</h3>
+                        <p class="text-gray-600">Create a new password for your account.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-lock-line text-sm"></i>
+                                    </div>
+                                </div>
+                                <input type="password" id="newPassword"
+                                       class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                       placeholder="Create a new password">
+                                <button type="button" id="toggleNewPassword"
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600">
+                                        <i class="ri-eye-line text-sm"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-lock-line text-sm"></i>
+                                    </div>
+                                </div>
+                                <input type="password" id="confirmNewPassword"
+                                       class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                       placeholder="Confirm your new password">
+                                <button type="button" id="toggleConfirmPassword"
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600">
+                                        <i class="ri-eye-line text-sm"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="button" id="updatePasswordBtn"
+                                class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-medium !rounded-button whitespace-nowrap">
+                            Update Password
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Success Message -->
+                <div id="successStep" class="hidden">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-8 h-8 flex items-center justify-center text-green-600">
+                                <i class="ri-check-line text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Password Updated!</h3>
+                        <p class="text-gray-600 mb-6">Your password has been successfully updated. You can now sign in with
+                            your new password.</p>
+
+                        <button type="button" id="backToLoginBtn"
+                                class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-medium !rounded-button whitespace-nowrap">
+                            Back to Sign In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-white border-t border-gray-200 mt-auto">
+            <div class="px-4 sm:px-6 lg:px-8 py-8">
+                <div class="text-center">
+                    <div class="flex justify-center space-x-6 mb-4">
+                        <a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Terms of Service</a>
+                        <a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Privacy Policy</a>
+                        <a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Help & Support</a>
+                    </div>
+                    <p class="text-sm text-gray-500">© 2025 Thrift eStop. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <div id="loader" style="
+             position: fixed;
+             top: 0; left: 0; right: 0; bottom: 0;
+             background: rgba(255, 255, 255, 0.8);
+             z-index: 9999;
+             display: none;
+             align-items: center;
+             justify-content: center;
+             ">
+            <div class="spinner" style="
+                 width: 50px;
+                 height: 50px;
+                 border: 5px solid #ddd;
+                 border-top: 5px solid #3498db;
+                 border-radius: 50%;
+                 animation: spin 1s linear infinite;
+                 "></div>
+        </div>
+
+        <script>
+            function showLoader() {
+                document.getElementById('loader').style.display = 'flex';
+            }
+
+            function hideLoader() {
+                document.getElementById('loader').style.display = 'none';
+            }
+
+        </script>
+
+        <script id="tab-switching">
+            document.addEventListener('DOMContentLoaded', function () {
+                const loginTab = document.getElementById('loginTab');
+                const registerTab = document.getElementById('registerTab');
+                const loginForm = document.getElementById('loginForm');
+                const registerForm = document.getElementById('registerForm');
+
+                loginTab.addEventListener('click', function () {
+                    loginTab.classList.add('bg-white', 'text-primary', 'shadow-sm');
+                    loginTab.classList.remove('text-gray-500');
+                    registerTab.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+                    registerTab.classList.add('text-gray-500');
+
+                    loginForm.classList.remove('hidden');
+                    registerForm.classList.add('hidden');
+                });
+                registerTab.addEventListener('click', function () {
+                    registerTab.classList.add('bg-white', 'text-primary', 'shadow-sm');
+                    registerTab.classList.remove('text-gray-500');
+                    loginTab.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+                    loginTab.classList.add('text-gray-500');
+
+                    registerForm.classList.remove('hidden');
+                    loginForm.classList.add('hidden');
+                });
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+        <!--        <script id="register-handler">
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const registerBtn = document.getElementById('registerSubmitBtn');
+        
+                        registerBtn.addEventListener('click', function () {
+                            // Collect input values
+                            const firstName = document.getElementById('firstName').value.trim();
+                            const lastName = document.getElementById('lastName').value.trim();
+                            const email = document.getElementById('registerEmail').value.trim();
+                            const mobile = document.getElementById('mobile').value.trim();
+                            const password = document.getElementById('registerPassword').value;
+        
+        
+                            // Basic validation
+                            if (!firstName || !lastName || !email || !mobile || !password) {
+                                alert('Please fill in all fields');
+                                return;
+                            }
+        
+                            if (password !== confirmPassword) {
+                                alert('Passwords do not match');
+                                return;
+                            }
+        
+                            if (password.length < 6) {
+                                alert('Password must be at least 6 characters long');
+                                return;
+                            }
+        
+                            // Optional: basic mobile format check
+                            const mobileRegex = /^[0-9\-\+]{9,15}$/;
+                            if (!mobileRegex.test(mobile)) {
+                                alert('Please enter a valid mobile number');
+                                return;
+                            }
+        
+                            // Optional: basic email format check
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            if (!emailRegex.test(email)) {
+                                alert('Please enter a valid email address');
+                                return;
+                            }
+        
+                            // Simulated success (replace with real request if needed)
+                            console.log('New user registered:', {
+                                firstName,
+                                lastName,
+                                email,
+                                mobile,
+                                password
+                            });
+        
+                            alert(`Welcome, ${firstName}! Your account has been created.`);
+        
+                            // Clear form fields (optional)
+                            document.getElementById('firstName').value = '';
+                            document.getElementById('lastName').value = '';
+                            document.getElementById('registerEmail').value = '';
+                            document.getElementById('mobile').value = '';
+                            document.getElementById('registerPassword').value = '';
+                            document.getElementById('confirmPassword').value = '';
+                        });
+                    });
+                </script>-->
+
+
+        <script id="password-toggle">
+            document.addEventListener('DOMContentLoaded', function () {
+                const toggleLoginPassword = document.getElementById('toggleLoginPassword');
+                const loginPassword = document.getElementById('loginPassword');
+                const toggleRegisterPassword = document.getElementById('toggleRegisterPassword');
+                const registerPassword = document.getElementById('registerPassword');
+                const toggleNewPassword = document.getElementById('toggleNewPassword');
+                const newPassword = document.getElementById('newPassword');
+                const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+                const confirmNewPassword = document.getElementById('confirmNewPassword');
+
+                toggleLoginPassword.addEventListener('click', function () {
+                    const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    loginPassword.setAttribute('type', type);
+                    const icon = toggleLoginPassword.querySelector('i');
+                    icon.className = type === 'password' ? 'ri-eye-line text-sm' : 'ri-eye-off-line text-sm';
+                });
+
+                toggleRegisterPassword.addEventListener('click', function () {
+                    const type = registerPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    registerPassword.setAttribute('type', type);
+                    const icon = toggleRegisterPassword.querySelector('i');
+                    icon.className = type === 'password' ? 'ri-eye-line text-sm' : 'ri-eye-off-line text-sm';
+                });
+
+                toggleNewPassword.addEventListener('click', function () {
+                    const type = newPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    newPassword.setAttribute('type', type);
+                    const icon = toggleNewPassword.querySelector('i');
+                    icon.className = type === 'password' ? 'ri-eye-line text-sm' : 'ri-eye-off-line text-sm';
+                });
+
+                toggleConfirmPassword.addEventListener('click', function () {
+                    const type = confirmNewPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmNewPassword.setAttribute('type', type);
+                    const icon = toggleConfirmPassword.querySelector('i');
+                    icon.className = type === 'password' ? 'ri-eye-line text-sm' : 'ri-eye-off-line text-sm';
+                });
+            });
+        </script>
+
+
+
+        <script id="forgot-password-flow">
+            document.addEventListener('DOMContentLoaded', function () {
+                const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+                const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+                const cancelReset = document.getElementById('cancelReset');
+                const sendCodeBtn = document.getElementById('sendCodeBtn');
+                const backToEmail = document.getElementById('backToEmail');
+                const verifyCodeBtn = document.getElementById('verifyCodeBtn');
+                const resendCodeBtn = document.getElementById('resendCodeBtn');
+                const updatePasswordBtn = document.getElementById('updatePasswordBtn');
+                const backToLoginBtn = document.getElementById('backToLoginBtn');
+
+                // Step elements
+                const enterEmailStep = document.getElementById('enterEmailStep');
+                const enterCodeStep = document.getElementById('enterCodeStep');
+                const newPasswordStep = document.getElementById('newPasswordStep');
+                const successStep = document.getElementById('successStep');
+
+                // Form elements
+                const resetEmail = document.getElementById('resetEmail');
+                const emailDisplay = document.getElementById('emailDisplay');
+                const codeInputs = [
+                    document.getElementById('code1'),
+                    document.getElementById('code2'),
+                    document.getElementById('code3'),
+                    document.getElementById('code4'),
+                    document.getElementById('code5'),
+                    document.getElementById('code6')
+                ];
+
+                // Open modal
+                forgotPasswordBtn.addEventListener('click', function () {
+                    forgotPasswordModal.classList.remove('hidden');
+                    showStep('enterEmail');
+                });
+
+                // Close modal
+                cancelReset.addEventListener('click', function () {
+                    forgotPasswordModal.classList.add('hidden');
+                    resetForm();
+                });
+
+                // Send verification code
+                sendCodeBtn.addEventListener('click', function () {
+                    const email = resetEmail.value.trim();
+                    if (!email) {
+                        alert('Please enter your email address');
+                        return;
+                    }
+
+                    // Simulate sending code
+                    emailDisplay.textContent = email;
+                    showStep('enterCode');
+
+                    // Focus first code input
+                    codeInputs[0].focus();
+                });
+
+                // Back to email step
+                backToEmail.addEventListener('click', function () {
+                    showStep('enterEmail');
+                });
+
+                // Verify code
+                verifyCodeBtn.addEventListener('click', function () {
+                    const code = codeInputs.map(input => input.value).join('');
+                    if (code.length !== 6) {
+                        alert('Please enter all 6 digits');
+                        return;
+                    }
+
+                    // Simulate code verification
+                    showStep('newPassword');
+                });
+
+                // Resend code
+                resendCodeBtn.addEventListener('click', function () {
+                    // Simulate resending code
+                    alert('Verification code resent to ' + resetEmail.value);
+                    // Clear code inputs
+                    codeInputs.forEach(input => input.value = '');
+                    codeInputs[0].focus();
+                });
+
+                // Update password
+                updatePasswordBtn.addEventListener('click', function () {
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmNewPassword').value;
+
+                    if (!newPassword || !confirmPassword) {
+                        alert('Please fill in both password fields');
+                        return;
+                    }
+
+                    if (newPassword !== confirmPassword) {
+                        alert('Passwords do not match');
+                        return;
+                    }
+
+                    if (newPassword.length < 6) {
+                        alert('Password must be at least 6 characters long');
+                        return;
+                    }
+
+                    // Simulate password update
+                    showStep('success');
+                });
+
+                // Back to login
+                backToLoginBtn.addEventListener('click', function () {
+                    forgotPasswordModal.classList.add('hidden');
+                    resetForm();
+                });
+
+                // Code input navigation
+                codeInputs.forEach((input, index) => {
+                    input.addEventListener('input', function () {
+                        if (this.value.length === 1 && index < codeInputs.length - 1) {
+                            codeInputs[index + 1].focus();
+                        }
+                    });
+
+                    input.addEventListener('keydown', function (e) {
+                        if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                            codeInputs[index - 1].focus();
+                        }
+                    });
+
+                    // Only allow numbers
+                    input.addEventListener('keypress', function (e) {
+                        if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+                            e.preventDefault();
+                        }
+                    });
+                });
+
+                // Close modal when clicking outside
+                forgotPasswordModal.addEventListener('click', function (e) {
+                    if (e.target === forgotPasswordModal) {
+                        forgotPasswordModal.classList.add('hidden');
+                        resetForm();
+                    }
+                });
+
+                function showStep(step) {
+                    // Hide all steps
+                    enterEmailStep.classList.add('hidden');
+                    enterCodeStep.classList.add('hidden');
+                    newPasswordStep.classList.add('hidden');
+                    successStep.classList.add('hidden');
+
+                    // Show selected step
+                    switch (step) {
+                        case 'enterEmail':
+                            enterEmailStep.classList.remove('hidden');
+                            break;
+                        case 'enterCode':
+                            enterCodeStep.classList.remove('hidden');
+                            break;
+                        case 'newPassword':
+                            newPasswordStep.classList.remove('hidden');
+                            break;
+                        case 'success':
+                            successStep.classList.remove('hidden');
+                            break;
+                    }
+                }
+
+                function resetForm() {
+                    // Clear all inputs
+                    resetEmail.value = '';
+                    codeInputs.forEach(input => input.value = '');
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmNewPassword').value = '';
+
+                    // Reset to first step
+                    showStep('enterEmail');
+                }
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+        <!--        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css" />-->
+
+       
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const toast = (type, message) => {
+                    iziToast[type]({message, position: "topRight"});
+                };
+
+                const registerBtn = document.getElementById("registerSubmitBtn");
+                const loginBtn = document.getElementById("loginBtn");
+                 const sendCodeBtn = document.getElementById("sendCodeBtn");
+                  const verifyCodeBtn = document.getElementById("verifyCodeBtn");
+                  const updatePasswordBtn = document.getElementById("updatePasswordBtn");
+
+                loginBtn.addEventListener("click", async () => {
+                    showLoader();
+                    const email = document.querySelector('#loginForm input[type="email"]').value.trim();
+                    const password = document.getElementById("loginPassword").value.trim();
+
+                    try {
+                        const response = await fetch("/ThrifteStop/login", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({email, password})
+                        });
+
+                        if (response.ok) {
+                            try {
+                                const data = await response.json();
+                                toast(data.status ? "success" : "error", data.message);
+
+                                if (data.status) {
+//                                    document.getElementById("loginForm").reset();
+                                    window.location.href = "home.html";
+                                }
+                                hideLoader();
+                            } catch (err) {
+                                console.error("Invalid JSON:", err);
+                                toast("error", "Something went wrong. Please try again.");
+                            }
+                        } else {
+                            toast("error", "Login failed. Try again.");
+                        }
+
+                    } catch (e) {
+                        console.error("Fetch failed:", e);
+                        toast("error", "Network error");
+                    }
+                });
+                
+                 registerBtn.addEventListener("click", async () => {
+                    const payload = {
+                        fname: document.getElementById("firstName").value.trim(),
+                        lname: document.getElementById("lastName").value.trim(),
+                        email: document.getElementById("registerEmail").value.trim(),
+                        password: document.getElementById("registerPassword").value.trim(),
+                        mobile: document.getElementById("mobile").value.trim()
+                    };
+
+                    try {
+                        const response = await fetch("/ThrifteStop/register", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            toast(data.status ? "success" : "error", data.message);
+
+                            if (data.status) {
+                                document.getElementById("firstName").value = "";
+                                document.getElementById("lastName").value = "";
+                                document.getElementById("registerEmail").value = "";
+                                document.getElementById("registerPassword").value = "";
+                                document.getElementById("mobile").value = "";
+                            }
+                        } else {
+                            toast("error", "Server error. Try again.");
+                        }
+                    } catch (e) {
+                        toast("error", "Network error");
+                    }
+                });
+                
+                
+                
+                
+                
+                sendCodeBtn.addEventListener("click", function () {
+                    const email = document.getElementById("resetEmail").value.trim();
+
+                    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+                        toast("error", "Please enter a valid email address.");
+                        return;
+                    }
+
+                    fetch("/ThrifteStop/send-code", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({email})
+                    })
+                            .then(res => {
+                                if (!res.ok) {
+                                    throw new Error("Network response was not OK");
+                                }
+                                return res.json(); // ✅ parse as JSON directly
+                            })
+                            .then(data => {
+                                toast(data.status, data.message);
+
+                                if (data.status === "success") {
+                                    localStorage.setItem("userEmail", email);
+                                    document.getElementById("enterEmailStep").classList.add("hidden");
+                                    document.getElementById("enterCodeStep").classList.remove("hidden");
+
+                                    // Focus the first code input
+                                    document.getElementById("code1").focus();
+                                }
+                            })
+                            .catch(err => {
+                                console.error("Error while sending code:", err);
+                                toast("error", "Unexpected response from server.");
+                            });
+                });
+                
+                
+                
+                verifyCodeBtn.addEventListener("click", function () {
+                    // Combine the 6 inputs into one string
+                    const code = [
+                        document.getElementById("code1").value,
+                        document.getElementById("code2").value,
+                        document.getElementById("code3").value,
+                        document.getElementById("code4").value,
+                        document.getElementById("code5").value,
+                        document.getElementById("code6").value
+                    ].join("").trim();
+
+                    const email = document.getElementById("resetEmail").value.trim(); // or from localStorage/session
+
+                    if (code.length !== 6 || !/^\d{6}$/.test(code)) {
+                        toast("error", "Please enter all 6 digits.");
+                        return;
+                    }
+
+                    fetch("/ThrifteStop/verify-code", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({email: email, code: code})
+                    })
+                            .then(res => res.json())
+                            .then(data => {
+                                toast(data.status, data.message);
+                                if (data.status === "success") {
+                                    // Proceed to new password step
+                                    document.getElementById("enterCodeStep").classList.add("hidden");
+                                    document.getElementById("newPasswordStep").classList.remove("hidden");
+                                }
+                            })
+                            .catch(err => toast("error", "Server error while verifying code."));
+                });
+                
+                updatePasswordBtn.addEventListener("click", function () {
+                    const password = document.getElementById("newPassword").value.trim();
+                    const confirmPassword = document.getElementById("confirmNewPassword").value.trim();
+                    const email = document.getElementById("resetEmail").value.trim(); // Or get from localStorage
+
+                    if (!password || !confirmPassword) {
+                        toast("error", "Please fill in both fields.");
+                        return;
+                    }
+
+                    if (password !== confirmPassword) {
+                        toast("error", "Passwords do not match.");
+                        return;
+                    }
+
+                    if (password.length < 6) {
+                        toast("error", "Password must be at least 6 characters.");
+                        return;
+                    }
+
+                    fetch("/ThrifteStop/update-password", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    })
+                            .then(res => res.json())
+                            .then(data => {
+                                toast(data.status, data.message);
+                                if (data.status === "success") {
+                                    setTimeout(() => {
+                                        window.location.href = "index.html";
+                                    }, 2000); // Delay before redirect
+                                }
+                            })
+                            .catch(() => toast("error", "Server error while updating password."));
+                });
+                
+            });
+        </script>
+
+
+        
+
+        
+
+
+    
+
+
+
+    </body>
+
+</html>

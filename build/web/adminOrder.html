@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Order Management - Admin Dashboard</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+        </style>
+    </head>
+    <body class="bg-gray-50 min-h-screen">
+        <div class="flex">
+            <aside class="w-64 bg-white shadow-lg min-h-screen">
+                <nav class="p-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="adminDashboard.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-dashboard-line"></i>
+                                </div>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="addNewProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-shopping-bag-line"></i>
+                                </div>
+                                <span>Add Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="updateProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-edit-box-line"></i>
+                                </div>
+                                <span>Update Product</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminOrder.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminInventory.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Inventory</span>
+                            </a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="adminOrder.html" data-page="adminOrder.html"
+                                class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="adminCustomer.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-group-line"></i>
+                                </div>
+                                <span>Customer</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminSale.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-bar-chart-line"></i>
+                                </div>
+                                <span>Sales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-logout-box-line"></i>
+                                </div>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </aside>
+        
+        <main>
+            <div class="max-w-7xl mx-auto p-6">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Order Management</h1>
+                    <p class="text-gray-600">View and manage customer orders</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 p-6">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-gray-700">Status:</label>
+                            <div class="relative">
+                                <select id="statusFilter" class="status-dropdown-main appearance-none bg-white border border-secondary rounded-sm px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">All Status</option>
+<!--                                    <option value="pending">Pending</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="cancelled">Cancelled</option>-->
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <i class="ri-arrow-down-s-line text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-gray-700">Date Range:</label>
+                            <input type="date" id="dateFrom" class="border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <span class="text-gray-500">to</span>
+                            <input type="date" id="dateTo" class="border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+
+                        <div class="flex-1 max-w-md">
+                            <div class="relative">
+                                <input type="text" id="searchInput" placeholder="Search orders..." class="w-full border border-gray-300 rounded-sm pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <i class="ri-search-line text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="applyFilters" class="bg-primary text-white px-6 py-2 rounded-button text-sm font-medium hover:bg-opacity-90 transition-colors whitespace-nowrap">
+                            Apply Filters
+                        </button>
+
+                        <button id="printBtn"
+                                class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-secondary hover:bg-opacity-90 !rounded-button whitespace-nowrap">
+                            <i class="ri-download-line"></i>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold">
+                                        <div class="flex items-center gap-2">
+                                            Order #
+                                            <i class="ri-arrow-up-down-line text-xs"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold">
+                                        <div class="flex items-center gap-2">
+                                            Customer
+                                            <i class="ri-arrow-up-down-line text-xs"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold">
+                                        <div class="flex items-center gap-2">
+                                            Date
+                                            <i class="ri-arrow-up-down-line text-xs"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold">
+                                        <div class="flex items-center gap-2">
+                                            Total
+                                            <i class="ri-arrow-up-down-line text-xs"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold">Status</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody">
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-001</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Sarah Johnson</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-15</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$249.99</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending" selected>Pending</option>
+                                                <option value="shipped">Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer bg-yellow-50">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-002</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Michael Chen</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-14</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$189.50</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            Shipped
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending">Pending</option>
+                                                <option value="shipped" selected>Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-003</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Emma Rodriguez</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-13</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$399.99</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Delivered
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending">Pending</option>
+                                                <option value="shipped">Shipped</option>
+                                                <option value="delivered" selected>Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer bg-yellow-50">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-004</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">David Wilson</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-12</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$129.99</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending" selected>Pending</option>
+                                                <option value="shipped">Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-005</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Lisa Thompson</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-11</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$299.50</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            Shipped
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending">Pending</option>
+                                                <option value="shipped" selected>Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer bg-yellow-50">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-006</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">James Anderson</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-10</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$459.99</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            Cancelled
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending">Pending</option>
+                                                <option value="shipped">Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled" selected>Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-007</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Maria Garcia</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-09</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$179.99</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Delivered
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending">Pending</option>
+                                                <option value="shipped">Shipped</option>
+                                                <option value="delivered" selected>Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer bg-yellow-50">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-008</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Robert Taylor</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-08</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$89.99</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            Shipped
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending">Pending</option>
+                                                <option value="shipped" selected>Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-009</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Jennifer Lee</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-07</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$329.99</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="pending" selected>Pending</option>
+                                                <option value="shipped">Shipped</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer bg-yellow-50">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">#ORD-2024-010</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">Christopher Brown</td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">2024-01-06</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">$199.50</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Delivered
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="relative">
+                                            <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="">Select</option>
+                                                <!--                                                <option value="shipped">Shipped</option>
+                                                                                                <option value="delivered" selected>Delivered</option>
+                                                                                                <option value="cancelled">Cancelled</option>-->
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="flex items-center gap-2 paginationControls">
+                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                <i class="ri-arrow-left-line"></i>
+                            </button>
+                            <button class="px-3 py-2 text-sm bg-primary text-white rounded-sm">1</button>
+                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-sm hover:bg-gray-50">2</button>
+                            <!--                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-sm hover:bg-gray-50">3</button>-->
+                            <button class="px-3 py-2 text-sm border border-gray-300 rounded-sm hover:bg-gray-50">
+                                <i class="ri-arrow-right-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                            <i class="ri-question-line text-orange-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Confirm Status Change</h3>
+                            <p class="text-sm text-gray-600">Are you sure you want to update this order status?</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button id="cancelBtn" class="px-4 py-2 text-sm border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                            Cancel
+                        </button>
+                        <button id="confirmBtn" class="px-4 py-2 text-sm bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="orderItemsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                <div class="bg-white rounded-lg p-6 max-w-3xl w-full mx-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-bold text-gray-900">
+                            Order Details - <span id="orderIdLabel" class="text-primary"></span></h2>
+                        <button id="closeOrderItemsModal" class="text-gray-400 hover:text-gray-600 text-xl">
+                            <i class="ri-close-line"></i>
+                        </button>
+                    </div>
+
+                    <!-- Order Items -->
+                    <h3 class="text-md font-semibold mb-2">Items</h3>
+                    <table class="w-full text-sm text-left border mb-6">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th class="px-4 py-2">Item ID</th>
+                                <th class="px-4 py-2">Product Title</th>
+                                <th class="px-4 py-2">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderItemsBody">
+                            <!-- JS populates this -->
+                        </tbody>
+                    </table>
+
+                    <!-- Shipping Address -->
+                    <h3 class="text-md font-semibold mb-2">Shipping Address</h3>
+                    <div id="shippingDetails" class="text-sm text-gray-700">
+                        <!-- JS populates this -->
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--            <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const modal = document.getElementById('orderItemsModal');
+                                const closeModalBtn = document.getElementById('closeOrderItemsModal');
+                                const orderItemsBody = document.getElementById('orderItemsBody');
+                                const shippingDetails = document.getElementById('shippingDetails');
+            
+                                const orderItemsMap = {
+                                    "#ORD-2024-001": [
+                                        {id: "ITM-001", title: "Wireless Mouse", price: "$49.99"},
+                                        {id: "ITM-002", title: "Laptop Stand", price: "$199.99"}
+                                    ],
+                                    "#ORD-2024-002": [
+                                        {id: "ITM-003", title: "Bluetooth Keyboard", price: "$89.50"}
+                                    ]
+                                };
+            
+                                const shippingMap = {
+                                    "#ORD-2024-001": "12-C Model Town, Lahore, Punjab 54000",
+                                    "#ORD-2024-002": "House #45, DHA Phase 5, Karachi, Sindh 75500"
+                                };
+            
+                                document.querySelectorAll('#orderTableBody td:first-child').forEach(cell => {
+                                    cell.addEventListener('click', () => {
+                                        const orderId = cell.textContent.trim();
+            
+                                        // Load items
+                                        const items = orderItemsMap[orderId] || [];
+                                        orderItemsBody.innerHTML = items.length
+                                                ? items.map(item =>
+                                                        `<tr>
+                                            <td class="px-4 py-2">${item.id}</td>
+                                            <td class="px-4 py-2">${item.title}</td>
+                                            <td class="px-4 py-2">${item.price}</td>
+                                        </tr>`
+                                                ).join('')
+                                                : `<tr><td colspan="3" class="px-4 py-3 text-center text-gray-500">No items found for this order</td></tr>`;
+            
+                                        // Load shipping address
+                                        const address = shippingMap[orderId] || "No shipping address found.";
+                                        shippingDetails.textContent = address;
+            
+                                        modal.classList.remove('hidden');
+                                        modal.classList.add('flex');
+                                    });
+                                });
+            
+                                closeModalBtn.addEventListener('click', () => {
+                                    modal.classList.add('hidden');
+                                    modal.classList.remove('flex');
+                                });
+            
+                                modal.addEventListener('click', (e) => {
+                                    if (e.target === modal)
+                                        closeModalBtn.click();
+                                });
+                            });
+                        </script>-->
+            <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
+            <script>
+            const modal = document.getElementById('confirmModal');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            let currentDropdown = null;
+            let originalValue = null;
+
+            function updateStatusBadge(row, status) {
+                const statusCell = row.querySelector('td:nth-child(5) span');
+                const statusClasses = {
+                    'pending': 'bg-orange-100 text-orange-800',
+                    'shipped': 'bg-blue-100 text-blue-800',
+                    'delivered': 'bg-green-100 text-green-800',
+                    'cancelled': 'bg-red-100 text-red-800'
+                };
+                statusCell.className = `inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusClasses[status] || ''}`;
+                statusCell.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            }
+
+            // 🟡 Show modal when dropdown changes
+            document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+                dropdown.addEventListener('change', function () {
+                    currentDropdown = this;
+                    originalValue = this.dataset.originalValue || this.value;
+                    this.dataset.originalValue = originalValue;
+
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                });
+            });
+
+            // 🟢 Confirm status update
+            confirmBtn.addEventListener('click', async function () {
+                if (currentDropdown) {
+                    const newStatus = currentDropdown.value;
+                    const row = currentDropdown.closest('tr');
+                    const orderId = row.querySelector('td:nth-child(1)').textContent.trim().replace("#", "");
+
+                    try {
+                        const response = await fetch('/ThrifteStop/update-order-status', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams({
+                                orderId: orderId,
+                                status: newStatus
+                            })
+                        });
+
+                        const json = await response.json();
+                        if (json.status) {
+                            updateStatusBadge(row, newStatus);
+                            currentDropdown.dataset.originalValue = newStatus;
+                            iziToast.success({
+                                title: 'Success',
+                                message: json.message,
+                                position: 'topRight'
+                            });
+                        } else {
+                            iziToast.error({
+                                title: 'Error',
+                                message: json.message,
+                                position: 'topRight'
+                            });
+                            currentDropdown.value = currentDropdown.dataset.originalValue;
+                        }
+
+                    } catch (err) {
+                        console.error('Fetch failed:', err);
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Request failed.',
+                            position: 'topRight'
+                        });
+                        currentDropdown.value = currentDropdown.dataset.originalValue;
+                    }
+
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    currentDropdown = null;
+                }
+            });
+
+            // 🔴 Cancel modal
+            cancelBtn.addEventListener('click', function () {
+                if (currentDropdown && originalValue) {
+                    currentDropdown.value = originalValue;
+                }
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                currentDropdown = null;
+            });
+
+            // 🧼 Click outside the modal to cancel
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    cancelBtn.click();
+                }
+            });
+            </script>
+
+
+
+            <!--            <script id="filterHandler">
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const statusFilter = document.getElementById('statusFilter');
+                                const searchInput = document.getElementById('searchInput');
+                                const dateFrom = document.getElementById('dateFrom');
+                                const dateTo = document.getElementById('dateTo');
+            
+                                function filterTable() {
+                                    const rows = document.querySelectorAll('#orderTableBody tr');
+                                    const statusValue = statusFilter.value.toLowerCase();
+                                    const searchValue = searchInput.value.toLowerCase();
+                                    const fromDate = dateFrom.value;
+                                    const toDate = dateTo.value;
+            
+                                    rows.forEach(row => {
+                                        const statusText = row.querySelector('td:nth-child(5) span').textContent.toLowerCase();
+                                        const customerText = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                                        const orderText = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                                        const dateText = row.querySelector('td:nth-child(3)').textContent;
+                                        let showRow = true;
+            
+                                        if (statusValue && !statusText.includes(statusValue)) {
+                                            showRow = false;
+                                        }
+            
+                                        if (searchValue && !customerText.includes(searchValue) && !orderText.includes(searchValue)) {
+                                            showRow = false;
+                                        }
+            
+                                        if (fromDate && dateText < fromDate) {
+                                            showRow = false;
+                                        }
+            
+                                        if (toDate && dateText > toDate) {
+                                            showRow = false;
+                                        }
+                                        row.style.display = showRow ? '' : 'none';
+                                    });
+                                }
+            
+                                statusFilter.addEventListener('change', filterTable);
+                                searchInput.addEventListener('input', filterTable);
+                                dateFrom.addEventListener('change', filterTable);
+                                dateTo.addEventListener('change', filterTable);
+                            });
+                        </script>-->
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const tableBody = document.getElementById('orderTableBody');
+                    const modal = document.getElementById('orderItemsModal');
+                    const orderItemsBody = document.getElementById('orderItemsBody');
+                    const shippingDetails = document.getElementById('shippingDetails');
+                    
+                    loadStatusesDropdowns();
+
+                    tableBody.addEventListener('click', async (e) => {
+                        const cell = e.target.closest('td');
+                        if (!cell)
+                            return;
+
+                        const row = cell.closest('tr');
+                        if (!row)
+                            return;
+
+                        const orderIdCell = row.querySelector('td:first-child');
+                        if (!orderIdCell)
+                            return;
+
+                        const orderId = orderIdCell.textContent.trim().replace("#", "");
+                        document.getElementById('orderIdLabel').textContent = `#${orderId}`; // ✅ Set in modal
+
+
+                        try {
+                            const res = await fetch(`/ThrifteStop/get-order-items?orderId=${orderId}`);
+                            const json = await res.json();
+
+                            if (json.status && Array.isArray(json.items)) {
+                                orderItemsBody.innerHTML = json.items.map(item => `
+                        <tr>
+                            <td class="px-4 py-2">${item.id}</td>
+                            <td class="px-4 py-2">${item.title}</td>
+                            <td class="px-4 py-2">${item.price}</td>
+                        </tr>
+                    `).join('');
+                                shippingDetails.textContent = json.address || "No address available";
+                            } else {
+                                orderItemsBody.innerHTML = `<tr><td colspan="3" class="px-4 py-3 text-center text-gray-500">No items found for this order.</td></tr>`;
+                                shippingDetails.textContent = "Shipping address not found.";
+                            }
+
+                            modal.classList.remove('hidden');
+                            modal.classList.add('flex');
+
+                        } catch (err) {
+                            console.error("Error loading order items", err);
+                            iziToast.error({
+                                title: "Error",
+                                message: "Failed to load order items.",
+                                position: "topRight"
+                            });
+                        }
+                    });
+
+                    // Close modal when clicking the X
+                    document.getElementById('closeOrderItemsModal').addEventListener('click', () => {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                    });
+
+                    // Close modal on background click
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                        }
+                    });
+                });
+                
+                
+                     async function loadStatusesDropdowns() {
+                        try {
+                            const res = await fetch('/ThrifteStop/get-order-statuses');
+                            if (res.ok) {
+                                const json = await res.json();
+                                if (json.status) {
+                                    document.querySelectorAll('.status-dropdown-main').forEach(dropdown => {
+                                        const current = dropdown.dataset.current;
+//                                        dropdown.innerHTML = '';
+                                        json.statuses.forEach(stat => {
+                                            const opt = document.createElement('option');
+                                            opt.value = stat.name;
+                                            opt.textContent = stat.name;
+                                            if (stat.name === current)
+                                                opt.selected = true;
+                                            dropdown.appendChild(opt);
+                                        });
+                                    });
+                                }
+                            }
+                        } catch (err) {
+                            console.error("Failed to load statuses", err);
+                        }
+                    }
+            </script>
+
+            <script>
+                let orders = [];
+                document.addEventListener('DOMContentLoaded', async () => {
+                    const tableBody = document.getElementById('orderTableBody');
+                    const paginationContainer = document.querySelector('.paginationControls');
+
+                   
+                    let currentPage = 1;
+                    const pageSize = 10;
+
+                    await loadOrdersFromBackend(); // initial load
+
+                    async function loadOrdersFromBackend() {
+                        const status = document.getElementById('statusFilter')?.value;
+                        const search = document.getElementById('searchInput')?.value;
+                        const dateFrom = document.getElementById('dateFrom')?.value;
+                        const dateTo = document.getElementById('dateTo')?.value;
+
+                        const params = new URLSearchParams();
+                        if (status)
+                            params.append("status", status);
+                        if (search)
+                            params.append("search", search);
+                        if (dateFrom)
+                            params.append("dateFrom", dateFrom);
+                        if (dateTo)
+                            params.append("dateTo", dateTo);
+
+                        try {
+                            const response = await fetch('/ThrifteStop/get-orders?' + params.toString());
+                            if (response.ok) {
+                                const json = await response.json();
+                                if (json.status && Array.isArray(json.orders)) {
+                                    orders = json.orders;
+                                    currentPage = 1;
+                                    renderTable();
+                                    renderPagination();
+                                }
+                            }
+                        } catch (err) {
+                            console.error("Failed to load filtered orders", err);
+                        }
+                    }
+
+                    function renderTable() {
+                        tableBody.innerHTML = "";
+                        const start = (currentPage - 1) * pageSize;
+                        const paginatedOrders = orders.slice(start, start + pageSize);
+
+                        const statusColors = {
+                            "pending": "bg-orange-100 text-orange-800",
+                            "shipped": "bg-blue-100 text-blue-800",
+                            "delivered": "bg-green-100 text-green-800",
+                            "cancelled": "bg-red-100 text-red-800"
+                        };
+
+                        paginatedOrders.forEach(order => {
+                            const statusClass = statusColors[order.status] || "bg-orange-100 text-orange-800";
+                            const row = `
+                    <tr class="border-b border-gray-100 hover:bg-orange-50 transition-colors cursor-pointer">
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">#${order.orderId}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">${order.customerName}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">${order.orderDate}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">Rs ${order.total.toFixed(2)}</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusClass}">
+                                ${capitalize(order.status)}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="relative">
+                                <select class="status-dropdown appearance-none bg-white border border-gray-300 rounded-sm px-3 py-1 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-primary" data-current="${order.status}">
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                            tableBody.insertAdjacentHTML('beforeend', row);
+                        });
+
+                        loadStatusesIntoDropdowns().then(() => {
+                            
+                            attachStatusChangeListeners();
+                        });
+                    }
+
+                    function renderPagination() {
+                        const totalPages = Math.ceil(orders.length / pageSize);
+                        paginationContainer.innerHTML = "";
+
+                        const prevBtn = createButton("ri-arrow-left-line", currentPage > 1, () => {
+                            currentPage--;
+                            renderTable();
+                            renderPagination();
+                        });
+                        paginationContainer.appendChild(prevBtn);
+
+                        for (let i = 1; i <= totalPages; i++) {
+                            const btn = document.createElement("button");
+                            btn.textContent = i;
+                            btn.className = "px-3 py-2 text-sm border border-gray-300 rounded-sm hover:bg-gray-50";
+                            if (i === currentPage) {
+                                btn.classList.add("bg-primary", "text-white");
+                            }
+                            btn.addEventListener("click", () => {
+                                currentPage = i;
+                                renderTable();
+                                renderPagination();
+                            });
+                            paginationContainer.appendChild(btn);
+                        }
+
+                        const nextBtn = createButton("ri-arrow-right-line", currentPage < totalPages, () => {
+                            currentPage++;
+                            renderTable();
+                            renderPagination();
+                        });
+                        paginationContainer.appendChild(nextBtn);
+                    }
+
+                    function createButton(iconClass, enabled, onClick) {
+                        const btn = document.createElement("button");
+                        btn.className = "px-3 py-2 text-sm border border-gray-300 rounded-sm hover:bg-gray-50";
+                        btn.innerHTML = `<i class="${iconClass}"></i>`;
+                        if (!enabled) {
+                            btn.disabled = true;
+                            btn.classList.add("opacity-50", "cursor-not-allowed");
+                        } else {
+                            btn.addEventListener("click", onClick);
+                        }
+                        return btn;
+                    }
+
+                    function capitalize(str) {
+                        return str.charAt(0).toUpperCase() + str.slice(1);
+                    }
+
+                    async function loadStatusesIntoDropdowns() {
+                        try {
+                            const res = await fetch('/ThrifteStop/get-order-statuses');
+                            if (res.ok) {
+                                const json = await res.json();
+                                if (json.status) {
+                                    document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+                                        const current = dropdown.dataset.current;
+                                        dropdown.innerHTML = '';
+                                        json.statuses.forEach(stat => {
+                                            const opt = document.createElement('option');
+                                            opt.value = stat.name.toLowerCase();
+                                            opt.textContent = stat.name;
+                                            if (stat.name.toLowerCase() === current)
+                                                opt.selected = true;
+                                            dropdown.appendChild(opt);
+                                        });
+                                    });
+                                }
+                            }
+                        } catch (err) {
+                            console.error("Failed to load statuses", err);
+                        }
+                    }
+
+                    function attachStatusChangeListeners() {
+                        document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+                            dropdown.addEventListener('change', function () {
+                                currentDropdown = this;
+                                originalValue = this.dataset.originalValue || this.value;
+                                this.dataset.originalValue = originalValue;
+
+                                modal.classList.remove('hidden');
+                                modal.classList.add('flex');
+                            });
+                        });
+                    }
+
+                    
+                    document.getElementById("applyFilters").addEventListener('click', loadOrdersFromBackend);
+
+
+                    function debounce(fn, delay) {
+                        let timeout;
+                        return function () {
+                            clearTimeout(timeout);
+                            timeout = setTimeout(fn, delay);
+                        };
+                    }
+                });
+
+                
+                if (document.getElementById("orderTableBody")) {
+                    document.getElementById("printBtn")?.addEventListener("click", () => {
+                        const today = new Date();
+                        const formattedDate = today.toISOString().split("T")[0];
+
+                        let printContent = `
+      <h2 style="text-align:center;">Order Report</h2>
+      <p style="margin:4px 0; font-size:13px;">Date: ${formattedDate}</p>
+      <table border="1" cellpadding="8" cellspacing="0" style="width:100%; font-family:sans-serif; font-size:14px; border-collapse:collapse;">
+        <thead>
+          <tr style="background-color:#C7795B; color:white;">
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total (Rs.)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+                        let total = 0;
+
+                        orders.forEach(o => {
+                            printContent += `
+        <tr>
+          <td>#${o.orderId}</td>
+          <td>${o.customerName}</td>
+          <td>${o.orderDate}</td>
+          <td style="text-align:right;">Rs ${o.total.toFixed(2)}</td>
+          <td>${o.status}</td>
+        </tr>`;
+                            total += o.total;
+                        });
+
+                        printContent += `
+        <tr style="font-weight:bold;">
+          <td colspan="3" style="text-align:right;">Total</td>
+          <td style="text-align:right;">Rs ${total.toFixed(2)}</td>
+          <td></td>
+        </tr>
+        </tbody></table>`;
+
+                        const win = window.open('', '', 'width=900,height=650');
+                        win.document.write('<html><head><title>Order Report</title></head><body>');
+                        win.document.write(printContent);
+                        win.document.write('</body></html>');
+                        win.document.close();
+                        win.print();
+                    });
+                }
+                
+                function logout() {
+                fetch('/ThrifteStop/AdminLogout', {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        iziToast.success({
+                            title: 'Logged out',
+                            message: 'You have been logged out.',
+                            position: 'topRight'
+                        });
+                        setTimeout(() => {
+                            window.location.href = 'adminSignIn.html'; 
+                        }, 1500);
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Logout failed.',
+                            position: 'topRight'
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Something went wrong.',
+                        position: 'topRight'
+                    });
+                });
+            }
+            </script>
+
+<!--            <script>
+                document.getElementById("printBtn").addEventListener("click", () => {
+                    const rows = Array.from(document.querySelectorAll("#orderTableBody tr"));
+
+                    const today = new Date();
+                    const formattedDate = today.toISOString().split("T")[0];
+
+                    let printContent = `
+            <h2 style="text-align:center;">Order Report</h2>
+            <p style="margin:4px 0; font-size:13px;">Date: ${formattedDate}</p>
+            <table border="1" cellpadding="8" cellspacing="0" style="width:100%; font-family:sans-serif; font-size:14px; border-collapse:collapse;">
+                <thead>
+                    <tr style="background-color:#C7795B; color:white;">
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total (Rs.)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+                    let totalSum = 0;
+
+                    rows.forEach(tr => {
+                        const tds = tr.querySelectorAll("td");
+                        if (tds.length < 5)
+                            return;
+
+                        const orderId = tds[0].innerText.trim();
+                        const customer = tds[1].innerText.trim();
+                        const date = tds[2].innerText.trim();
+                        const totalText = tds[3].innerText.trim().replace(/[^\d.]/g, "");
+                        const status = tds[4].innerText.trim();
+
+                        const total = parseFloat(totalText) || 0;
+                        totalSum += total;
+
+                        printContent += `
+                <tr>
+                    <td>${orderId}</td>
+                    <td>${customer}</td>
+                    <td>${date}</td>
+                    <td style="text-align:right;">Rs ${total.toFixed(2)}</td>
+                    <td>${status}</td>
+                </tr>
+            `;
+                    });
+
+                    printContent += `
+                <tr style="font-weight:bold;">
+                    <td colspan="3" style="text-align:right;">Total</td>
+                    <td style="text-align:right;">Rs ${totalSum.toFixed(2)}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+            </table>
+        `;
+
+                    const win = window.open('', '', 'width=900,height=650');
+                    win.document.write('<html><head><title>Order Report</title></head><body>');
+                    win.document.write(printContent);
+                    win.document.write('</body></html>');
+                    win.document.close();
+                    win.print();
+                });
+            </script>-->
+
+
+
+        </main>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Profile - Account Management</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            .custom-checkbox {
+                appearance: none;
+                width: 1.25rem;
+                height: 1.25rem;
+                border: 2px solid #d1d5db;
+                border-radius: 4px;
+                background: white;
+                cursor: pointer;
+                position: relative;
+            }
+
+            .custom-checkbox:checked {
+                background: #8B4513;
+                border-color: #8B4513;
+            }
+
+            .custom-checkbox:checked::after {
+                content: '✓';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-size: 0.75rem;
+                font-weight: bold;
+            }
+
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.active {
+                display: block;
+            }
+
+            .status-badge {
+                padding: 0.25rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
+            .status-delivered {
+                background-color: #dcfce7;
+                color: #166534;
+            }
+
+            .status-processing {
+                background-color: #fef3c7;
+                color: #92400e;
+            }
+
+            .status-shipped {
+                background-color: #dbeafe;
+                color: #1e40af;
+            }
+
+            .status-cancelled {
+                background-color: #fee2e2;
+                color: #dc2626;
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 min-h-screen">
+        <div id="nav-placeholder"></div>
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="bg-primary text-white px-8 py-12 text-center">
+                    <div class="w-20 h-20 bg-white rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <div class="w-6 h-6 flex items-center justify-center">
+                            <i class="ri-user-line text-primary text-2xl"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-2xl font-bold mb-2" id="fullName">Sarah Johnson</h1>
+                    <p class="text-white/80" id="memberSince">Member since March 2022</p>
+
+                </div>
+
+                <div class="border-b border-gray-200">
+                    <nav class="flex space-x-8 px-8">
+                        <button
+                            class="tab-btn py-4 px-2 border-b-2 border-secondary text-secondary font-medium whitespace-nowrap active"
+                            data-tab="account">
+                            Account Details
+                        </button>
+                        <button
+                            class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap"
+                            data-tab="orders">
+                            Order History
+                        </button>
+                    </nav>
+                </div>
+
+                <div class="p-8">
+                    <div id="account-tab" class="tab-content active">
+                        <div class="max-w-2xl">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-6">Personal Information</h2>
+
+                            <div class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                                        <input id="firstName" type="text"
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                                        <input id="lastName" type="text"
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                    <input id="email" type="email" disabled
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <input id="phone" type="text"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                </div>
+                                <script>
+                                    const phoneInput = document.getElementById("phone");
+
+                                    phoneInput.addEventListener("input", function () {
+                                        // Replace anything that’s not a digit
+                                        this.value = this.value.replace(/\D/g, '');
+                                    });
+                                </script>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="relative">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
+                                        <input id="password" type="password"
+                                               class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg text-sm">
+                                        <button type="button" id="togglePassword"
+                                                class="absolute top-[42px] right-3 text-gray-500 hover:text-gray-700">
+                                            <!-- Eye Icon -->
+                                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                 viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7
+                                                  -1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Joined Date</label>
+                                        <input id="joinedDate" type="date" disabled
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="pt-4">
+                                    <h3 class="text-lg font-medium text-gray-900 mb-4">Shipping Address</h3>
+
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1
+                                                *</label>
+                                            <input id="address1" type="text" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Address Line
+                                                2</label>
+                                            <input id="address2" type="text"
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                                <select id="city" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                                    <option value="">Select a city</option>
+                                                    <!-- Dynamic options will be inserted here by JS -->
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code
+                                                    *</label>
+                                                <input id="zip" type="text"
+                                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pt-6">
+                                    <button id="saveBtn"
+                                            class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-button font-medium transition-colors">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="orders-tab" class="tab-content">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900">Order History</h2>
+                            <div class="text-sm text-gray-500">Showing 8 orders</div>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th
+                                                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Order #</th>
+                                            <th
+                                                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Date</th>
+                                            <th
+                                                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Items</th>
+                                            <th
+                                                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Total</th>
+                                            <th
+                                                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Status</th>
+                                            <th
+                                                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-001</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Jan 15, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3 items</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $127.50</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-delivered">Delivered</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">View
+                                                    Details</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-002</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Jan 22, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 item</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $89.99</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-shipped">Shipped</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">Track
+                                                    Order</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-003</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Feb 03, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5 items</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $245.75</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-processing">Processing</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">View
+                                                    Details</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-004</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Feb 14, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2 items</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $156.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-delivered">Delivered</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">Reorder</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-005</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mar 01, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 item</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $67.25</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-cancelled">Cancelled</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">View
+                                                    Details</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-006</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mar 12, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">4 items</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $198.50</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-delivered">Delivered</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">Review
+                                                    Items</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-007</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mar 25, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2 items</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $134.75</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-shipped">Shipped</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">Track
+                                                    Order</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="#"
+                                                   class="text-primary hover:text-primary/80 font-medium">#ORD-2024-008</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Apr 08, 2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6 items</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                                $312.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="status-badge status-processing">Processing</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    class="text-primary hover:text-primary/80 text-sm font-medium whitespace-nowrap">View
+                                                    Details</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mt-6">
+                            <div class="text-sm text-gray-700">
+                                Showing 1 to 8 of 8 orders
+                            </div>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                                    disabled>
+                                    Previous
+                                </button>
+                                <button
+                                    class="px-3 py-2 text-sm bg-primary text-white rounded-lg whitespace-nowrap">1</button>
+                                <button
+                                    class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                                    disabled>
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-placeholder"></div>
+
+        <script id="tab-functionality">
+            document.addEventListener('DOMContentLoaded', function () {
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const targetTab = this.getAttribute('data-tab');
+
+                        tabButtons.forEach(btn => {
+                            btn.classList.remove('border-secondary', 'text-secondary', 'active');
+                            btn.classList.add('border-transparent', 'text-gray-500');
+                        });
+
+                        this.classList.remove('border-transparent', 'text-gray-500');
+                        this.classList.add('border-secondary', 'text-secondary', 'active');
+
+                        tabContents.forEach(content => {
+                            content.classList.remove('active');
+                        });
+
+                        document.getElementById(targetTab + '-tab').classList.add('active');
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", async () => {
+                try {
+                    const res = await fetch("/ThrifteStop/get-profile");
+
+                    if (!res.ok) {
+                        throw new Error("Failed to fetch profile data");
+                    }
+
+                    const data = await res.json();
+
+                    if (data.status === "error") {
+                        iziToast.error({message: data.message, position: "topRight"});
+                        return;
+                    }
+
+                    document.getElementById("firstName").value = data.fname || "";
+                    document.getElementById("lastName").value = data.lname || "";
+                    document.getElementById("email").value = data.email || "";
+                    document.getElementById("phone").value = data.mobile || "";
+                    document.getElementById("password").value = data.password || "";
+                    document.getElementById("joinedDate").value = data.joinedDate || "";
+                    document.getElementById("address1").value = data.line1 || "";
+                    document.getElementById("address2").value = data.line2 || "";
+                    document.getElementById("zip").value = data.postalCode || "";
+
+                    if (data.cityId) {
+                        document.getElementById("city").value = data.cityId;
+                    }
+
+                    const fullName = `${data.fname || ""} ${data.lname || ""}`.trim();
+                    document.getElementById("fullName").textContent = fullName || "User";
+
+                    if (data.joinedDate) {
+                        const joined = new Date(data.joinedDate);
+                        const options = {year: "numeric", month: "long"};
+                        const formattedDate = joined.toLocaleDateString("en-US", options);
+                        document.getElementById("memberSince").textContent = `Member since ${formattedDate}`;
+                    }
+                } catch (err) {
+                    console.error("Profile load error:", err);
+                    iziToast.error({message: "Failed to load profile data.", position: "topRight"});
+                }
+                
+                try {
+                    const res = await fetch("/ThrifteStop/get-cities");
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.status && Array.isArray(data.cities)) {
+                            const citySelect = document.getElementById("city");
+                            citySelect.innerHTML = '<option value="">Select a city</option>';
+                            data.cities.forEach(city => {
+                                const option = document.createElement("option");
+                                option.value = city.id;
+                                option.textContent = city.cityName;
+                                citySelect.appendChild(option);
+                            });
+                        } else {
+                            console.error("City load failed:", data.message || "Invalid structure");
+                        }
+                    } else {
+                        console.error("Failed to fetch cities. Status:", res.status);
+                    }
+                } catch (err) {
+                    console.error("Error fetching cities:", err);
+                }
+            });
+
+            document.getElementById("saveBtn").addEventListener("click", async function () {
+                const requiredFields = [
+                    {id: 'firstName', label: 'First Name'},
+                    {id: 'lastName', label: 'Last Name'},
+                    {id: 'email', label: 'Email Address', isEmail: true},
+                    {id: 'phone', label: 'Phone Number', isPhone: true},
+                    {id: 'password', label: 'Password', minLength: 6},
+                    {id: 'address1', label: 'Address Line 1'},
+                    {id: 'city', label: 'City'},
+                    {id: 'zip', label: 'ZIP Code'}
+                ];
+
+                const formData = {};
+
+                for (let field of requiredFields) {
+                    const input = document.getElementById(field.id);
+                    const value = input.value.trim();
+
+                    if (!value) {
+                        iziToast.warning({
+                            title: 'Missing',
+                            message: `${field.label} is required.`,
+                            position: 'topRight'
+                        });
+                        input.focus();
+                        return;
+                    }
+
+                    if (field.isEmail && !/^\S+@\S+\.\S+$/.test(value)) {
+                        iziToast.warning({
+                            title: 'Invalid',
+                            message: `Please enter a valid email.`,
+                            position: 'topRight'
+                        });
+                        input.focus();
+                        return;
+                    }
+
+                    if (field.minLength && value.length < field.minLength) {
+                        iziToast.warning({
+                            title: 'Too Short',
+                            message: `${field.label} must be at least ${field.minLength} characters.`,
+                            position: 'topRight'
+                        });
+                        input.focus();
+                        return;
+                    }
+
+                    if (field.isPhone && !/^\d{10}$/.test(value)) {
+                        iziToast.warning({
+                            title: 'Invalid',
+                            message: `Phone Number must be exactly 10 digits.`,
+                            position: 'topRight'
+                        });
+                        input.focus();
+                        return;
+                    }
+
+                    formData[field.id] = value;
+                }
+
+                formData.address2 = document.getElementById("address2")?.value.trim() || "";
+                formData.cityId = parseInt(formData.city);
+
+                try {
+                    const res = await fetch("/ThrifteStop/update-profile", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            fname: formData.firstName,
+                            lname: formData.lastName,
+                            email: formData.email,
+                            mobile: formData.phone,
+                            password: formData.password,
+                            address1: formData.address1,
+                            address2: formData.address2,
+                            postalCode: formData.zip,
+                            cityId: formData.cityId
+                        })
+                    });
+
+                    if (!res.ok) {
+                        throw new Error("Failed to update profile");
+                    }
+
+                    const data = await res.json();
+
+                    // Adjust for boolean status
+                    if (data.status === true) {
+                        iziToast.success({
+                            message: data.message,
+                            position: 'topRight'
+                        });
+
+                        // Reload profile
+                        const profileRes = await fetch("/ThrifteStop/get-profile");
+                        if (!profileRes.ok) {
+                            throw new Error("Failed to re-fetch profile");
+                        }
+                        const user = await profileRes.json();
+
+                        document.getElementById("firstName").value = user.fname || "";
+                        document.getElementById("lastName").value = user.lname || "";
+                        document.getElementById("email").value = user.email || "";
+                        document.getElementById("phone").value = user.mobile || "";
+                        document.getElementById("password").value = user.password || "";
+                        document.getElementById("joinedDate").value = user.joinedDate || "";
+
+                        // Because get-profile returns flat address fields (not nested)
+                        document.getElementById("address1").value = user.line1 || "";
+                        document.getElementById("address2").value = user.line2 || "";
+                        document.getElementById("zip").value = user.postalCode || "";
+                        document.getElementById("city").value = user.cityId || "";
+                    } else {
+                        iziToast.error({
+                            message: data.message || "Update failed",
+                            position: 'topRight'
+                        });
+                    }
+
+                } catch (err) {
+                    console.error("Profile update error:", err);
+                    iziToast.error({
+                        message: "Server error while updating profile.",
+                        position: 'topRight'
+                    });
+                }
+            });
+
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+        
+
+
+
+        <script>
+            const togglePassword = document.getElementById("togglePassword");
+            const passwordInput = document.getElementById("password");
+            const eyeIcon = document.getElementById("eyeIcon");
+
+            togglePassword.addEventListener("click", function () {
+                const isHidden = passwordInput.type === "password";
+                passwordInput.type = isHidden ? "text" : "password";
+
+                // Optional: change icon (can be improved with eye-off icon)
+                eyeIcon.innerHTML = isHidden
+                        ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7
+                        a10.05 10.05 0 012.272-3.722m3.664-2.63A9.958 9.958 0 0112 5
+                        c4.478 0 8.268 2.943 9.542 7a9.978 9.978 0 01-4.293 5.157M15 12
+                        a3 3 0 11-6 0 3 3 0 016 0z" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M3 3l18 18" />`
+                        : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7
+                        -1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />`;
+            });
+        </script>
+
+        
+
+
+
+        <script>
+
+            function loadHTML(id, url) {
+                fetch(url)
+                        .then(response => {
+                            if (!response.ok)
+                                throw new Error("Network response was not ok");
+                            return response.text();
+                        })
+                        .then(data => {
+                            const container = document.getElementById(id);
+                            container.innerHTML = data;
+
+                            // Extract and execute scripts manually
+                            const scripts = container.querySelectorAll("script");
+                            scripts.forEach(script => {
+                                const newScript = document.createElement("script");
+                                if (script.src) {
+                                    newScript.src = script.src;
+                                } else {
+                                    newScript.textContent = script.textContent;
+                                }
+                                document.head.appendChild(newScript); // Append to head or body
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error loading HTML:', error);
+                        });
+            }
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                loadHTML("nav-placeholder", "header.html");
+                loadHTML("footer-placeholder", "footer.html");
+            });
+        </script>
+    </body>
+
+</html>

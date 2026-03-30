@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thrift eStop - Unique Finds</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C7795B',   // Muted terracotta
+                        secondary: '#E0B96A'  // Soft mustard
+                    }
+                    ,
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        .vintage-overlay {
+            background: linear-gradient(45deg, rgba(139, 69, 19, 0.1) 0%, rgba(210, 105, 30, 0.05) 100%);
+            position: relative;
+        }
+
+        .vintage-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-container {
+            scroll-behavior: smooth;
+        }
+
+        .filter-panel {
+            transition: all 0.3s ease;
+        }
+
+        .filter-panel.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .thrift-logo {
+            height: 20px;
+            /* or 80px, adjust as needed */
+            max-width: 100%;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-['Lora']">
+    <header class="bg-white shadow-sm sticky top-0 z-50 h-20">
+        <div class="px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-['Pacifico'] text-primary"><img src="resources/thrift eStop Logo.png"
+                        class="thrift-logo" alt=""></div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-primary transition-colors">Home</a>
+                    <a href="productList.html" class="text-gray-700 hover:text-primary transition-colors">Shop</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors">About</a>
+                    <a href="purchaseHistory.html" class="text-gray-700 hover:text-primary transition-colors">Order
+                        History</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+
+                    <!-- Sign Out Icon -->
+                    <button onclick="signOutUser()"
+                        class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-primary transition-colors">
+                        <i class="ri-logout-box-r-line ri-lg"></i>
+                    </button>
+
+                    <button onclick="window.location.href='cart.html'"
+                        class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-primary transition-colors relative">
+                        <i class="ri-shopping-cart-line ri-lg"></i>
+<!--                        <span
+                            class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>-->
+                    </button>
+                    <button onclick="window.location.href='userProfile.html'"
+                        class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-primary transition-colors">
+                        <i class="ri-user-line ri-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        async function signOutUser(){
+            const response = await fetch("/ThrifteStop/SignOut");
+            if(response.ok){
+                const json = await response.json();
+                if(json.status){
+                    window.location="index.html";
+                }else{
+                    window.location.reload();
+                }
+            }else{
+                console.log("logout failed")
+            }
+                   
+        }
+    </script>
+
+
+</body>
+
+</html>

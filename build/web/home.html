@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Thrift eStop - Unique Finds</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        }
+                        ,
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            .vintage-overlay {
+                background: linear-gradient(45deg, rgba(139, 69, 19, 0.1) 0%, rgba(210, 105, 30, 0.05) 100%);
+                position: relative;
+            }
+
+            .vintage-overlay::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                pointer-events: none;
+            }
+
+            .product-card {
+                transition: all 0.3s ease;
+            }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .carousel-container {
+                scroll-behavior: smooth;
+            }
+
+            .filter-panel {
+                transition: all 0.3s ease;
+            }
+
+            .filter-panel.collapsed {
+                transform: translateX(-100%);
+            }
+            
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 font-['Lora']">
+        <div id="nav-placeholder"></div>
+
+        <section class="relative min-h-screen flex items-center vintage-overlay"
+                 style="background-image: url('https://readdy.ai/api/search-image?query=vintage%20thrift%20store%20interior%20with%20carefully%20arranged%20clothing%20racks%2C%20warm%20lighting%2C%20wooden%20floors%2C%20and%20cozy%20atmosphere%2C%20left%20side%20with%20warm%20neutral%20background%20perfect%20for%20text%20overlay%2C%20right%20side%20showing%20curated%20vintage%20items%20and%20clothing%20displays%2C%20professional%20photography%20style%2C%20warm%20color%20palette&width=1920&height=1080&seq=hero001&orientation=landscape'); background-size: cover; background-position: center;">
+            <div class="w-full px-6 py-20">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div class="space-y-8">
+                            <div class="space-y-4">
+                                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                                    Discover Unique
+                                    <span class="text-primary block">Vintage Treasures</span>
+                                </h1>
+                                <p class="text-xl text-gray-700 leading-relaxed">
+                                    Every piece tells a story. Find one-of-a-kind fashion pieces that express your unique
+                                    style and make a sustainable choice.
+                                </p>
+                                <div class="bg-secondary/20 border border-secondary/30 rounded-lg p-4 inline-block">
+                                    <p class="text-secondary font-semibold flex items-center">
+                                        <i class="ri-time-line ri-lg mr-2"></i>
+                                        Grab it before it's gone! Each item is truly unique.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button
+                                    class="bg-primary text-white px-8 py-4 !rounded-button font-semibold text-lg hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Shop Unique Finds
+                                </button>
+                                <button
+                                    class="border-2 border-primary text-primary px-8 py-4 !rounded-button font-semibold text-lg hover:bg-primary hover:text-white transition-colors whitespace-nowrap">
+                                    Browse Categories
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-black mb-4">How Thrift eStop Works</h2>
+                    <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+                        Shopping secondhand has never been easier. Here's how we bring you the best thrift finds in just a few steps.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Step Card -->
+                    <div class="bg-white p-6 rounded-2xl shadow border border-gray-200">
+                        <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mb-4">
+                            <i class="ri-search-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-black mb-2">Browse</h3>
+                        <p class="text-gray-700">Explore a wide range of curated secondhand products across multiple categories.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow border border-gray-200">
+                        <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mb-4">
+                            <i class="ri-heart-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-black mb-2">Pick What You Love</h3>
+                        <p class="text-gray-700">Add your favorite finds to the cart — our inventory is always one-of-a-kind!</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow border border-gray-200">
+                        <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mb-4">
+                            <i class="ri-shopping-cart-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-black mb-2">Checkout</h3>
+                        <p class="text-gray-700">Secure payment and fast shipping across the country. Checkout in minutes.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow border border-gray-200">
+                        <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mb-4">
+                            <i class="ri-emotion-happy-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-black mb-2">Enjoy & Repeat</h3>
+                        <p class="text-gray-700">Receive your thrifted treasure, flaunt your style, and come back for more deals!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Shop by Category</h2>
+                    <p class="text-xl text-gray-600">Explore our curated collections</p>
+                </div>
+
+                <div id="categoryGrid" class="grid md:grid-cols-3 gap-8">
+                    <div data-name="Clothes"
+                         class="category-card product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden cursor-pointer">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=collection%20of%20vintage%20clothing%20items%20including%20dresses%20shirts%20and%20jackets%20hanging%20on%20wooden%20rack%2C%20warm%20lighting%2C%20cozy%20thrift%20store%20atmosphere%2C%20professional%20photography&width=400&height=300&seq=category001&orientation=landscape"
+                                 alt="Clothes Category" class="w-full h-48 object-cover object-top">
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <h3 class="text-2xl font-bold mb-2">Clothes</h3>
+                                    <p class="text-lg count-text">127 unique items available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-name="Shoes" 
+                         class="category-card product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden cursor-pointer">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=collection%20of%20vintage%20shoes%20including%20boots%20sneakers%20and%20dress%20shoes%20arranged%20on%20wooden%20shelves%2C%20warm%20lighting%2C%20cozy%20thrift%20store%20atmosphere%2C%20professional%20photography&width=400&height=300&seq=category002&orientation=landscape"
+                                 alt="Shoes Category" class="w-full h-48 object-cover object-top">
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <h3 class="text-2xl font-bold mb-2">Shoes</h3>
+                                    <p class="text-lg count-text">89 unique items available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-name="Bags"
+                         class="category-card product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden cursor-pointer">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=collection%20of%20vintage%20bags%20and%20purses%20including%20leather%20handbags%20and%20canvas%20totes%20displayed%20on%20wooden%20table%2C%20warm%20lighting%2C%20cozy%20thrift%20store%20atmosphere%2C%20professional%20photography&width=400&height=300&seq=category003&orientation=landscape"
+                                 alt="Bags Category" class="w-full h-48 object-cover object-top">
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <h3 class="text-2xl font-bold mb-2">Bags</h3>
+                                    <p class="text-lg count-text">64 unique items available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex items-center justify-between mb-12">
+                    <div>
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">New Arrivals</h2>
+                        <p class="text-xl text-gray-600">Fresh finds added this week</p>
+                    </div>
+                    <button onclick="window.location.href = '/ThrifteStop/productList.html'"
+                            class="bg-primary text-white px-6 py-3 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                        View All Items
+                    </button>
+                </div>
+
+                <div id="newArrivalsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20wool%20sweater%20cream%20color%20with%20cable%20knit%20pattern%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20front%20view%2C%20detailed%20texture%20visible&width=300&height=300&seq=new001&orientation=squarish"
+                                 alt="Wool Sweater" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Vintage Wool Sweater</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$48</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20floral%20dress%20midi%20length%20with%20short%20sleeves%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20front%20view%2C%20detailed%20pattern%20visible&width=300&height=300&seq=new002&orientation=squarish"
+                                 alt="Floral Dress" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Floral Midi Dress</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$62</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20oxford%20shoes%20brown%20leather%20with%20laces%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20side%20view%2C%20detailed%20craftsmanship%20visible&width=300&height=300&seq=new003&orientation=squarish"
+                                 alt="Oxford Shoes" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Oxford Shoes</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$78</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20crossbody%20bag%20canvas%20material%20with%20leather%20straps%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20front%20view%2C%20detailed%20texture%20visible&width=300&height=300&seq=new004&orientation=squarish"
+                                 alt="Crossbody Bag" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Canvas Crossbody Bag</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$42</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20blazer%20navy%20blue%20color%20with%20gold%20buttons%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20front%20view%2C%20detailed%20tailoring%20visible&width=300&height=300&seq=new005&orientation=squarish"
+                                 alt="Navy Blazer" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Navy Blazer</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$85</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20high%20heels%20black%20patent%20leather%20with%20pointed%20toe%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20side%20view%2C%20detailed%20shine%20and%20craftsmanship%20visible&width=300&height=300&seq=new006&orientation=squarish"
+                                 alt="Patent Heels" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Patent Leather Heels</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$68</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20tote%20bag%20leather%20brown%20color%20with%20handles%20and%20zipper%20closure%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20front%20view%2C%20detailed%20texture%20visible&width=300&height=300&seq=new007&orientation=squarish"
+                                 alt="Leather Tote" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Leather Tote Bag</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$92</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=vintage%20cardigan%20knit%20sweater%20beige%20color%20with%20buttons%2C%20clean%20white%20background%2C%20professional%20product%20photography%2C%20front%20view%2C%20detailed%20knit%20pattern%20visible&width=300&height=300&seq=new008&orientation=squarish"
+                                 alt="Knit Cardigan" class="w-full h-48 object-cover object-top">
+                            <div class="absolute top-3 left-3 space-y-1">
+                                <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New
+                                    Arrival</span>
+                                <span
+                                    class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                            </div>
+                            <div class="absolute top-3 right-3 flex space-x-2">
+                                <button
+                                    class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                    <i class="ri-heart-line text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Knit Cardigan</h3>
+                            <p class="text-xl font-bold text-primary mb-3">$55</p>
+                            <button
+                                class="w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <div id="footer-placeholder"></div>
+        <!-- Loader Overlay -->
+        <div id="loader" style="
+             position: fixed;
+             top: 0; left: 0; right: 0; bottom: 0;
+             background: rgba(255, 255, 255, 0.8);
+             z-index: 9999;
+             display: none;
+             align-items: center;
+             justify-content: center;
+             ">
+            <div class="spinner" style="
+                 width: 50px;
+                 height: 50px;
+                 border: 5px solid #ddd;
+                 border-top: 5px solid #3498db;
+                 border-radius: 50%;
+                 animation: spin 1s linear infinite;
+                 "></div>
+        </div>
+
+        <!-- Spinner animation style -->
+
+
+
+        <!--        <script id="carousel-script">
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const carousel = document.getElementById('carousel');
+                        const carouselTrack = document.getElementById('carouselTrack');
+                        const prevBtn = document.getElementById('prevBtn');
+                        const nextBtn = document.getElementById('nextBtn');
+                        const dots = document.querySelectorAll('#dots button');
+        
+                        let currentIndex = 0;
+                        const itemsPerView = 4;
+                        const totalItems = carouselTrack.children.length;
+                        const maxIndex = Math.ceil(totalItems / itemsPerView) - 1;
+        
+                        function updateCarousel() {
+                            const translateX = -(currentIndex * 100);
+                            carouselTrack.style.transform = `translateX(${translateX}%)`;
+        
+                            dots.forEach((dot, index) => {
+                                dot.classList.toggle('bg-primary', index === currentIndex);
+                                dot.classList.toggle('bg-gray-300', index !== currentIndex);
+                            });
+                        }
+        
+                        prevBtn.addEventListener('click', () => {
+                            currentIndex = currentIndex > 0 ? currentIndex - 1 : maxIndex;
+                            updateCarousel();
+                        });
+        
+                        nextBtn.addEventListener('click', () => {
+                            currentIndex = currentIndex < maxIndex ? currentIndex + 1 : 0;
+                            updateCarousel();
+                        });
+        
+                        dots.forEach((dot, index) => {
+                            dot.addEventListener('click', () => {
+                                currentIndex = index;
+                                updateCarousel();
+                            });
+                        });
+                    });
+                </script>-->
+        <script>
+            function showLoader() {
+                document.getElementById('loader').style.display = 'flex';
+            }
+
+            function hideLoader() {
+                document.getElementById('loader').style.display = 'none';
+            }
+
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                loadCategoryCounts();
+            });
+
+            async function loadCategoryCounts() {
+                try {
+                    const response = await fetch("/ThrifteStop/get-category-counts");
+                    if (response.ok) {
+                        const json = await response.json();
+                        if (json.status) {
+                            const categories = json.categories;
+                            const cards = document.querySelectorAll(".category-card");
+
+                            cards.forEach(card => {
+                                const name = card.dataset.name?.trim();
+                                const countElem = card.querySelector(".count-text");
+
+                                const match = categories.find(c => c.name === name);
+                                if (match) {
+                                    countElem.textContent = `${match.count} unique items available`;
+                                } else {
+                                    countElem.textContent = `0 items`;
+                                }
+                            });
+                        } else {
+                            console.error("Server error:", json.message);
+                        }
+                    } else {
+                        console.error("HTTP error:", response.status);
+                    }
+                } catch (err) {
+                    console.error("Fetch error:", err);
+                }
+            }
+        </script>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", async function () {
+                try {
+                    const response = await fetch("/ThrifteStop/get-new-arrivals");
+                    if (response.ok) {
+                        const data = await response.json();
+                        const container = document.getElementById("newArrivalsContainer");
+                        container.innerHTML = ""; // clear existing
+
+                        const products = data.products;
+                        products.forEach(item => {
+                            const card = `
+                <div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="relative">
+                        <img src="${item.imageUrl}" alt="${item.name}" class="w-full h-52 object-cover object-top">
+                        <div class="absolute top-3 left-3 space-y-1">
+                            <span class="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-full block">New Arrival</span>
+                            <span class="bg-primary text-white px-2 py-1 text-xs font-semibold rounded-full block">One-of-a-Kind</span>
+                        </div>
+                        <div class="absolute top-3 right-3 flex space-x-2">
+                            <button class="w-8 h-8 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition-colors">
+                                <i class="ri-heart-line text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">${item.name}</h3>
+                        <p class="text-xl font-bold text-primary mb-3">${item.price}</p>
+                        <button class="view-product-btn w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
+                                data-id="${item.id}">
+                            View Product
+                        </button>
+                    </div>
+                </div>`;
+                            container.insertAdjacentHTML("beforeend", card);
+                        });
+
+                        container.querySelectorAll(".view-product-btn").forEach(btn => {
+                            btn.addEventListener("click", function () {
+                                const id = this.getAttribute("data-id");
+                                window.location.href = `/ThrifteStop/productView.html?id=${id}`;
+                            });
+                        });
+                    } else {
+                        console.error("Failed to load new arrivals: Response not OK");
+                    }
+                } catch (err) {
+                    console.error("Failed to load new arrivals", err);
+                }
+            });
+
+        </script>
+
+
+
+        <script id="filter-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const filterToggle = document.getElementById('filterToggle');
+                const filterPanel = document.getElementById('filterPanel');
+
+                filterToggle.addEventListener('click', () => {
+                    filterPanel.classList.toggle('collapsed');
+                });
+            });
+        </script>
+
+        <script id="checkbox-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                const radios = document.querySelectorAll('input[type="radio"]');
+
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        const checkIcon = this.parentElement.querySelector('i');
+                        if (this.checked) {
+                            checkIcon.classList.remove('opacity-0');
+                            checkIcon.classList.add('opacity-100');
+                        } else {
+                            checkIcon.classList.remove('opacity-100');
+                            checkIcon.classList.add('opacity-0');
+                        }
+                    });
+                });
+
+                radios.forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        const radioGroup = document.querySelectorAll(`input[name="${this.name}"]`);
+                        radioGroup.forEach(r => {
+                            const dot = r.parentElement.querySelector('div:last-child');
+                            if (r.checked) {
+                                dot.classList.remove('opacity-0');
+                                dot.classList.add('opacity-100');
+                            } else {
+                                dot.classList.remove('opacity-100');
+                                dot.classList.add('opacity-0');
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
+
+
+
+        <script id="wishlist-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const wishlistButtons = document.querySelectorAll('button i[class*="ri-heart"]');
+
+                wishlistButtons.forEach(button => {
+                    button.parentElement.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const icon = this.querySelector('i');
+                        if (icon.classList.contains('ri-heart-line')) {
+                            icon.classList.remove('ri-heart-line', 'text-gray-600');
+                            icon.classList.add('ri-heart-fill', 'text-red-500');
+                        } else {
+                            icon.classList.remove('ri-heart-fill', 'text-red-500');
+                            icon.classList.add('ri-heart-line', 'text-gray-600');
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+
+            function loadHTML(id, url) {
+                fetch(url)
+                        .then(response => {
+                            if (!response.ok)
+                                throw new Error("Network response was not ok");
+                            return response.text();
+                        })
+                        .then(data => {
+                            const container = document.getElementById(id);
+                            container.innerHTML = data;
+
+                            // Extract and execute scripts manually
+                            const scripts = container.querySelectorAll("script");
+                            scripts.forEach(script => {
+                                const newScript = document.createElement("script");
+                                if (script.src) {
+                                    newScript.src = script.src;
+                                } else {
+                                    newScript.textContent = script.textContent;
+                                }
+                                document.head.appendChild(newScript); // Append to head or body
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error loading HTML:', error);
+                        });
+            }
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                loadHTML("nav-placeholder", "header.html");
+                loadHTML("footer-placeholder", "footer.html");
+            });
+        </script>
+    </body>
+
+</html>

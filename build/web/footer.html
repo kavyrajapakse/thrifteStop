@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Thrift eStop - Unique Finds</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        }
+                        ,
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            .vintage-overlay {
+                background: linear-gradient(45deg, rgba(139, 69, 19, 0.1) 0%, rgba(210, 105, 30, 0.05) 100%);
+                position: relative;
+            }
+
+            .vintage-overlay::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                pointer-events: none;
+            }
+
+            .product-card {
+                transition: all 0.3s ease;
+            }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .carousel-container {
+                scroll-behavior: smooth;
+            }
+
+            .filter-panel {
+                transition: all 0.3s ease;
+            }
+
+            .filter-panel.collapsed {
+                transform: translateX(-100%);
+            }
+
+            .thrift-logo{
+                height: 60px;
+                /* or 80px, adjust as needed */
+                max-width: 100%;
+                transition: transform 0.3s ease;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 font-['Lora']">
+
+
+
+        <footer class="bg-[#F6E8D6] text-[#5A3E36] py-16">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div>
+                        <div class="font-['Pacifico'] text-primary mb-4"><img src="resources/thrift eStop Logo.png" class="thrift-logo" alt=""></div>
+                        <p class="text-[#5A3E36] mb-6">Discover unique vintage treasures and give pre-loved fashion a new
+                            story.</p>
+                        <div class="flex space-x-4">
+                            <a href="#"
+                               class="w-10 h-10 flex items-center justify-center bg-[#F6E8D6] rounded-full hover:bg-primary transition-colors">
+                                <i class="ri-facebook-fill"></i>
+                            </a>
+                            <a href="#"
+                               class="w-10 h-10 flex items-center justify-center bg-[#F6E8D6] rounded-full hover:bg-primary transition-colors">
+                                <i class="ri-instagram-line"></i>
+                            </a>
+                            <a href="#"
+                               class="w-10 h-10 flex items-center justify-center bg-[#F6E8D6] rounded-full hover:bg-primary transition-colors">
+                                <i class="ri-twitter-line"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-lg mb-4">Shop</h3>
+                        <ul class="space-y-2 text-[#5A3E36]">
+                            <li><a href="#" class="hover:text-black transition-colors">All Items</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">Clothes</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">Shoes</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">Bags</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">New Arrivals</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-lg mb-4">Support</h3>
+                        <ul class="space-y-2 text-[#5A3E36]">
+                            <li><a href="#" class="hover:text-black transition-colors">Contact Us</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">Size Guide</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">Shipping Info</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">Returns</a></li>
+                            <li><a href="#" class="hover:text-black transition-colors">FAQ</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- <div>
+                        <h3 class="font-semibold text-lg mb-4">Newsletter</h3>
+                        <p class="text-[#5A3E36] mb-4">Get notified about new arrivals and exclusive finds.</p>
+                        <div class="flex gap-2">
+                            <input type="email" placeholder="Your email"
+                                class="flex-1 px-4 py-2 bg-[#F6E8D6] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                            <button
+                                class="bg-primary text-white px-4 py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="border-t border-[#5A3E36] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-[#5A3E36] text-sm">© 2025 Thrift eStop. All rights reserved.</p>
+                    <div class="flex items-center space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="text-[#5A3E36] hover:text-white text-sm transition-colors">Privacy Policy</a>
+                        <a href="#" class="text-[#5A3E36] hover:text-white text-sm transition-colors">Terms of Service</a>
+                        <div class="flex items-center space-x-2">
+                            <i class="ri-visa-fill text-2xl"></i>
+                            <i class="ri-mastercard-fill text-2xl"></i>
+                            <i class="ri-paypal-fill text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+    </body>
+
+</html>

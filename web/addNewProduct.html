@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ThirdtAdmin Dashboard - Add New Product</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 min-h-screen">
+        <!-- Header -->
+        <!--    <header class="bg-primary text-white shadow-lg">
+                <div class="px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <h1 class="text-2xl font-['Pacifico'] text-white">logo</h1>
+                        <div class="text-sm opacity-90">Monday, July 14, 2025</div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-white/20 rounded-lg cursor-pointer hover:bg-white/30 transition-colors">
+                            <i class="ri-notification-3-line text-lg"></i>
+                        </div>
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-white/20 rounded-lg cursor-pointer hover:bg-white/30 transition-colors">
+                            <i class="ri-user-3-line text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>-->
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-white shadow-lg min-h-screen">
+                <nav class="p-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="adminDashboard.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-dashboard-line"></i>
+                                </div>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="addNewProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-shopping-bag-line"></i>
+                                </div>
+                                <span>Add Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="updateProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-edit-box-line"></i>
+                                </div>
+                                <span>Update Product</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminOrder.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminInventory.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Inventory</span>
+                            </a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="adminOrder.html" data-page="adminOrder.html"
+                                class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="adminCustomer.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-group-line"></i>
+                                </div>
+                                <span>Customer</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminSale.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-bar-chart-line"></i>
+                                </div>
+                                <span>Sales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-logout-box-line"></i>
+                                </div>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-8">
+                <!-- Breadcrumb -->
+                <div class="mb-8">
+                    <nav class="flex items-center space-x-2 text-sm text-gray-600">
+                        <a href="#" class="hover:text-primary">Dashboard</a>
+                        <i class="ri-arrow-right-s-line"></i>
+                        <a href="#" class="hover:text-primary">Products</a>
+                        <i class="ri-arrow-right-s-line"></i>
+                        <span class="text-primary">Add New Product</span>
+                    </nav>
+                </div>
+
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Add New Product</h1>
+                    <p class="text-gray-600">Create a new product for your store inventory</p>
+                </div>
+
+                <!-- Form Container -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="space-y-8">
+                        <!-- Basic Information -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="space-y-6">
+                                <h2 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-3">Basic
+                                    Information</h2>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Product ID</label>
+                                    <input type="text" disabled id="product-id"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                    <select id="categoryFilter"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm">
+                                        <option value="">Select Category</option>
+                                        <!--                                        <option value="new">New</option>
+                                                                                <option value="used">Used</option>
+                                                                                <option value="refurbished">Refurbished</option>-->
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                                    <input type="text" id="title"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                           placeholder="Enter title (e.g., New Arrival)">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Condition</label>
+                                    <select id="conditionFilter"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm">
+                                        <option value="">Select condition</option>
+                                        <!--                                        <option value="new">New</option>
+                                                                                <option value="used">Used</option>
+                                                                                <option value="refurbished">Refurbished</option>-->
+                                    </select>
+                                </div>
+
+
+
+                                <!-- <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">SKU</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" placeholder="Enter SKU code">
+                                </div> -->
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                    <textarea rows="4" id="description"
+                                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm resize-none"
+                                              placeholder="Enter product description"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Product Images -->
+                            <div class="space-y-6">
+                                <h2 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-3">Product Images
+                                </h2>
+
+                                <div
+                                    class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition-colors">
+                                    <div
+                                        class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-gray-100 rounded-lg">
+                                        <i class="ri-image-line text-2xl text-gray-400"></i>
+                                    </div>
+                                    <p class="text-gray-600 mb-2">Drag and drop images here</p>
+                                    <p class="text-sm text-gray-500 mb-4">or</p>
+                                    <label
+                                        class="inline-block px-6 py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors text-sm cursor-pointer">
+                                        Browse Files
+                                        <input id="product-images" type="file" class="hidden" multiple
+                                               accept=".jpg,.jpeg,.png,.webp">
+                                    </label>
+
+                                    <p class="text-xs text-gray-500 mt-3">Support: JPG, PNG, WebP (Max 5MB each)</p>
+                                </div>
+
+                                <div class="grid grid-cols-3 gap-4 mt-6">
+                                    <div id="img-preview-1"
+                                         class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                                        <i class="ri-add-line text-gray-400 text-2xl"></i>
+                                    </div>
+                                    <div id="img-preview-2"
+                                         class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                                        <i class="ri-add-line text-gray-400 text-2xl"></i>
+                                    </div>
+                                    <div id="img-preview-3"
+                                         class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                                        <i class="ri-add-line text-gray-400 text-2xl"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Pricing & Inventory -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="space-y-6">
+                                <h2 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-3">Pricing</h2>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Regular Price (LKR)</label>
+                                    <input type="text"
+                                           class="price-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                           placeholder="1,000.00">
+                                </div>
+
+
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">Stock Status</label>
+                                    <div class="flex space-x-6">
+                                        <label class="flex items-center cursor-pointer">
+                                            <div class="relative">
+                                                <input type="radio" name="stock_status" value="in_stock" class="sr-only">
+                                                <div
+                                                    class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                                    <div class="w-2.5 h-2.5 bg-primary rounded-full hidden"></div>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">In Stock</span>
+                                        </label>
+                                        <label class="flex items-center cursor-pointer">
+                                            <div class="relative">
+                                                <input type="radio" name="stock_status" value="out_of_stock"
+                                                       class="sr-only">
+                                                <div
+                                                    class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                                    <div class="w-2.5 h-2.5 bg-primary rounded-full hidden"></div>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">Out of Stock</span>
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Product Attributes -->
+                            <div class="space-y-6">
+                                <h2 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-3">Product
+                                    Attributes</h2>
+
+
+                                <!--                            <div>
+                                                                <label class="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                                                                <select
+                                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm">
+                                                                    <option>Select a color</option>
+                                                                    <option>Black</option>
+                                                                    <option>White</option>
+                                                                    <option>Brown</option>
+                                                                    <option>Navy</option>
+                                                                </select>
+                                                            </div>-->
+
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                                    <select id="sizeFilter"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary text-sm">
+                                        <option>Select a size</option>
+                                        <!--                                        <option>XS</option>
+                                                                                <option>S</option>
+                                                                                <option>M</option>
+                                                                                <option>L</option>
+                                                                                <option>XL</option>-->
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <!-- Form Actions -->
+                        <div class="flex items-center justify-between pt-8 border-t border-gray-200">
+                            <button type="button"
+                                    class="px-6 py-3 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap !rounded-button">
+                                Update Product
+                            </button>
+                            <div class="flex space-x-4">
+                                <button type="button"
+                                        class="px-6 py-3 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap !rounded-button">
+                                    Cancel
+                                </button>
+                                <button type="submit" onclick="saveProduct()"
+                                        class="px-8 py-3 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap !rounded-button">
+                                    Create Product
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const input = document.getElementById('product-images');
+                const previewBoxes = [
+                    document.getElementById('img-preview-1'),
+                    document.getElementById('img-preview-2'),
+                    document.getElementById('img-preview-3')
+                ];
+
+                input.addEventListener('change', function () {
+                    const files = Array.from(input.files).slice(0, 3); // only first 3 files
+                    previewBoxes.forEach((box, i) => {
+                        box.innerHTML = ''; // clear
+                        if (files[i]) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const img = document.createElement('img');
+                                img.src = e.target.result;
+                                img.className = 'object-cover w-full h-full';
+                                box.appendChild(img);
+                            };
+                            reader.readAsDataURL(files[i]);
+                        } else {
+                            box.innerHTML = '<i class="ri-add-line text-gray-400 text-2xl"></i>';
+                        }
+                    });
+                });
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+        
+
+        <script>
+
+            document.addEventListener("DOMContentLoaded", () => {
+                loadCombo("/ThrifteStop/get-categories", "categoryFilter");
+                loadCombo("/ThrifteStop/get-sizes", "sizeFilter");
+                loadCombo("/ThrifteStop/get-conditions", "conditionFilter");
+            });
+
+            async function loadCombo(url, selectId) {
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const data = await response.json();
+                        const select = document.getElementById(selectId);
+                        data.categories.forEach(item => {
+                            const opt = document.createElement("option");
+                            opt.value = item.id;
+                            opt.textContent = item.name;
+                            select.appendChild(opt);
+                        });
+                    } else {
+                        console.error("Failed to load " + selectId + ": Server responded with status " + response.status);
+                    }
+                } catch (err) {
+                    console.error("Error loading " + selectId + ":", err);
+                }
+            }
+
+            async function saveProduct() {
+                const productId = document.getElementById("product-id").value;
+                const title = document.getElementById("title").value;
+                const description = document.getElementById("description").value;
+                const categoryId = document.getElementById("categoryFilter").value;
+                const conditionId = document.getElementById("conditionFilter").value;
+                const sizeId = document.getElementById("sizeFilter").value;
+                const priceRaw = document.querySelector(".price-input").value.replace(/,/g, '');
+                const price = parseFloat(priceRaw);
+                const stockStatus = document.querySelector('input[name="stock_status"]:checked')?.value;
+                const images = document.getElementById("product-images").files;
+
+                const form = new FormData();
+                form.append("productId", productId);
+                form.append("title", title);
+                form.append("description", description);
+                form.append("categoryId", categoryId);
+                form.append("conditionId", conditionId);
+                form.append("sizeId", sizeId);
+                form.append("price", price);
+                form.append("stockStatus", stockStatus);
+
+                // Append images only if they exist
+                if (images.length >= 1)
+                    form.append("image1", images[0]);
+                if (images.length >= 2)
+                    form.append("image2", images[1]);
+                if (images.length >= 3)
+                    form.append("image3", images[2]);
+
+                try {
+                    const res = await fetch("SaveProduct", {
+                        method: "POST",
+                        body: form
+                    });
+
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.status) {
+                            iziToast.success({
+                                title: 'Success',
+                                message: 'Product saved successfully!',
+                                position: 'topRight'
+                            });
+
+                            // Clear all input fields
+//                            document.getElementById("product-id").value = '';
+                            document.getElementById("title").value = '';
+                            document.getElementById("description").value = '';
+                            document.getElementById("categoryFilter").selectedIndex = 0;
+                            document.getElementById("conditionFilter").selectedIndex = 0;
+                            document.getElementById("sizeFilter").selectedIndex = 0;
+                            document.querySelector(".price-input").value = '';
+                            const stockRadios = document.querySelectorAll('input[name="stock_status"]');
+                            stockRadios.forEach(radio => radio.checked = false);
+                            const oldInput = document.getElementById("product-images");
+                            const newInput = oldInput.cloneNode(true);
+                            oldInput.parentNode.replaceChild(newInput, oldInput);
+
+                            // Reset preview boxes
+                            const previewBoxes = [
+                                document.getElementById('img-preview-1'),
+                                document.getElementById('img-preview-2'),
+                                document.getElementById('img-preview-3')
+                            ];
+
+                            previewBoxes.forEach(box => {
+                                box.innerHTML = '<i class="ri-add-line text-gray-400 text-2xl"></i>';
+                            });
+
+
+
+                            const idRes = await fetch("/ThrifteStop/generate-product-id");
+                            if (idRes.ok) {
+                                const idJson = await idRes.json();
+                                if (idJson.status) {
+                                    document.getElementById("product-id").value = idJson.nextId;
+                                } else {
+                                    console.error("Failed to generate next product ID:", idJson.message);
+                                    document.getElementById("product-id").value = ''; // fallback clear
+                                }
+                            } else {
+                                console.error("HTTP error fetching next product ID");
+                                document.getElementById("product-id").value = ''; // fallback clear
+                            }
+
+                        } else {
+                            if (json.message === "Please sign in") {
+                                window.location = "sign-in.html";
+                            } else {
+                                iziToast.error({
+                                    title: 'Error',
+                                    message: json.message,
+                                    position: 'topRight'
+                                });
+                            }
+                        }
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Server error. Please try again later.',
+                            position: 'topRight'
+                        });
+                    }
+                } catch (error) {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Network error. Please check your connection.',
+                        position: 'topRight'
+                    });
+                    console.error('Error saving product:', error);
+                }
+            }
+
+
+             function logout() {
+                fetch('/ThrifteStop/AdminLogout', {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        iziToast.success({
+                            title: 'Logged out',
+                            message: 'You have been logged out.',
+                            position: 'topRight'
+                        });
+                        setTimeout(() => {
+                            window.location.href = 'adminSignIn.html'; // change if your login page differs
+                        }, 1500);
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Logout failed.',
+                            position: 'topRight'
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Something went wrong.',
+                        position: 'topRight'
+                    });
+                });
+            }
+        </script>
+
+
+
+        <script id="radio-functionality">
+            document.addEventListener('DOMContentLoaded', function () {
+                const radioInputs = document.querySelectorAll('input[type="radio"]');
+
+                radioInputs.forEach(input => {
+                    input.addEventListener('change', function () {
+                        const name = this.name;
+                        const allRadios = document.querySelectorAll(`input[name="${name}"]`);
+
+                        allRadios.forEach(radio => {
+                            const indicator = radio.parentElement.querySelector('.w-2\\.5');
+                            if (radio.checked) {
+                                indicator.classList.remove('hidden');
+                            } else {
+                                indicator.classList.add('hidden');
+                            }
+                        });
+                    });
+                });
+            });
+
+
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const priceInputs = document.querySelectorAll('.price-input');
+                priceInputs.forEach(input => {
+                    input.addEventListener('input', () => {
+                        const raw = input.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+                        const parts = raw.split('.');
+                        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        input.value = parts.join('.');
+                    });
+                });
+            });
+        </script>
+
+
+        <!-- <script id="checkbox-functionality">
+            document.addEventListener('DOMContentLoaded', function () {
+                const checkboxInputs = document.querySelectorAll('input[type="checkbox"]');
+    
+                checkboxInputs.forEach(input => {
+                    input.addEventListener('change', function () {
+                        const indicator = this.parentElement.querySelector('.w-3');
+                        if (this.checked) {
+                            indicator.classList.remove('hidden');
+                        } else {
+                            indicator.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        </script> -->
+        <script>
+
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", async () => {
+                try {
+                    const res = await fetch("/ThrifteStop/generate-product-id");
+
+                    if (res.ok) {
+                        const json = await res.json();
+
+                        if (json.status) {
+                            const idInput = document.getElementById("product-id");
+                            if (idInput) {
+                                idInput.value = json.nextId;
+                            }
+                        } else {
+                            console.error("Failed to generate product ID:", json.message);
+                        }
+                    } else {
+                        console.error("HTTP request failed.");
+                    }
+                } catch (err) {
+                    console.error("Error generating product ID:", err);
+                }
+            });
+        </script>
+
+
+        <script id="toggle-functionality">
+            document.addEventListener('DOMContentLoaded', function () {
+                const toggles = document.querySelectorAll('.relative.inline-flex');
+
+                toggles.forEach(toggle => {
+                    const input = toggle.querySelector('input[type="checkbox"]');
+                    const background = toggle.querySelector('.w-12');
+                    const handle = toggle.querySelector('.w-5');
+
+                    toggle.addEventListener('click', function () {
+                        input.checked = !input.checked;
+
+                        if (input.checked) {
+                            background.classList.remove('bg-gray-300');
+                            background.classList.add('bg-primary');
+                            handle.classList.remove('translate-x-0.5');
+                            handle.classList.add('translate-x-6');
+                        } else {
+                            background.classList.remove('bg-primary');
+                            background.classList.add('bg-gray-300');
+                            handle.classList.remove('translate-x-6');
+                            handle.classList.add('translate-x-0.5');
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+
+</html>

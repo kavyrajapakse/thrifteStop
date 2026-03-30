@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Thrift Treasures - Product Listing</title>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap"
+              rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A'  // Soft mustard
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            .vintage-texture {
+                background: linear-gradient(135deg, #faf9f7 0%, #f5f3f0 100%);
+            }
+
+            .filter-panel {
+                box-shadow: 0 4px 20px rgba(139, 69, 19, 0.1);
+            }
+
+            .product-card {
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
+            }
+
+            .search-suggestions {
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            }
+
+            .badge-sustainable {
+                background: linear-gradient(135deg, #10b981, #059669);
+            }
+
+            .badge-vintage {
+                background: linear-gradient(135deg, #8B4513, #D2691E);
+            }
+
+            .price-original {
+                text-decoration: line-through;
+                opacity: 0.6;
+            }
+        </style>
+    </head>
+
+    <body class="vintage-texture min-h-screen">
+        <!-- Header -->
+        <div id="nav-placeholder"></div>
+
+        <!-- Search Section -->
+        <div class="border-b border-gray-200 py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto relative">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-search-line text-gray-400"></i>
+                            </div>
+                        </div>
+                        <input type="text" id="searchInput"
+                               class="block w-full pl-11 pr-4 py-4 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary text-base"
+                               placeholder="Find unique thrift treasures...">
+                        <button id="searchBtn"
+                                class="absolute inset-y-2 right-2 px-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors !rounded-button">
+                            Search
+                        </button>
+                    </div>
+                    <!-- Search Suggestions -->
+                    <!--                    <div id="searchSuggestions"
+                                             class="absolute top-full left-0 right-0 bg-white search-suggestions rounded-lg mt-1 hidden z-50">
+                                            <div class="p-4">
+                                                <div class="mb-3">
+                                                    <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Popular
+                                                        Categories</h4>
+                                                    <div class="space-y-1">
+                                                        <div class="flex items-center px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                                                            <i class="ri-shirt-line text-primary mr-2"></i>
+                                                            <span class="text-sm">Vintage Clothing</span>
+                                                        </div>
+                                                        <div class="flex items-center px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                                                            <i class="ri-handbag-line text-primary mr-2"></i>
+                                                            <span class="text-sm">Designer Bags</span>
+                                                        </div>
+                                                        <div class="flex items-center px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                                                            <i class="ri-footprint-line text-primary mr-2"></i>
+                                                            <span class="text-sm">Retro Sneakers</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Trending
+                                                        Searches</h4>
+                                                    <div class="flex flex-wrap gap-2">
+                                                        <span
+                                                            class="px-2 py-1 bg-gray-100 text-xs rounded-full cursor-pointer hover:bg-primary hover:text-white transition-colors">Y2K
+                                                            Fashion</span>
+                                                        <span
+                                                            class="px-2 py-1 bg-gray-100 text-xs rounded-full cursor-pointer hover:bg-primary hover:text-white transition-colors">90s
+                                                            Denim</span>
+                                                        <span
+                                                            class="px-2 py-1 bg-gray-100 text-xs rounded-full cursor-pointer hover:bg-primary hover:text-white transition-colors">Vintage
+                                                            Leather</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                </div>
+                <!-- User Actions -->
+
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Filter Panel -->
+                <div class="lg:w-80 flex-shrink-0">
+                    <div class="bg-white rounded-xl filter-panel p-6 sticky top-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 font-['Playfair_Display']">Filters</h3>
+                            <button class="text-sm text-primary hover:text-secondary transition-colors">Clear All</button>
+                        </div>
+                        <!-- Era/Decade Filter -->
+                        <!-- <div class="mb-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Era & Decade</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="sr-only">
+                                    <div
+                                        class="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center mr-3 cursor-pointer hover:border-primary transition-colors">
+                                        <div class="w-2 h-2 bg-primary rounded hidden"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-700">1960s Vintage</span>
+                                    <span class="ml-auto text-xs text-gray-500">24</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="sr-only">
+                                    <div
+                                        class="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center mr-3 cursor-pointer hover:border-primary transition-colors">
+                                        <div class="w-2 h-2 bg-primary rounded hidden"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-700">1970s Retro</span>
+                                    <span class="ml-auto text-xs text-gray-500">31</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="sr-only">
+                                    <div
+                                        class="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center mr-3 cursor-pointer hover:border-primary transition-colors">
+                                        <div class="w-2 h-2 bg-primary rounded hidden"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-700">1980s Classic</span>
+                                    <span class="ml-auto text-xs text-gray-500">18</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="sr-only">
+                                    <div
+                                        class="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center mr-3 cursor-pointer hover:border-primary transition-colors">
+                                        <div class="w-2 h-2 bg-primary rounded hidden"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-700">1990s Grunge</span>
+                                    <span class="ml-auto text-xs text-gray-500">42</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="sr-only">
+                                    <div
+                                        class="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center mr-3 cursor-pointer hover:border-primary transition-colors">
+                                        <div class="w-2 h-2 bg-primary rounded hidden"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-700">Y2K Fashion</span>
+                                    <span class="ml-auto text-xs text-gray-500">36</span>
+                                </label>
+                            </div>
+                        </div> -->
+                        <!-- Category Filter -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Category</h4>
+                            <select id="categoryFilter" class="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700">
+                                <option value="" selected>Select a category</option>
+                                <!--                            <option value="clothing">Clothing (89)</option>
+                                                            <option value="shoes">Shoes (34)</option>
+                                                            <option value="bags">Bags & Accessories (27)</option>-->
+                            </select>
+                        </div>
+
+                        <!-- Size Filter -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Size</h4>
+                            <select id="sizeFilter" class="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700">
+                                <option value="" selected>Select a size</option>
+
+                            </select>
+                        </div>
+
+                        <!-- Condition Filter -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Condition</h4>
+                            <select id="conditionFilter" class="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700">
+                                <option value="" selected>Select condition</option>
+                                <!--                            <option value="like_new">Like New</option>
+                                                            <option value="excellent">Excellent</option>
+                                                            <option value="good">Good</option>
+                                                            <option value="fair">Fair</option>-->
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <!-- <div class="mb-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Price Range</h4>
+                            <div class="px-2">
+                                <div class="relative">
+                                    <input type="range" min="0" max="200" value="100"
+                                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-500 mt-2">
+                                    <span>$0</span>
+                                    <span>$200+</span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <!-- Popular Tags -->
+                        <!-- Apply Filters Button -->
+                        <div class="mt-6">
+                            <button id="applyFilters"
+                                    class="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                                Apply Filters
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Main Content -->
+                <div class="flex-1">
+                    <!-- Results Header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display']">Thrift Treasures</h2>
+                            <!--                        <p class="text-gray-600 mt-1">151 unique items found</p>-->
+                        </div>
+                        <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+                            <div class="flex items-center space-x-2">
+                                <!--                            <span class="text-sm text-gray-600">Sort by:</span>-->
+                                <!--                            <button
+                                                                class="flex items-center space-x-1 px-3 py-2 border border-gray-300 rounded-lg text-sm hover:border-primary transition-colors">
+                                                                <span>Newest First</span>
+                                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                                    <i class="ri-arrow-down-s-line"></i>
+                                                                </div>
+                                                            </button>-->
+                            </div>
+                            <!-- <div class="flex border border-gray-300 rounded-lg">
+                                <button class="p-2 bg-primary text-white rounded-l-lg">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-grid-line"></i>
+                                    </div>
+                                </button>
+                                <button class="p-2 text-gray-600 hover:text-primary rounded-r-lg">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-list-check"></i>
+                                    </div>
+                                </button>
+                            </div> -->
+                        </div>
+                    </div>
+                    <!-- New Arrivals Banner -->
+                    <div class="bg-gradient-to-r from-primary to-secondary rounded-xl p-6 mb-8 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">New Arrivals This Week</h3>
+                                <p class="text-white/90">Fresh vintage finds just added to our collection</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <!--                            <div class="w-8 h-8 flex items-center justify-center">
+                                                                <i class="ri-star-fill text-yellow-300"></i>
+                                                            </div>
+                                                            <span class="text-sm">24 new items</span>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Grid -->
+                    <div id="productGridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <!-- Product Card 1 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%201970s%20brown%20leather%20jacket%20hanging%20on%20wooden%20hanger%20with%20soft%20natural%20lighting%20and%20neutral%20beige%20background%2C%20high%20quality%20product%20photography%20style&width=300&height=400&seq=1&orientation=portrait"
+                                     alt="Vintage Leather Jacket"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span
+                                        class="badge-vintage text-white text-xs px-2 py-1 rounded-full font-medium">Vintage
+                                        Certified</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-line text-gray-600"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Like New</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">Vintage 1970s Brown Leather
+                                        Jacket</h3>
+                                    <span class="text-xs text-gray-500 ml-2">Size M</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">Originally from Nordstrom</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$89</span>
+                                    <span class="text-sm text-gray-500 price-original">$245</span>
+                                    <span class="text-xs text-green-600 font-medium">64% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-eye-line"></i>
+                                        </div>
+                                        12 viewing
+                                    </span>
+                                    <span class="badge-sustainable text-white px-2 py-1 rounded-full">Eco Choice</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 2 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%201990s%20high%20waisted%20blue%20denim%20jeans%20laid%20flat%20on%20white%20marble%20surface%20with%20soft%20studio%20lighting%2C%20minimalist%20product%20photography%20style&width=300&height=400&seq=2&orientation=portrait"
+                                     alt="90s High-Waisted Jeans"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">Last
+                                        Chance</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-line text-gray-600"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Excellent</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">90s High-Waisted Mom Jeans
+                                    </h3>
+                                    <span class="text-xs text-gray-500 ml-2">Size 28</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">Authentic Levi's vintage</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$45</span>
+                                    <span class="text-sm text-gray-500 price-original">$120</span>
+                                    <span class="text-xs text-green-600 font-medium">62% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-time-line"></i>
+                                        </div>
+                                        2h left
+                                    </span>
+                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Trending</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 3 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%20designer%20handbag%20black%20leather%20with%20gold%20hardware%20displayed%20on%20elegant%20white%20pedestal%20with%20soft%20shadows%20and%20luxury%20lighting&width=300&height=400&seq=3&orientation=portrait"
+                                     alt="Designer Handbag"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span
+                                        class="badge-vintage text-white text-xs px-2 py-1 rounded-full font-medium">Designer</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-fill text-red-500"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Like New</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">Authentic Coach Leather
+                                        Handbag</h3>
+                                    <span class="text-xs text-gray-500 ml-2">One Size</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">Vintage Coach collection</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$156</span>
+                                    <span class="text-sm text-gray-500 price-original">$395</span>
+                                    <span class="text-xs text-green-600 font-medium">61% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-star-fill text-yellow-400"></i>
+                                        </div>
+                                        4.8 (23 reviews)
+                                    </span>
+                                    <span class="badge-sustainable text-white px-2 py-1 rounded-full">Authenticated</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 4 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%201980s%20colorful%20windbreaker%20jacket%20with%20geometric%20patterns%20displayed%20on%20white%20background%20with%20clean%20studio%20lighting&width=300&height=400&seq=4&orientation=portrait"
+                                     alt="80s Windbreaker"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full font-medium">Rare
+                                        Find</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-line text-gray-600"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">Good</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">80s Retro Geometric
+                                        Windbreaker</h3>
+                                    <span class="text-xs text-gray-500 ml-2">Size L</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">Nike vintage collection</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$67</span>
+                                    <span class="text-sm text-gray-500 price-original">$180</span>
+                                    <span class="text-xs text-green-600 font-medium">63% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-fire-line text-red-500"></i>
+                                        </div>
+                                        Hot item
+                                    </span>
+                                    <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full">80s Style</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 5 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%20white%20canvas%20sneakers%20with%20worn%20details%20and%20authentic%20patina%20on%20clean%20white%20background%20with%20soft%20shadows&width=300&height=400&seq=5&orientation=portrait"
+                                     alt="Vintage Sneakers"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span
+                                        class="badge-sustainable text-white text-xs px-2 py-1 rounded-full font-medium">Sustainable</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-line text-gray-600"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Excellent</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">Classic White Canvas Sneakers
+                                    </h3>
+                                    <span class="text-xs text-gray-500 ml-2">Size 9</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">Converse All Star vintage</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$32</span>
+                                    <span class="text-sm text-gray-500 price-original">$75</span>
+                                    <span class="text-xs text-green-600 font-medium">57% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-thumb-up-line"></i>
+                                        </div>
+                                        95% liked
+                                    </span>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">Classic</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 6 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%20floral%20print%20dress%20hanging%20on%20wooden%20hanger%20with%20soft%20natural%20lighting%20and%20cream%20colored%20background%2C%20boho%20style%20clothing%20photography&width=300&height=400&seq=6&orientation=portrait"
+                                     alt="Vintage Floral Dress"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span class="badge-vintage text-white text-xs px-2 py-1 rounded-full font-medium">Boho
+                                        Chic</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-line text-gray-600"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Like New</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">Vintage Floral Maxi Dress
+                                    </h3>
+                                    <span class="text-xs text-gray-500 ml-2">Size S</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">Free People inspired</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$54</span>
+                                    <span class="text-sm text-gray-500 price-original">$140</span>
+                                    <span class="text-xs text-green-600 font-medium">61% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-heart-fill text-pink-400"></i>
+                                        </div>
+                                        Loved by 8
+                                    </span>
+                                    <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full">Feminine</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 7 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%20band%20t-shirt%20with%20faded%20graphics%20laid%20flat%20on%20white%20surface%20with%20authentic%20worn%20texture%20and%20soft%20studio%20lighting&width=300&height=400&seq=7&orientation=portrait"
+                                     alt="Vintage Band Tee"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span
+                                        class="bg-indigo-500 text-white text-xs px-2 py-1 rounded-full font-medium">Collector</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-line text-gray-600"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">Good</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">Vintage Rock Band Tour Tee
+                                    </h3>
+                                    <span class="text-xs text-gray-500 ml-2">Size M</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">1990s authentic tour merch</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$78</span>
+                                    <span class="text-sm text-gray-500 price-original">$200</span>
+                                    <span class="text-xs text-green-600 font-medium">61% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-music-line"></i>
+                                        </div>
+                                        Music lover
+                                    </span>
+                                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">90s Grunge</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 8 -->
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="https://readdy.ai/api/search-image?query=vintage%20silk%20scarf%20with%20elegant%20pattern%20displayed%20on%20white%20marble%20surface%20with%20luxury%20lighting%20and%20soft%20shadows&width=300&height=400&seq=8&orientation=portrait"
+                                     alt="Silk Scarf"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span
+                                        class="badge-vintage text-white text-xs px-2 py-1 rounded-full font-medium">Luxury</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-heart-line text-gray-600"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Like New</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">Vintage Silk Designer Scarf
+                                    </h3>
+                                    <span class="text-xs text-gray-500 ml-2">One Size</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">Hermès inspired design</p>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">$89</span>
+                                    <span class="text-sm text-gray-500 price-original">$250</span>
+                                    <span class="text-xs text-green-600 font-medium">64% off</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span class="flex items-center">
+                                        <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-vip-crown-line text-yellow-500"></i>
+                                        </div>
+                                        Premium
+                                    </span>
+                                    <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Elegant</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Load More -->
+                    <!-- Pagination -->
+                    <div class="flex justify-center items-center mt-12 space-x-2 text-sm text-gray-700">
+                        <button id="prevBtn"
+                                class="px-4 py-2 border border-gray-300 rounded-lg hover:border-primary hover:text-primary transition-colors">
+                            <i class="ri-arrow-left-s-line"></i> Prev
+                        </button>
+
+                        <button class="pagination-btn px-4 py-2 border border-gray-300 rounded-lg bg-primary text-white" data-page="1">1</button>
+                        <button class="pagination-btn px-4 py-2 border border-gray-300 rounded-lg hover:border-primary hover:text-primary transition-colors" data-page="2">2</button>
+                        <button class="pagination-btn px-4 py-2 border border-gray-300 rounded-lg hover:border-primary hover:text-primary transition-colors" data-page="3">3</button>
+                        <button class="pagination-btn px-4 py-2 border border-gray-300 rounded-lg hover:border-primary hover:text-primary transition-colors" data-page="10">10</button>
+
+                        <button id="nextBtn"
+                                class="px-4 py-2 border border-gray-300 rounded-lg hover:border-primary hover:text-primary transition-colors">
+                            Next <i class="ri-arrow-right-s-line"></i>
+                        </button>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div id="footer-placeholder"></div>
+    </body>
+
+
+
+    <script>
+        let currentPage = 1;
+        const productsPerPage = 8;
+        let totalProducts = 0;
+
+        function getFilters() {
+            const category = document.getElementById("categoryFilter")?.value || "";
+            const size = document.getElementById("sizeFilter")?.value || "";
+            const condition = document.getElementById("conditionFilter")?.value || "";
+            const search = document.getElementById("searchInput")?.value || "";
+            return {category, size, condition, search};
+        }
+
+        async function loadProducts(page) {
+            const {category, size, condition, search} = getFilters();
+            const query = new URLSearchParams({
+                page,
+                category,
+                size,
+                condition,
+                search
+            });
+
+            try {
+                const response = await fetch(`/ThrifteStop/get-product-list?${query.toString()}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const container = document.getElementById("productGridContainer");
+                    container.innerHTML = "";
+
+                    data.products.forEach(item => {
+                        const card = `
+                        <div class="bg-white rounded-xl product-card overflow-hidden group cursor-pointer">
+                            <div class="relative">
+                                <img src="${item.image}" alt="${item.title}"
+                                     class="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 left-3">
+                                    <span class="badge-vintage text-white text-xs px-2 py-1 rounded-full font-medium">Vintage</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-medium text-gray-900 text-sm line-clamp-2">${item.title}</h3>
+                                    <span class="text-xs text-gray-500 ml-2">${item.size}</span>
+                                </div>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="text-lg font-bold text-gray-900">${item.price}</span>
+                                </div>
+                                <button class="view-product-btn w-full bg-primary text-white py-2 !rounded-button font-semibold hover:bg-primary/90 transition-colors"
+                                        data-id="${item.id}">
+                                    View Product
+                                </button>
+                            </div>
+                        </div>`;
+                        container.insertAdjacentHTML("beforeend", card);
+                    });
+
+                    container.querySelectorAll(".view-product-btn").forEach(btn => {
+                        btn.addEventListener("click", function () {
+                            const id = this.getAttribute("data-id");
+                            window.location.href = `/ThrifteStop/productView.html?id=${id}`;
+                        });
+                    });
+
+                    totalProducts = data.total;
+                    updatePaginationUI();
+                } else {
+                    console.error("Server responded with status: " + response.status);
+                }
+            } catch (err) {
+                console.error("Error loading products:", err);
+            }
+        }
+
+        function updatePaginationUI() {
+            const totalPages = Math.ceil(totalProducts / productsPerPage);
+            document.getElementById("prevBtn").disabled = currentPage === 1;
+            document.getElementById("nextBtn").disabled = currentPage >= totalPages;
+
+            document.querySelectorAll(".pagination-btn").forEach(btn => {
+                if (parseInt(btn.dataset.page) === currentPage) {
+                    btn.classList.add("bg-primary", "text-white");
+                } else {
+                    btn.classList.remove("bg-primary", "text-white");
+                }
+            });
+        }
+
+        function setupPagination() {
+            document.querySelectorAll(".pagination-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const newPage = parseInt(btn.dataset.page);
+                    if (!isNaN(newPage)) {
+                        currentPage = newPage;
+                        loadProducts(currentPage);
+                    }
+                });
+            });
+
+            document.getElementById("prevBtn").addEventListener("click", () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    loadProducts(currentPage);
+                }
+            });
+
+            document.getElementById("nextBtn").addEventListener("click", () => {
+                const totalPages = Math.ceil(totalProducts / productsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    loadProducts(currentPage);
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadProducts(currentPage);
+            setupPagination();
+            loadCombo("/ThrifteStop/get-categories", "categoryFilter");
+            loadCombo("/ThrifteStop/get-sizes", "sizeFilter");
+            loadCombo("/ThrifteStop/get-conditions", "conditionFilter");
+
+            const filterBtn = document.getElementById("applyFilters");
+            if (filterBtn) {
+                filterBtn.addEventListener("click", () => {
+                    currentPage = 1;
+                    loadProducts(currentPage);
+                });
+            }
+
+            document.getElementById("searchBtn").addEventListener("click", () => {
+                currentPage = 1;
+                loadProducts(currentPage);
+            });
+        });
+
+        async function loadCombo(url, selectId) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json();
+                    const select = document.getElementById(selectId);
+                    data.categories.forEach(item => {
+                        const opt = document.createElement("option");
+                        opt.value = item.id;
+                        opt.textContent = item.name;
+                        select.appendChild(opt);
+                    });
+                } else {
+                    console.error("Failed to load " + selectId + ": Server responded with status " + response.status);
+                }
+            } catch (err) {
+                console.error("Error loading " + selectId + ":", err);
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+    <script id="search-functionality">
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const searchSuggestions = document.getElementById('searchSuggestions');
+            searchInput.addEventListener('focus', function () {
+                searchSuggestions.classList.remove('hidden');
+            });
+            searchInput.addEventListener('blur', function () {
+                setTimeout(() => {
+                    searchSuggestions.classList.add('hidden');
+                }, 200);
+            });
+            searchInput.addEventListener('input', function () {
+                if (this.value.length > 0) {
+                    searchSuggestions.classList.remove('hidden');
+                } else {
+                    searchSuggestions.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script id="filter-functionality">
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const customCheckbox = checkbox.nextElementSibling;
+                const indicator = customCheckbox.querySelector('div');
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        customCheckbox.classList.add('border-primary', 'bg-primary/10');
+                        indicator.classList.remove('hidden');
+                    } else {
+                        customCheckbox.classList.remove('border-primary', 'bg-primary/10');
+                        indicator.classList.add('hidden');
+                    }
+                });
+                customCheckbox.addEventListener('click', function () {
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+            });
+        });
+    </script>
+    <script id="product-interactions">
+        document.addEventListener('DOMContentLoaded', function () {
+            const heartButtons = document.querySelectorAll('.product-card button');
+            heartButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const icon = this.querySelector('i');
+                    if (icon.classList.contains('ri-heart-line')) {
+                        icon.classList.remove('ri-heart-line');
+                        icon.classList.add('ri-heart-fill', 'text-red-500');
+                    } else {
+                        icon.classList.remove('ri-heart-fill', 'text-red-500');
+                        icon.classList.add('ri-heart-line', 'text-gray-600');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+
+        function loadHTML(id, url) {
+            fetch(url)
+                    .then(response => {
+                        if (!response.ok)
+                            throw new Error("Network response was not ok");
+                        return response.text();
+                    })
+                    .then(data => {
+                        const container = document.getElementById(id);
+                        container.innerHTML = data;
+
+                        // Extract and execute scripts manually
+                        const scripts = container.querySelectorAll("script");
+                        scripts.forEach(script => {
+                            const newScript = document.createElement("script");
+                            if (script.src) {
+                                newScript.src = script.src;
+                            } else {
+                                newScript.textContent = script.textContent;
+                            }
+                            document.head.appendChild(newScript); // Append to head or body
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error loading HTML:', error);
+                    });
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadHTML("nav-placeholder", "header.html");
+            loadHTML("footer-placeholder", "footer.html");
+        });
+    </script>
+
+</html>

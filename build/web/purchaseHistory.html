@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Purchase History - Thrift Store</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B', // Muted terracotta
+                            secondary: '#E0B96A' // Soft mustard
+                        },
+                        borderRadius: {
+                            none: '0px',
+                            sm: '4px',
+                            DEFAULT: '8px',
+                            md: '12px',
+                            lg: '16px',
+                            xl: '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            full: '9999px',
+                            button: '8px'
+                        }
+                    }
+                }
+            };
+        </script>
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50 min-h-screen">
+        <div id="nav-placeholder"></div>
+
+        <main class="w-full px-4 sm:px-6 lg:px-8 py-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-primary mb-2">Purchase History</h2>
+                    <p class="text-gray-600">Track all your thrift store purchases</p>
+                </div>
+
+                <!-- <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    
+                    <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                        <div
+                            class="flex flex-col sm:flex-row gap-4 flex-1 min-w-0">
+                            <div class="relative flex-1 max-w-md min-w-0">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-search-line text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="Search orders..."
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-sm" />
+                            </div>
+                            <div
+                                class="flex gap-2 flex-wrap sm:flex-nowrap items-center min-w-0 justify-start sm:justify-start">
+                                <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+                                    
+                                    <div class="relative min-w-[130px]">
+                                        <input type="date"
+                                            class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-secondary transition-colors !rounded-button"
+                                            placeholder="From" />
+                                    </div>
+    
+                                    
+                                    <div class="relative min-w-[130px]">
+                                        <input type="date"
+                                            class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-secondary transition-colors !rounded-button"
+                                            placeholder="To" />
+                                    </div>
+                                </div>
+    
+                                <div class="relative min-w-[120px]">
+                                    <select
+                                        class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:border-secondary transition-colors text-sm text-gray-700 bg-white cursor-pointer !rounded-button focus:outline-none focus:ring-2 focus:ring-secondary w-full">
+                                        <option selected>All Status</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative mt-3 lg:mt-0 flex-shrink-0">
+                            <button
+                                class="flex items-center gap-2 px-4 py-2 border border-primary bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm whitespace-nowrap !rounded-button w-full sm:w-auto justify-center">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-search-line text-white text-base"></i>
+                                </div>
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div id="orderHistoryContainer"
+                     class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div
+                        class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="p-6">
+                            <div
+                                class="flex items-start justify-between mb-2">
+                                <h3
+                                    class="font-semibold text-primary text-sm">
+                                    #ORD-2024-001
+                                </h3>
+                                <span
+                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Delivered
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2">March 15, 2024</p>
+                            <p class="text-lg font-semibold text-gray-900 mb-4">Rs
+                                8,500.00</p>
+
+                            <!-- Products list in order -->
+                            <div class="space-y-4">
+                                <!-- Product 1 -->
+                                <div
+                                    class="flex items-start gap-4">
+                                    <div
+                                        class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="resources/items/knot tank top_1_6667324ad7e73.jpeg" alt="Product 1"
+                                             class="w-full h-full object-cover object-top" />
+                                    </div>
+                                    <div
+                                        class="text-sm text-gray-700">
+                                        <p class="font-medium">Vintage Leather Jacket</p>
+                                        <p>Rs 4500.00</p>
+                                    </div>
+                                </div>
+
+                                <!-- Product 2 -->
+                                <div
+                                    class="flex items-start gap-4">
+                                    <div
+                                        class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="resources/items/Lazer Cut blouse_1_6665cdb0c6387.jpeg" alt="Product 2"
+                                             class="w-full h-full object-cover object-top" />
+                                    </div>
+                                    <div
+                                        class="text-sm text-gray-700">
+                                        <p class="font-medium">Retro Denim Jeans</p>
+                                        <p>Rs 4000.00</p>
+                                    </div>
+                                </div>
+
+                                <!-- Add more items here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="p-6">
+                            <div
+                                class="flex items-start justify-between mb-2">
+                                <h3
+                                    class="font-semibold text-primary text-sm">
+                                    #ORD-2024-002
+                                </h3>
+                                <span
+                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    In Transit
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2">March 12, 2024</p>
+                            <p class="text-lg font-semibold text-gray-900 mb-4">Rs
+                                6,850.00</p>
+
+                            <!-- Products list in order -->
+                            <div class="space-y-4">
+                                <!-- Product 1 -->
+                                <div
+                                    class="flex items-start gap-4">
+                                    <div
+                                        class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="resources/items/Over Sized Shirt_0_666587928c80f.jpeg" alt="Vintage Denim Jeans"
+                                             class="w-full h-full object-cover object-top" />
+                                    </div>
+                                    <div
+                                        class="text-sm text-gray-700">
+                                        <p class="font-medium">Vintage Denim Jeans</p>
+                                        <p>Rs 3,250.00</p>
+                                    </div>
+                                </div>
+
+                                <!-- Product 2 -->
+                                <div
+                                    class="flex items-start gap-4">
+                                    <div
+                                        class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="resources/items/Stradivaius Skirt_1_666596a6db557.jpeg" alt="Retro Corduroy Jacket"
+                                             class="w-full h-full object-cover object-top" />
+                                    </div>
+                                    <div
+                                        class="text-sm text-gray-700">
+                                        <p class="font-medium">Retro Corduroy Jacket</p>
+                                        <p>Rs 3,600.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="paginationContainer"
+                     class="flex items-center justify-center mt-12 space-x-2 flex-wrap gap-2">
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:border-secondary hover:text-secondary transition-colors">
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-left-s-line"></i>
+                        </div>
+                    </button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-lg bg-secondary text-white font-medium">
+                        1
+                    </button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:border-secondary hover:text-secondary transition-colors">
+                        2
+                    </button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:border-secondary hover:text-secondary transition-colors">
+                        3
+                    </button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:border-secondary hover:text-secondary transition-colors">
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </main>
+        <div id="footer-placeholder"></div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", async function () {
+                const ORDERS_PER_PAGE = 3;
+                let ordersData = [];
+                let currentPage = 1;
+
+                const container = document.getElementById("orderHistoryContainer");
+                const paginationContainer = document.getElementById("paginationContainer");
+
+                function renderOrders(page) {
+                    container.innerHTML = "";
+                    const start = (page - 1) * ORDERS_PER_PAGE;
+                    const end = start + ORDERS_PER_PAGE;
+                    const pageOrders = ordersData.slice(start, end);
+
+                    pageOrders.forEach(order => {
+                        let itemsHTML = "";
+                        order.items.forEach(item => {
+                            itemsHTML += `
+                        <div class="flex items-center space-x-4 mb-3">
+                            <img src="${item.image}" alt="${item.title}" class="w-16 h-16 object-cover rounded border" />
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${item.title}</h4>
+                                <p class="text-sm text-gray-600">${item.price}</p>
+                            </div>
+                        </div>`;
+                        });
+
+                        const cardHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow mb-6 border flex flex-col h-full">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">Order #${order.orderId}</h3>
+                                <p class="text-sm text-gray-500">${order.orderDate}</p>
+                            </div>
+                            <div class="text-sm text-primary font-semibold">${order.status}</div>
+                        </div>
+                        <div>${itemsHTML}</div>
+                        <div class="mt-auto text-right pt-4 font-bold text-gray-800 border-t">${order.totalAmount}</div>
+                    </div>`;
+                        container.insertAdjacentHTML("beforeend", cardHTML);
+                    });
+                }
+
+                function renderPagination(totalPages) {
+                    paginationContainer.innerHTML = "";
+
+                    // Prev Button
+                    const prevBtn = document.createElement("button");
+                    prevBtn.innerHTML = `<i class="ri-arrow-left-s-line"></i>`;
+                    prevBtn.className = `w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:border-secondary hover:text-secondary`;
+                    prevBtn.disabled = currentPage === 1;
+                    prevBtn.onclick = () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            updateView();
+                        }
+                    };
+                    paginationContainer.appendChild(prevBtn);
+
+                    // Page Buttons
+                    for (let i = 1; i <= totalPages; i++) {
+                        const btn = document.createElement("button");
+                        btn.textContent = i;
+                        btn.className = `w-10 h-10 flex items-center justify-center rounded-lg ${
+                                i === currentPage
+                                ? 'bg-secondary text-white font-medium'
+                                : 'border border-gray-300 hover:border-secondary hover:text-secondary'
+                                }`;
+                        btn.onclick = () => {
+                            currentPage = i;
+                            updateView();
+                        };
+                        paginationContainer.appendChild(btn);
+                    }
+
+                    // Next Button
+                    const nextBtn = document.createElement("button");
+                    nextBtn.innerHTML = `<i class="ri-arrow-right-s-line"></i>`;
+                    nextBtn.className = `w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 hover:border-secondary hover:text-secondary`;
+                    nextBtn.disabled = currentPage === totalPages;
+                    nextBtn.onclick = () => {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            updateView();
+                        }
+                    };
+                    paginationContainer.appendChild(nextBtn);
+                }
+
+                function updateView() {
+                    const totalPages = Math.ceil(ordersData.length / ORDERS_PER_PAGE);
+                    renderOrders(currentPage);
+                    renderPagination(totalPages);
+                }
+
+                try {
+                    const response = await fetch("/ThrifteStop/get-customer-orders");
+
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch order data");
+                    }
+
+                    const data = await response.json();
+
+                    if (!data.status || !Array.isArray(data.orders) || data.orders.length === 0) {
+                        container.innerHTML = `<p class="text-center text-gray-500">No orders yet.</p>`;
+                        paginationContainer.innerHTML = "";
+                        return;
+                    }
+
+                    ordersData = data.orders;
+                    currentPage = 1;
+                    updateView();
+
+                } catch (err) {
+                    console.error("Error loading orders:", err);
+                    container.innerHTML = `<p class="text-center text-red-500">Failed to load orders.</p>`;
+                }
+            });
+        </script>
+
+
+
+        <!--        <script id="filter-interactions">
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const searchInput = document.querySelector('input[type="text"]');
+                        const filterButtons = document.querySelectorAll('button[class*="border-gray-300"]');
+        
+                        searchInput.addEventListener('input', function () {
+                            console.log('Search:', this.value);
+                        });
+        
+                        filterButtons.forEach(button => {
+                            button.addEventListener('click', function () {
+                                console.log('Filter clicked:', this.textContent.trim());
+                            });
+                        });
+                    });
+                </script>-->
+        <script id="order-interactions">
+            document.addEventListener('DOMContentLoaded', function () {
+                const orderCards = document.querySelectorAll('.bg-white.rounded-lg.shadow-sm');
+
+                orderCards.forEach(card => {
+                    const button = card.querySelector('button');
+                    if (button && !button.classList.contains('cursor-not-allowed')) {
+                        button.addEventListener('click', function () {
+                            const orderNumber = card.querySelector('.text-primary').textContent;
+                            console.log('Order action:', orderNumber);
+                        });
+                    }
+                });
+            });
+        </script>
+
+        <script id="pagination-interactions">
+            document.addEventListener('DOMContentLoaded', function () {
+                const paginationButtons = document.querySelectorAll('.flex.items-center.justify-center.mt-12 button');
+
+                paginationButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const pageNumber = this.textContent.trim();
+                        console.log('Page clicked:', pageNumber);
+
+                        paginationButtons.forEach(btn => {
+                            btn.classList.remove('bg-secondary', 'text-white');
+                            btn.classList.add('border', 'border-gray-300');
+                        });
+
+                        if (!isNaN(pageNumber)) {
+                            this.classList.add('bg-secondary', 'text-white');
+                            this.classList.remove('border', 'border-gray-300');
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+
+            function loadHTML(id, url) {
+                fetch(url)
+                        .then(response => {
+                            if (!response.ok)
+                                throw new Error("Network response was not ok");
+                            return response.text();
+                        })
+                        .then(data => {
+                            const container = document.getElementById(id);
+                            container.innerHTML = data;
+
+                            // Extract and execute scripts manually
+                            const scripts = container.querySelectorAll("script");
+                            scripts.forEach(script => {
+                                const newScript = document.createElement("script");
+                                if (script.src) {
+                                    newScript.src = script.src;
+                                } else {
+                                    newScript.textContent = script.textContent;
+                                }
+                                document.head.appendChild(newScript); // Append to head or body
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error loading HTML:', error);
+                        });
+            }
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                loadHTML("nav-placeholder", "header.html");
+                loadHTML("footer-placeholder", "footer.html");
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Customer Management</title>
+        <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css" />
+        <style>
+            :where([class^="ri-"])::before {
+                content: "\f3c2";
+            }
+
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            .switch {
+                width: 44px;
+                height: 24px;
+                background: #e5e7eb;
+                border-radius: 12px;
+                padding: 2px;
+                /* transition: background 0.4s; */
+                cursor: pointer;
+                position: relative;
+            }
+
+            .switch.active {
+                background: #C7795B;
+            }
+
+            .switch-handle {
+                width: 20px;
+                height: 20px;
+                background: white;
+                border-radius: 50%;
+                transition: transform 0.4s;
+                position: absolute;
+                left: 2px;
+            }
+
+            .switch.active .switch-handle {
+                transform: translateX(20px);
+            }
+        </style>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#C7795B',
+                            secondary: '#E0B96A'
+                        },
+                        borderRadius: {
+                            'none': '0px',
+                            'sm': '4px',
+                            DEFAULT: '8px',
+                            'md': '12px',
+                            'lg': '16px',
+                            'xl': '20px',
+                            '2xl': '24px',
+                            '3xl': '32px',
+                            'full': '9999px',
+                            'button': '8px'
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+
+    <body class="bg-[#fafafa] min-h-screen">
+        <div class="flex">
+            <aside class="w-64 bg-white shadow-lg min-h-screen">
+                <nav class="p-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="adminDashboard.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-dashboard-line"></i>
+                                </div>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="addNewProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-shopping-bag-line"></i>
+                                </div>
+                                <span>Add Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="updateProduct.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-edit-box-line"></i>
+                                </div>
+                                <span>Update Product</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminOrder.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="adminInventory.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Inventory</span>
+                            </a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="adminOrder.html" data-page="adminOrder.html"
+                                class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                <span>Orders</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="adminCustomer.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-group-line"></i>
+                                </div>
+                                <span>Customer</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminSale.html"
+                               class="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-bar-chart-line"></i>
+                                </div>
+                                <span>Sales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-logout-box-line"></i>
+                                </div>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </aside>
+            <main class="container mx-auto px-6 py-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Customer Management</h1>
+                    <p class="text-gray-600">View and manage customers</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 p-6">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-gray-700">Status:</label>
+                            <div class="relative">
+                                <select id="statusFilter" class="appearance-none bg-white border border-secondary rounded-sm px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <i class="ri-arrow-down-s-line text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-gray-700">Date Range:</label>
+                            <input type="date" id="dateFrom" class="border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <span class="text-gray-500">to</span>
+                            <input type="date" id="dateTo" class="border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+
+                        <div class="flex-1 max-w-md">
+                            <div class="relative">
+                                <input type="text" id="searchInput" placeholder="Search customers..." class="w-full border border-gray-300 rounded-sm pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <i class="ri-search-line text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="applyFilters" class="bg-primary text-white px-6 py-2 rounded-button text-sm font-medium hover:bg-opacity-90 transition-colors whitespace-nowrap">
+                            Apply Filters
+                        </button>
+                        <button id="printBtn"
+                                class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-secondary hover:bg-opacity-90 !rounded-button whitespace-nowrap">
+                            <i class="ri-download-line"></i>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="text-left py-4 px-4 text-sm font-medium">Customer</th>
+                                    <th class="text-left py-4 px-4 text-sm font-medium">Email</th>
+                                    <th class="text-left py-4 px-4 text-sm font-medium">Joined</th>
+                                    <th class="text-left py-4 px-4 text-sm font-medium">Mobile</th>
+                                    <th class="text-left py-4 px-4 text-sm font-medium">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                                                <i class="ri-user-line text-gray-400"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-sm">Isabella Thompson</div>
+                                                <div class="text-xs text-gray-500">#CT8945</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-sm">isabella.t@example.com</td>
+                                    <td class="py-4 px-4 text-sm">July 12, 2025</td>
+                                    <td class="py-4 px-4 text-sm">0777764768</td>
+                                    <td class="py-4 px-4">
+                                        <div class="switch active">
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                                                <i class="ri-user-line text-gray-400"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-sm">Alexander Mitchell</div>
+                                                <div class="text-xs text-gray-500">#CT8946</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-sm">alex.m@example.com</td>
+                                    <td class="py-4 px-4 text-sm">July 14, 2025</td>
+                                    <td class="py-4 px-4 text-sm">0778945226</td>
+                                    <td class="py-4 px-4">
+                                        <div class="switch active">
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-pages flex items-center justify-between mt-6">
+                        <!-- <div class="text-sm text-gray-600">Showing 1 to 10 of 45 entries</div> -->
+                        <div class="flex gap-2">
+                            <button id="prevBtn"
+                                    class="page-btn px-3 py-1 text-sm border border-gray-200 rounded-button hover:border-primary">Previous</button>
+                            <button class="px-3 py-1 text-sm text-white bg-primary rounded-button">1</button>
+                            <button
+                                class="page-btn px-3 py-1 text-sm border border-gray-200 rounded-button hover:border-primary">2</button>
+                            <button id="nextBtn"
+                                    class="page-btn px-3 py-1 text-sm border border-gray-200 rounded-button hover:border-primary">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+        <!-- <script id="chartInit">
+            document.addEventListener('DOMContentLoaded', function () {
+                const customerGrowthChart = echarts.init(document.getElementById('customerGrowthChart'));
+                const customerStatusChart = echarts.init(document.getElementById('customerStatusChart'));
+                const growthOption = {
+                    animation: false,
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        borderColor: '#eee',
+                        textStyle: { color: '#1f2937' }
+                    },
+                    grid: { top: 10, right: 10, bottom: 20, left: 40 },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                        axisLine: { lineStyle: { color: '#eee' } },
+                        axisLabel: { color: '#1f2937' }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: { lineStyle: { color: '#eee' } },
+                        axisLabel: { color: '#1f2937' }
+                    },
+                    series: [{
+                        data: [150, 230, 224, 218, 135, 147, 260],
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: { color: 'rgba(87, 181, 231, 1)' },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgba(87, 181, 231, 0.2)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(87, 181, 231, 0)'
+                            }])
+                        }
+                    }]
+                };
+                const statusOption = {
+                    animation: false,
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        borderColor: '#eee',
+                        textStyle: { color: '#1f2937' }
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        data: [
+                            { value: 735, name: 'Active' },
+                            { value: 180, name: 'Inactive' },
+                            { value: 85, name: 'Pending' }
+                        ],
+                        label: { color: '#1f2937' },
+                        itemStyle: {
+                            borderRadius: 4
+                        },
+                        color: ['rgba(87, 181, 231, 1)', 'rgba(141, 211, 199, 1)', 'rgba(251, 191, 114, 1)']
+                    }]
+                };
+                customerGrowthChart.setOption(growthOption);
+                customerStatusChart.setOption(statusOption);
+                window.addEventListener('resize', function () {
+                    customerGrowthChart.resize();
+                    customerStatusChart.resize();
+                });
+            });
+        </script> -->
+        <!-- <script id="filterToggle">
+            document.addEventListener('DOMContentLoaded', function () {
+                const filterBtn = document.getElementById('filterBtn');
+                const filterMenu = document.getElementById('filterMenu');
+                const statusFilter = document.getElementById('statusFilter');
+                const dateFromFilter = document.getElementById('dateFromFilter');
+                const dateToFilter = document.getElementById('dateToFilter');
+                const applyFilters = document.getElementById('applyFilters');
+                filterBtn.addEventListener('click', function () {
+                    filterMenu.classList.toggle('hidden');
+                });
+                document.addEventListener('click', function (event) {
+                    if (!filterBtn.contains(event.target) && !filterMenu.contains(event.target)) {
+                        filterMenu.classList.add('hidden');
+                    }
+                });
+                function filterCustomers() {
+                    const rows = document.querySelectorAll('tbody tr');
+                    const status = statusFilter.value;
+                    const dateFrom = dateFromFilter.value ? new Date(dateFromFilter.value) : null;
+                    const dateTo = dateToFilter.value ? new Date(dateToFilter.value) : null;
+                    rows.forEach(row => {
+                        const rowStatus = row.querySelector('.switch').classList.contains('active') ? 'active' : 'inactive';
+                        const joinDate = new Date(row.querySelector('td:nth-child(3)').textContent);
+                        let showRow = true;
+                        if (status !== 'all' && status !== rowStatus) {
+                            showRow = false;
+                        }
+                        if (dateFrom && joinDate < dateFrom) {
+                            showRow = false;
+                        }
+                        if (dateTo && joinDate > dateTo) {
+                            showRow = false;
+                        }
+                        row.style.display = showRow ? '' : 'none';
+                    });
+                }
+                applyFilters.addEventListener('click', () => {
+                    filterCustomers();
+                    filterMenu.classList.add('hidden');
+                });
+                dateFromFilter.max = new Date().toISOString().split('T')[0];
+                dateToFilter.max = new Date().toISOString().split('T')[0];
+            });
+        </script> -->
+        <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+        <script>
+                            let customers = [];
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const tbody = document.querySelector('tbody');
+                                const prevBtn = document.getElementById("prevBtn");
+                                const nextBtn = document.getElementById("nextBtn");
+                                const pageButtons = document.querySelectorAll('.pagination-pages .page-btn');
+                                let currentPage = 1;
+                                let filters = {
+                                    status: '',
+                                    dateFrom: '',
+                                    dateTo: '',
+                                    search: ''
+                                };
+
+
+                                async function loadCustomers(page = 1, { status = '', dateFrom = '', dateTo = '', search = '' } = {}) {
+                                    const params = new URLSearchParams({page});
+
+                                    if (status)
+                                        params.append("status", status);
+                                    if (dateFrom)
+                                        params.append("dateFrom", dateFrom);
+                                    if (dateTo)
+                                        params.append("dateTo", dateTo);
+                                    if (search)
+                                        params.append("search", search.trim());
+
+                                    const response = await fetch(`/ThrifteStop/load-customers?` + params.toString());
+
+                                    if (response.ok) {
+                                        const json = await response.json();
+                                        if (json.status) {
+                                            customers = json.customers; 
+                                            tbody.innerHTML = "";
+
+                                            json.customers.forEach(c => {
+                                                const tr = document.createElement('tr');
+                                                tr.classList.add("border-b", "border-gray-100");
+                                                tr.innerHTML = `
+                    <td class="py-4 px-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="ri-user-line text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium text-sm">${c.name}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-4 px-4 text-sm">${c.id || '—'}</td>
+                    <td class="py-4 px-4 text-sm">${c.joined}</td>
+                    <td class="py-4 px-4 text-sm">${c.mobile}</td>
+                    <td class="py-4 px-4">
+                        <div class="switch ${c.status === 1 ? 'active' : ''}">
+                            <div class="switch-handle"></div>
+                        </div>
+                    </td>`;
+                                                tbody.appendChild(tr);
+                                            });
+
+                                            // Attach toggle logic with iziToast
+                                            document.querySelectorAll('.switch').forEach(switchEl => {
+                                                switchEl.addEventListener('click', async function () {
+                                                    const isActive = this.classList.toggle('active');
+                                                    const tr = this.closest('tr');
+                                                    const email = tr.querySelector('td:nth-child(2)').textContent.trim();
+                                                    const newStatus = isActive ? 1 : 2;
+
+                                                    const params = new URLSearchParams();
+                                                    params.append("email", email);
+                                                    params.append("status", newStatus);
+
+                                                    const response = await fetch('/ThrifteStop/update-customer-status', {
+                                                        method: 'POST',
+                                                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                                        body: params.toString()
+                                                    });
+
+                                                    if (response.ok) {
+                                                        const json = await response.json();
+                                                        if (!json.status) {
+                                                            iziToast.error({
+                                                                title: 'Error',
+                                                                message: json.message || "Failed to update status",
+                                                                position: 'topRight'
+                                                            });
+                                                            this.classList.toggle('active'); // revert
+                                                        } else {
+                                                            iziToast.success({
+                                                                title: 'Updated',
+                                                                message: 'Customer status updated successfully!',
+                                                                position: 'topRight'
+                                                            });
+                                                        }
+                                                    } else {
+                                                        iziToast.error({
+                                                            title: 'Network',
+                                                            message: 'Network error while updating status.',
+                                                            position: 'topRight'
+                                                        });
+                                                        this.classList.toggle('active'); // revert
+                                                    }
+                                                });
+                                            });
+
+                                        } else {
+                                            iziToast.error({
+                                                title: 'Error',
+                                                message: json.message || "Failed to load customers.",
+                                                position: 'topRight'
+                                            });
+                                        }
+                                    } else {
+                                        iziToast.error({
+                                            title: 'Network',
+                                            message: 'Network error while loading customers.',
+                                            position: 'topRight'
+                                        });
+                                }
+                                }
+
+
+
+                                // Pagination Buttons
+                                document.querySelectorAll('.pagination-pages button').forEach((btn, index) => {
+                                    btn.addEventListener('click', () => {
+                                        currentPage = index + 1;
+                                        loadCustomers(currentPage, filters);
+                                        updatePagination();
+                                    });
+                                });
+
+                                document.getElementById("prevBtn").addEventListener('click', () => {
+                                    if (currentPage > 1) {
+                                        currentPage--;
+                                        loadCustomers(currentPage, filters);
+                                        updatePagination();
+                                    }
+                                });
+
+                                document.getElementById("nextBtn").addEventListener('click', () => {
+                                    currentPage++;
+                                    loadCustomers(currentPage, filters);
+                                    updatePagination();
+                                });
+
+                                // Pagination number buttons (1, 2, 3)
+                                document.querySelectorAll('.page-btn').forEach((btn, index) => {
+                                    btn.addEventListener('click', () => {
+                                        currentPage = index + 1;
+                                        loadCustomers(currentPage);
+                                        updatePagination();
+                                    });
+                                });
+
+                                document.getElementById("applyFilters").addEventListener('click', () => {
+                                    filters = {
+                                        status: document.getElementById('statusFilter').value,
+                                        dateFrom: document.getElementById('dateFrom').value,
+                                        dateTo: document.getElementById('dateTo').value,
+                                        search: document.getElementById('searchInput').value
+                                    };
+                                    currentPage = 1;
+                                    loadCustomers(currentPage, filters);
+                                    updatePagination();
+                                });
+
+
+
+                                function updatePagination() {
+                                    const allBtns = document.querySelectorAll('.page-btn');
+                                    allBtns.forEach((btn, index) => {
+                                        btn.classList.toggle('bg-primary', index + 1 === currentPage);
+                                        btn.classList.toggle('text-white', index + 1 === currentPage);
+                                        btn.classList.toggle('border-gray-200', index + 1 !== currentPage);
+                                    });
+
+                                    document.getElementById("prevBtn").disabled = currentPage === 1;
+                                }
+
+
+                                loadCustomers(currentPage);
+                            });
+
+                            document.getElementById("printBtn")?.addEventListener("click", () => {
+                                const today = new Date();
+                                const formattedDate = today.toISOString().split("T")[0];
+
+                                let printContent = `
+        <h2 style="text-align:center;">Customer Report</h2>
+        <p style="margin:4px 0; font-size:13px;">Date: ${formattedDate}</p>
+        <table border="1" cellpadding="8" cellspacing="0" style="width:100%; font-family:sans-serif; font-size:14px; border-collapse:collapse;">
+            <thead>
+                <tr style="background-color:#C7795B; color:white;">
+                    <th>Name</th>
+                    <th>Customer ID</th>
+                    <th>Joined Date</th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+                                customers.forEach(c => {
+                                    printContent += `
+            <tr>
+                <td>${c.name}</td>
+                <td>${c.id || '—'}</td>
+                <td>${c.joined}</td>
+                <td>${c.mobile}</td>
+                <td>${c.status === 1 ? 'Active' : 'Inactive'}</td>
+            </tr>`;
+                                });
+
+                                printContent += `</tbody></table>`;
+
+                                const win = window.open('', '', 'width=900,height=650');
+                                win.document.write('<html><head><title>Customer Report</title></head><body>');
+                                win.document.write(printContent);
+                                win.document.write('</body></html>');
+                                win.document.close();
+                                win.print();
+                            });
+
+
+                            function logout() {
+                                fetch('/ThrifteStop/AdminLogout', {
+                                    method: 'POST'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        iziToast.success({
+                                            title: 'Logged out',
+                                            message: 'You have been logged out.',
+                                            position: 'topRight'
+                                        });
+                                        setTimeout(() => {
+                                            window.location.href = 'adminSignIn.html'; 
+                                        }, 1500);
+                                    } else {
+                                        iziToast.error({
+                                            title: 'Error',
+                                            message: 'Logout failed.',
+                                            position: 'topRight'
+                                        });
+                                    }
+                                }).catch(error => {
+                                    console.error(error);
+                                    iziToast.error({
+                                        title: 'Error',
+                                        message: 'Something went wrong.',
+                                        position: 'topRight'
+                                    });
+                                });
+                            }
+        </script>
+
+        <!--        <script>
+                    document.getElementById("printBtn").addEventListener("click", () => {
+                        const rows = Array.from(document.querySelectorAll("tbody tr"));
+                        
+                        const today = new Date();
+                        const formattedDate = today.toISOString().split("T")[0];
+                        
+                        let printContent = `
+                <h2 style="text-align:center;">Customer Report</h2>
+                <p style="margin:4px 0; font-size:13px;">Date: ${formattedDate}</p>
+                <table border="1" cellpadding="8" cellspacing="0" style="width:100%; font-family:sans-serif; font-size:14px; border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Joined</th>
+                            <th>Mobile</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+        
+                        rows.forEach(tr => {
+                            const cells = tr.querySelectorAll("td");
+                            const name = cells[0]?.innerText.trim();
+                            const email = cells[1]?.innerText.trim();
+                            const joined = cells[2]?.innerText.trim();
+                            const mobile = cells[3]?.innerText.trim();
+                            const isActive = cells[4]?.querySelector('.switch')?.classList.contains('active');
+                            const status = isActive ? "Active" : "Inactive";
+        
+                            printContent += `
+                    <tr>
+                        <td>${name}</td>
+                        <td>${email}</td>
+                        <td>${joined}</td>
+                        <td>${mobile}</td>
+                        <td>${status}</td>
+                    </tr>
+                `;
+                        });
+        
+                        printContent += `
+                    </tbody>
+                </table>
+            `;
+        
+                        const win = window.open('', '', 'width=900,height=650');
+                        win.document.write('<html><head><title>Print Customers</title></head><body>');
+                        win.document.write(printContent);
+                        win.document.write('</body></html>');
+                        win.document.close();
+                        win.print();
+                    });
+        
+                </script>-->
+
+        <!-- <script type="module" src="customerCharts.js"></script> -->
+    </body>
+
+</html>

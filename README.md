@@ -29,6 +29,12 @@ It includes a customer storefront, cart and checkout flow, profile management, a
 - Frontend: HTML, Tailwind CSS (CDN), vanilla JavaScript
 - Libraries: Gson, JavaMail
 
+## Demo Video
+
+Watch the full project demo on YouTube:
+
+- [ThrifteStop Demo](https://youtu.be/TjS59g0gpL8?si=rLN_YClWCrau2LiW)
+
 ## Project Structure
 
 - `src/java/controller` - Customer-facing servlets
